@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Card, Table, Button, Modal, Avatar, Breadcrumb, Col, Row } from "antd";
-import { useTranslation, Trans } from "react-i18next";
+import { Layout, Card, Table, Modal, Breadcrumb, Col, Row } from "antd";
+import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
-import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
+import {  ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOrg, fetchPlace } from "../../action";
 import AddTaxonomy from "./AddTaxonomy";
 
 const { confirm } = Modal;
@@ -18,14 +15,12 @@ const Taxonomy = function ({ currentLang }) {
   const [taxonomyList, setTaxonomyList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const [totalPage, setTotalPage] = useState(1);
   const [defaultPage, setDefaultPage] = useState(1);
   const [placeDetails, setPlaceDetails] = useState()
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const eventTableHeader = [
     {
@@ -185,10 +180,7 @@ const Taxonomy = function ({ currentLang }) {
       });
   };
 
-  const selectSemantic = (selectObj) => {
-    const searchArray = [selectObj];
-    getPlaces(1, searchArray);
-  };
+ 
 
   return (
     <Layout className="dashboard-layout">
@@ -232,7 +224,7 @@ const Taxonomy = function ({ currentLang }) {
                 },
                 current: defaultPage,
                 pageSize: 20,
-                total: totalPage,
+                total: 1,
                 hideOnSinglePage: true,
                 showSizeChanger: false
               }}
