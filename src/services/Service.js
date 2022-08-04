@@ -161,13 +161,13 @@ export default class ServiceApi {
     });
   }
 
-  static getAllTaxonomy() {
-    return Axios({
-      url: `taxonomy`,
-      method: "GET",
+  // static getAllTaxonomy() {
+  //   return Axios({
+  //     url: `taxonomy`,
+  //     method: "GET",
 
-    });
-  }
+  //   });
+  // }
 
   static getTaxonomyType() {
     return Axios({
