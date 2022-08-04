@@ -1,0 +1,78 @@
+.button-login{
+    background: #e96f0a;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 100%;
+    height: 60px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: #FFFFFF;
+}
+.login-input{
+    width: 100%;
+    height: 60px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 28px;
+    color: #000000;
+    
+}
+.login-form .ant-form-item{
+    margin-bottom: 40px;
+}
+
+.login-center-text{
+    margin-bottom: 50px;
+    font-weight: 700;
+    font-size: 45px;
+    line-height: 120%;
+    color: #222732;
+}
+.login-center-text.sign-in-text{
+    color: #031D45;
+}
+.login-label{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    margin-left: 15px;
+    color: #000000;
+    margin-bottom: 3px;
+}
+
+
+.ant-layout-sider.login-sider{
+    flex: 0 0 450px !important;
+    max-width: 460px !important;
+    width: 450px !important;
+    text-align: center;
+    height: 100%;
+
+}
+.login-root{
+    min-height: 100%;
+}
+.ant-layout.login-input-root{
+    min-height: calc(100vh - 100px);
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    padding: 20px;
+}
+.login-div{
+    width: 550px;
+}
+.login-logo{
+    width: 370px;
+    margin-top: 140px;
+}
+.ant-col.login-input-col{
+    flex: 1;
+}
+.ant-row.login-input-row{
+    width: 100%;
+}

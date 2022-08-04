@@ -1,0 +1,14 @@
+.semantic-search-div{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #ddd557;
+}
+.search-title{
+    font-weight: 700;
+    text-transform: capitalize;
+    color: #7b7b7b;
+    font-size: 15px;
+    line-height: 21px;
+}

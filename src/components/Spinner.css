@@ -1,0 +1,43 @@
+.spinImg{
+    /* font-size: 50px; */
+    /* position: absolute;
+    top: 45%; */
+    /* right: 35%; */
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    animation-name: spinning;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    
+    animation-timing-function: linear;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+}
+.segment-card .spinImg{
+    margin-bottom: 121px;
+    margin-left: -35px;
+}
+@keyframes spinning {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+  }
+ 
+  .dashboard-layout-home .spin{
+    width: calc(100vw - 75px); 
+  }
+.spin{
+    position: fixed;
+    display: inline-block;
+    opacity: 1073;
+    
+    height: calc(100vh - 161px);
+    z-index: 100;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    
+    /* top: 50%; */
+    
+    /* bottom: 23%; */
+    /* bottom: 47px; */
+    /* top: 50%; */
+}

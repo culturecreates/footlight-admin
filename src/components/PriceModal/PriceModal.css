@@ -1,0 +1,45 @@
+.text-align-end{
+    text-align: end;
+}
+.flex-input{
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+}
+.contr-text{
+    margin-right: 40px;
+}
+.dollar-input{
+    width: 180px;
+    margin-right: 20px;
+}
+.ant-radio-group.price-radio{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px;
+}
+.ant-radio-group.price-radio .ant-radio-wrapper-checked.ant-radio-wrapper{
+    padding: 9px 15px;
+    background: #f1eeee;
+}
+.ant-radio-group.price-radio .ant-radio-wrapper{
+    padding: 9px 15px;
+    background: #ffffff;
+    margin: 0px;
+    flex: 1;
+}
+.radio-price-content{
+    padding: 9px 15px;
+    background: #f1eeee;
+    margin-bottom: 20px;
+}
+.delete-price{
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.price-modal .ant-modal-body{
+    padding: 10px 24px;
+}

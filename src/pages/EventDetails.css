@@ -1,0 +1,170 @@
+.event-title{
+    font-weight: 700;
+    text-transform: none;
+    color: inherit;
+    font-size: 30px;
+    line-height: 38px;
+    font-family: Cogito, Verdana, Helvetica, sans-serif;
+    text-align: center;
+    padding: 0px;
+    border-width: 0px;
+    border-style: initial;
+    border-color: initial;
+    border-image: initial;
+    margin: 22px 0px;
+}
+.event-title-section{
+     display: flex;
+     background-color: rgb(248, 247, 245);
+     padding: 15px 50px;
+     margin-bottom: 15px;
+
+}
+.event-time-section{
+    margin-right: 30px;
+    width: 350px;
+}
+.event-time-header{
+    font-family: Cogito, Verdana, Helvetica, sans-serif;
+    font-weight: 700;
+    text-transform: none;
+    color: inherit;
+    text-align: left;
+    font-size: 14px;
+    line-height: 21px;
+    margin: 0px;
+    border-width: 0px;
+    border-style: initial;
+    border-color: initial;
+    border-image: initial;
+}
+.event-contact-card{
+    border-top: 2px solid rgb(238, 238, 238);
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.flex{
+    display: flex;
+    margin: 15px 30px;
+}
+
+.event-contact-details{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.image-and-contact{
+    margin-left: 15px;
+    margin-right: 25px;
+}
+.event-detail-desc{
+    font-size: 16px;
+    line-height: 22px;
+    font-family: Cogito,Verdana,Helvetica,sans-serif;
+    font-weight: 400;
+    text-transform: none;
+    color: inherit;
+    text-align: left;
+}
+.ant-btn-primary.types-button:hover,
+.ant-btn-primary.types-button:active {
+    color: #fff;
+    border-color: #f04d46;
+    background: #f04d46;
+}
+.ant-btn-primary.types-button {
+    color: #000;
+    border-color: rgb(248, 247, 245);
+    background: rgb(248, 247, 245);
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+.social-icons{
+    color: red;
+    margin-left: 15px;
+}
+.social-icons .anticon{
+    margin-right: 10px;
+    cursor: pointer;
+}
+.print-icon.anticon{
+    margin-right: 30px;
+}
+.social-section{
+    text-align: right;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+.social-section a{
+    color: red;
+    margin-left: 20px;
+    font-weight: 700;
+}
+.buy-button{
+    width: 100%;
+    margin-bottom: 15px;
+}
+.left-button{
+    color: #f04d46;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 25px;
+}
+.left-icon{
+    margin-right: 10px;
+    margin-left: 15px;
+
+}
+.sub-events:hover{
+    color: #eb160f;
+
+}
+.sub-events{
+    font-size: 12px;
+    line-height: 19px;
+    color: #f04d46;
+    font-weight: 700;
+    cursor: pointer;
+}
+.subevent-dropdown{
+    color: #999;
+    font-weight: 400;
+}
+.contact-address{
+    margin-left: 10px;
+    word-break: break-all;
+}
+.contact-address a{
+    color: #f04d46;
+}
+.event-price{
+    font-size: 15px;
+    margin-left: 10px;
+    color: #090909;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+}
+.virrtual-event{
+    margin-top: 10px;
+    color: #3a0202;
+    font-weight: 500;
+}
+.date-popup.ant-dropdown{
+    max-height: 300px;
+    overflow: auto;
+}
+
+@media only screen and (max-width : 600px) {
+    .social-section.ant-row-end{
+        justify-content: start;
+    }
+    .logo-image{
+        width: 130px;
+    }
+}
