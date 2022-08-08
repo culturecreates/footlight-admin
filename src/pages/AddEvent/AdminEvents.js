@@ -87,6 +87,20 @@ const AdminEvents = function ({ currentLang }) {
       render: (e, record) => <div>{record?.locationName?.[currentLang]}</div>,
     },  
     {
+      title: t("Created", { lng: currentLang }),
+      dataIndex: "hasLegacyCapability",
+      key: "hasLegacyCapability",
+      width: 200,
+      render: (e, record) => <div>{record?.created}</div>,
+    }, 
+    {
+      title: t("Modified", { lng: currentLang }),
+      dataIndex: "hasLegacyCapability",
+      key: "hasLegacyCapability",
+      width: 200,
+      render: (e, record) => <div>{record?.modified}</div>,
+    }, 
+    {
       title: t("Published", { lng: currentLang }),
       dataIndex: "hasDependency",
       key: "hasDependency",
@@ -238,7 +252,7 @@ const AdminEvents = function ({ currentLang }) {
               dataSource={eventList}
               columns={eventTableHeader}
               className={"event-table"}
-              scroll={{x: 900, y: "calc(100% - 60px)" }}
+              scroll={{x: 1400, y: "calc(100% - 60px)" }}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)

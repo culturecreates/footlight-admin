@@ -75,7 +75,7 @@ function App() {
 
   return (
     <Layout className="events-app-layout">
-      <Header className="app-header">
+      {/* <Header className="app-header">
       <Row justify="space-between" className="header-links">
       <Col xs={{
         span: 12,
@@ -93,9 +93,7 @@ function App() {
         offset: 0,
       }}
       md={{ span: 8 }} lg={{ span: 8 }}>
-      {/* <div className="footer-title">Footlight</div> */}
       </Col>
-        {/* <div className="footer-cal">{t("headerText", { lng: currentLang })}</div> */}
         <Col xs={{
         span: 12,
         offset: 0,
@@ -107,7 +105,7 @@ function App() {
             <div className={!isEnglish?"active-admin":"active-user"}>English</div> </div>
             </Col>
          </Row>
-      </Header>
+      </Header> */}
 
       <Content className="app-content">
        

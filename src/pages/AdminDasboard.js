@@ -1,17 +1,17 @@
 import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
-import { Layout, Menu} from "antd";
+import { Layout, Menu,Avatar,Image,Dropdown, Space} from "antd";
 
 import "./AdminDashboard.css";
 import {
-    RightOutlined 
+    RightOutlined ,CaretUpOutlined
 } from "@ant-design/icons";
 import {
     Link,
     Route,
     Routes,
     useLocation,
-    
+    useNavigate
   } from "react-router-dom";
 import { adminSideMenuLinks } from "../utils/Utility";
 import { useTranslation,  } from "react-i18next";
@@ -20,6 +20,7 @@ import AdminContacts from "./AddContact/AdminContact";
 import AdminPlaces from "./AdminPlace/AdminPlaces";
 import Organization from "./AdminOrg/Organization";
 import Taxonomy from "./Taxonomy/Taxonomy";
+import ServiceApi from "../services/Service";
 
 const { Content, Sider } = Layout;
 
@@ -27,11 +28,39 @@ const AdminDashboard = function ({  currentLang }) {
     const [routePath, setRoutePath] = useState("/admin/events");
     const { t } = useTranslation();
     const location = useLocation();
+    const navigate = useNavigate();
     const sideMenuLinks= adminSideMenuLinks;
     useEffect(() => {
         setRoutePath(location.pathname);
        
       }, [location]);
+      useEffect(() => {
+        ServiceApi.calendarInfo()
+      .then((response) => {
+       
+      })
+      .catch((error) => {
+        
+      });
+       
+      }, []);
+
+      const menu = (
+        <Menu
+        onClick={(e)=>e.key==="1"? navigate(`/`):undefined}
+          items={[
+            {
+              label: "Profile",
+              key: '0',
+            },
+            {
+              label: "Logout",
+              key: '1',
+            },
+           
+          ]}
+        />
+      );
   return (
     <Layout className="dashboard-layout-home">
     <Sider width={250} className="dashboard-sider">
@@ -55,6 +84,22 @@ const AdminDashboard = function ({  currentLang }) {
           </Menu.Item>
         ))}
       </Menu>
+      <div className="user-logout">
+      <Avatar src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 35 }} />} />
+      <Dropdown overlay={menu} trigger={['click']}
+       placement="topRight"
+       arrow={{
+         pointAtCenter: true,
+       }}>
+    
+      <Space>
+      <div style={{marginLeft:"10px",cursor:"pointer"}}>Suhail Aliyar</div>
+        <CaretUpOutlined />
+      </Space>
+   
+  </Dropdown>
+         
+      </div>
     </Sider>
     <Layout style={{ padding: "0 0px 0px" }}>
     

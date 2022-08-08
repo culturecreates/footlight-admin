@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Layout, Card, Table, Modal, Breadcrumb, Col, Row } from "antd";
+import { Layout, Card, Table, Modal, Breadcrumb, Col, Row,Button } from "antd";
 import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
-import {  ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
+import {  ExclamationCircleOutlined,DeleteOutlined,PlusOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
@@ -17,6 +17,8 @@ const Taxonomy = function ({ currentLang }) {
   const [isAdd, setIsAdd] = useState(false);
   const [defaultPage, setDefaultPage] = useState(1);
   const [placeDetails, setPlaceDetails] = useState()
+  const [audienceList, setAudienceList] = useState([]);
+  const [typeList, setTypeList] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -96,6 +98,8 @@ const Taxonomy = function ({ currentLang }) {
     const eventId = params.get("id");
     if(eventId)
     getplaceDetails(eventId)
+    getPlaces();
+   
     }
     else
     {
@@ -124,6 +128,30 @@ const Taxonomy = function ({ currentLang }) {
       });
   };
 
+  const formatarray=(data)=>{
+
+   return data.map(item=>{
+     const obj={
+         value:item.identifier.uri,
+         title: item.name?.fr,
+         children:item.children?formatarrayTree(item.children):undefined
+     }
+     return obj
+   })
+
+
+  }
+  const formatarrayTree=(data)=>{
+    
+    return data.map(item=>{
+      const obj={
+        value:item.identifier.uri,
+        title: item.name?.fr,
+          children:item.children?formatarrayTree(item.children):undefined
+      }
+      return obj
+    })
+  }
   const getPlaces = (page = 1) => {
     setLoading(true);
     // ServiceApi.getAllTaxonomy()
@@ -145,11 +173,15 @@ const Taxonomy = function ({ currentLang }) {
       .then((response) => {
         if (response && response.data && response.data.data) {
           const eventsPublic = response.data.data;
+          setAudienceList(formatarray(eventsPublic))
+         
          
           ServiceApi.getTaxonomyType()
           .then((response) => {
             if (response && response.data && response.data.data) {
               const events = response.data.data;
+              setTypeList(formatarray(events))
+              
               const data = [
                 {
                   key: 1,
@@ -201,10 +233,10 @@ const Taxonomy = function ({ currentLang }) {
             onClearSearch={getPlaces}
             currentLang={currentLang}
           /> */}
-          {/* <Button type="primary" icon={<PlusOutlined />} size={"large"}
+          <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>navigate(`/admin/add-taxonomy`)}>
             {t("Taxonomy")}
-          </Button> */}
+          </Button>
         </Col>
 }
       </Row>
@@ -239,7 +271,8 @@ const Taxonomy = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddTaxonomy currentLang={currentLang} orgDetails={placeDetails}/>
+        <AddTaxonomy currentLang={currentLang} orgDetails={placeDetails}
+        audienceList={audienceList} typeList={typeList}/>
             }
       </Card>
       {loading && <Spinner />}

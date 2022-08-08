@@ -237,6 +237,14 @@ export default class ServiceApi {
     });
   }
 
+  static addTaxonomy(payload) {
+    return Axios({
+      url: `taxonomy`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
   static addPlace(payload) {
     return Axios({
       url: `places`,

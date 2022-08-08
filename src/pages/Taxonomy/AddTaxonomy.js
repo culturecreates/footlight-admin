@@ -1,4 +1,4 @@
-import { Layout, Form, Input, Button, message, Select, Divider, Space, Typography } from "antd";
+import { Layout, Form, Input, Button, message, Select, TreeSelect, Space, Typography } from "antd";
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import {
   CloseOutlined,
   
 } from "@ant-design/icons";
-import { adminContact, adminOrg, urlValidate } from "../../utils/Utility";
+import {  adminTaxonomy, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,10 +18,10 @@ import AddNewContactModal from "../../components/AddNewContactModal";
 
 const { Option, OptGroup } = Select;
 
-const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd }) {
+const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,audienceList,typeList }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [contactList, setContactList] = useState([]);
+  const [treeList, setTreeList] = useState([]);
   const [showAddContact,setShowAddContact]= useState(false)
 
 
@@ -30,29 +30,40 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const conceptArray=[
+    {
+      name:"audience",
+      uri:"https://cultureoutaouais.com/resource/AudienceConcept"
+    },
+    {
+      name:"Event Type",
+      uri:"https://cultureoutaouais.com/resource/TypeEvenementConcept"
+    }
+  ]
+
 
   const contactStore = useSelector((state) => state.org);
 
   const handleSubmit = (values) => {
     const postalObj = {
         name: {fr:values.name},
-        description: {fr:values.description},
-        url: {uri:values.url},
-        contactPoint: values.contact ?{
-            entityId: values.contact
-          }:undefined,
+        
+        identifier: {uri:values.url},
+        broader: {uri:values.broader},
+        conceptScheme: {uri:values.conceptScheme},
     };
     setLoading(true)
     if (orgDetails)
-    ServiceApi.updateOrg(postalObj,orgDetails.uuid)
+    ServiceApi.addTaxonomy(postalObj,orgDetails.uuid)
       .then((response) => {
         if (response && response.data) {
          
             
            
-            setLoading(false)  
-            message.success("Organization Updated Successfully");
-            navigate(`/admin/organization`);
+          navigate(`/admin/taxonomy`);
+          setLoading(false) 
+
+          message.success("Taxonomy Created Successfully");
          
         }
       })
@@ -60,34 +71,18 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
         setLoading(false)
       });
       else
-      ServiceApi.addOrg(postalObj)
+      ServiceApi.addTaxonomy(postalObj)
       .then((response) => {
         if (response && response.data) {
             
-            if (isModal) {
-              ServiceApi.getAllOrg()
-              .then((response) => {
-                setLoading(false);
-                if (response && response.data && response.data.data) {
-                  const events = response.data.data;
-                 
-            
-                  dispatch(fetchOrg(events));
-                  onsuccessAdd()
-                }
-                
-              })
-              .catch((error) => {
-                setLoading(false);
-              });
-            }
+           
             
             
-            else
-            navigate(`/admin/organization`);
+           
+            navigate(`/admin/taxonomy`);
             setLoading(false) 
 
-            message.success("Organization Created Successfully");
+            message.success("Taxonomy Created Successfully");
             
             
         }
@@ -97,6 +92,15 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
       });
   };
 
+  const handleChange = (value,option) => {
+    console.log(value,option)
+    if(option.title ==="audience")
+    {
+      setTreeList(audienceList)
+    }
+    else
+     setTreeList(typeList)
+  };
   useEffect(() => {
     if (orgDetails) {
         console.log(orgDetails)
@@ -126,42 +130,9 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   }
   }
 
-  useEffect(()=>{
+ 
 
-    if (contactStore == null) {
-      getContacts();
-    } else {
-      setContactList(contactStore.map(item=>{
-        const obj={name:item.name["fr"],
-      value:item.uuid}
-      return obj;
-      }));
-
-    }
-  },[contactStore])
-
-  const getContacts = (page = 1) => {
-    
-    ServiceApi.getAllContacts(page, currentLang === "en" ? "EN" : "FR")
-      .then((response) => {
-        if (response && response.data && response.data.data) {
-          const events = response.data.data;
-          dispatch(fetchContact(response.data.data));
-          
-          setContactList(events.map(item=>{
-            const obj={name:item.name["fr"],
-          value:item.uuid}
-          return obj;
-          }));
-        
-        }
-        
-      })
-      .catch((error) => {
-        
-      });
-  };
-
+  
   return (
     <Layout className="add-event-layout">
       <Form
@@ -171,7 +142,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminOrg.map((item) => (
+        {adminTaxonomy.map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
             <Form.Item
@@ -197,35 +168,29 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
                 }
               ]}
             >
-              { item.type === "area"?
-                <Input.TextArea
-                  placeholder={item.placeHolder}
-                  className="replace-input"
-                  rows={4}
-                />
+              { item.type === "Treeselect"?
+                 <TreeSelect
+                 style={{ width: '100%' }}
+                //  value={value}
+
+                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                 treeData={treeList}
+                
+                 placeholder="Please select"
+                //  treeDefaultExpandAll
+               
+               />
                 :
                 item.type === "select"?
                 <Select
-                style={{ width: 350 }}
+                style={{ width: '100%' }}
                 dropdownClassName="contact-select"
-                placeholder="Select Contact"
-                dropdownRender={(menu) => (
-                  <>
-                    {menu}
-                    <Divider style={{ margin: "8px 0" }} />
-                    <Space align="center" style={{ padding: "0 8px 4px" }}>
-                      <Typography.Link
-                        onClick={() => setShowAddContact(true)}
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        <PlusOutlined /> Add New Contact
-                      </Typography.Link>
-                    </Space>
-                  </>
-                )}
+                placeholder="Select Concept"
+                onChange={handleChange}
               >
-                {contactList.map((item) => (
-                  <Option key={item.value} value={item.value}>{item.name}</Option>
+                {conceptArray.map((item) => (
+                  <Option key={item.uri} value={item.uri} title={item.name}>
+                     {  t(item.name, { lng: currentLang })}{}</Option>
                 ))}
               </Select>
                 :

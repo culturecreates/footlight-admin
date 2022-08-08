@@ -116,6 +116,39 @@ export const adminSideMenuLinks = [
     },
     
   ]
+
+  export const adminTaxonomy=[
+    {
+      name: "name",
+      title:"Name",
+      required:true,
+      placeHolder: "Enter Taxonomy Name",
+      type:"text"
+    },
+    {
+      name: "url",
+      title:"Identifier",
+      required:true,
+      placeHolder: "Enter Url",
+      type:"text"
+    },
+  
+    {
+      name: "conceptScheme",
+      title:"Concept Scheme",
+      required:true,
+      placeHolder: "Select Concept",
+      type:"select"
+    },
+    {
+      name: "broader",
+      title:"Broader",
+      required:true,
+      placeHolder: "Select Contact",
+      type:"Treeselect"
+    },
+    
+  ]
   export const adminPlaces = [
     {
       name: "name",
