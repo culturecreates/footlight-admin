@@ -9,7 +9,7 @@ import {
   CloseOutlined,
   
 } from "@ant-design/icons";
-import {  adminTaxonomy, urlValidate } from "../../utils/Utility";
+import {  adminTaxonomy, getCookies, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,11 +33,11 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   const conceptArray=[
     {
       name:"audience",
-      uri:"https://cultureoutaouais.com/resource/AudienceConcept"
+      uri:getCookies("concept_scheme")?.AUDIENCE
     },
     {
       name:"Event Type",
-      uri:"https://cultureoutaouais.com/resource/TypeEvenementConcept"
+      uri:getCookies("concept_scheme")?.EVENT_ADDITIONAL_TYPES
     }
   ]
 

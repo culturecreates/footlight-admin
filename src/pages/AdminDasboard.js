@@ -13,7 +13,7 @@ import {
     useLocation,
     useNavigate
   } from "react-router-dom";
-import { adminSideMenuLinks } from "../utils/Utility";
+import { adminSideMenuLinks, getCookies, storeCookies } from "../utils/Utility";
 import { useTranslation,  } from "react-i18next";
 import AdminEvents from "./AddEvent/AdminEvents";
 import AdminContacts from "./AddContact/AdminContact";
@@ -38,7 +38,7 @@ const AdminDashboard = function ({  currentLang }) {
       useEffect(() => {
         ServiceApi.calendarInfo()
       .then((response) => {
-       
+        storeCookies("concept_scheme", response.data.conceptSchemes);
       })
       .catch((error) => {
         
@@ -94,7 +94,8 @@ const AdminDashboard = function ({  currentLang }) {
        }}>
     
       <Space>
-      <div style={{marginLeft:"10px",cursor:"pointer"}}>Suhail Aliyar</div>
+      <div style={{marginLeft:"10px",cursor:"pointer",maxWidth:"150px",wordBreak:"break-all"}}>
+        {getCookies("user_token")?.user?.firstName}&nbsp;{getCookies("user_token")?.user?.lastName}</div>
         <CaretUpOutlined />
       </Space>
    

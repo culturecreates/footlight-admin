@@ -1,5 +1,6 @@
 import { Axios,AxiosLogin } from "../utils/ServerConfig";
 import * as moment_timezone from "moment-timezone"
+import { getCookies } from "../utils/Utility";
 
 export default class ServiceApi {
   static convertDate =(date)=>{
@@ -184,7 +185,7 @@ export default class ServiceApi {
     return Axios({
       url: `taxonomy`,
       method: "GET",
-      params:{"concept-scheme":process.env.REACT_APP_CONCEPT_SCHEME}
+      params:{"concept-scheme":getCookies("concept_scheme")?.AUDIENCE}
 
     });
   }
@@ -201,7 +202,7 @@ export default class ServiceApi {
     return Axios({
       url: `taxonomy`,
       method: "GET",
-      params:{"concept-scheme":"https://cultureoutaouais.com/resource/TypeEvenementConcept"}
+      params:{"concept-scheme":getCookies("concept_scheme")?.EVENT_ADDITIONAL_TYPES}
 
     });
   }

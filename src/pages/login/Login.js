@@ -20,7 +20,8 @@ const Login = () => {
        
         if(response.data.accessToken)  
         {const token = {
-          token:response.data.accessToken
+          token:response.data.accessToken,
+          user: response.data.user
         };
         storeCookies("user_token", token);
         
