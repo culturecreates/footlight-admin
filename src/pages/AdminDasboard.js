@@ -94,7 +94,7 @@ const AdminDashboard = function ({  currentLang }) {
        }}>
     
       <Space>
-      <div style={{marginLeft:"10px",cursor:"pointer",maxWidth:"150px",wordBreak:"break-all"}}>
+      <div style={{marginLeft:"10px",cursor:"pointer",maxWidth:"160px",wordBreak:"break-all"}}>
         {getCookies("user_token")?.user?.firstName}&nbsp;{getCookies("user_token")?.user?.lastName}</div>
         <CaretUpOutlined />
       </Space>

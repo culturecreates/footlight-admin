@@ -91,14 +91,22 @@ const AdminEvents = function ({ currentLang }) {
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,
-      render: (e, record) => <div>{record?.created}</div>,
+      render: (e, record) => <div>
+        <div>{record?.creator?.userName}</div>
+        <div style={{fontSize:"11px"}}>{moment(record.creator?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
+
+      </div>,
     }, 
     {
       title: t("Modified", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,
-      render: (e, record) => <div>{record?.modified}</div>,
+      render: (e, record) => <div>
+      <div>{record?.modifier?.userName}</div>
+      <div style={{fontSize:"11px"}}>{moment(record.modifier?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
+
+    </div>,
     }, 
     {
       title: t("Published", { lng: currentLang }),

@@ -37,13 +37,14 @@
     font-size: 25px;
     line-height: 35px;
     margin-left: 15px;
+    color: #FFFFFF;
 }
 .login-center-text{
     margin-bottom: 50px;
     font-weight: 700;
     font-size: 35px;
     line-height: 120%;
-    color: #222732;
+    color: #FFFFFF;
 }
 .login-center-text.sign-in-text{
     color: #031D45;
@@ -53,7 +54,7 @@
     font-size: 18px;
     line-height: 21px;
     margin-left: 5px;
-    color: #000000;
+    color: #FFFFFF;
     margin-bottom: 5px;
 }
 
@@ -68,6 +69,7 @@
 }
 .login-root{
     min-height: 100%;
+    background: #343843;
 }
 .ant-layout.login-input-root{
     min-height: calc(100vh);

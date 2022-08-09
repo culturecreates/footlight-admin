@@ -118,7 +118,7 @@ export default class ServiceApi {
   static eventList(page=1,filterArray=[],lng="fr") {
     console.log(filterArray,filterArray.find((o) => o.type === "queryString")&&filterArray.find((o) => o.type === "queryString").name)
     return Axios({
-      url: `events/list`,
+      url: `events/list/admin-view`,
       method: "GET",
       params:{
          "language":lng,
