@@ -30,7 +30,8 @@ Axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   // Do something with response error
-  if(error.response.data.status === 401)
+  console.log(error.response.data.statusCode)
+  if(error.response.data.statusCode === 401)
   {
     removeCookies("user_token");
     return window.location.href = '/' ;

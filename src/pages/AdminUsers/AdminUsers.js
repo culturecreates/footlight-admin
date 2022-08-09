@@ -8,19 +8,19 @@ import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-des
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
-import AddOrganization from "./AddOrganization";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrg, fetchPlace } from "../../action";
+import { fetchContact, fetchPlace } from "../../action";
+import Addusers from "./Addusers";
 
 const { confirm } = Modal;
 
-const Organization = function ({ currentLang }) {
-  const [orgList, setOrgList] = useState([]);
+const AdminUsers = function ({ currentLang }) {
+  const [contactList, setContactList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [defaultPage, setDefaultPage] = useState(1);
-  const [placeDetails, setPlaceDetails] = useState()
+  const [contactDetails, setContactDetails] = useState()
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,40 +29,19 @@ const Organization = function ({ currentLang }) {
 
   const eventTableHeader = [
     {
-      title: t("PlaceName", { lng: currentLang }),
+      title: t("Name", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
       render: (e, record) => (
         <Row className="image-name">
           
           <Col flex="1 1 150px">
+              
           {record.name[currentLang]}
           </Col>
         </Row>
       ),
     },
-    {
-      title: t("Created", { lng: currentLang }),
-      dataIndex: "hasLegacyCapability",
-      key: "hasLegacyCapability",
-      width: 200,
-      render: (e, record) => <div>
-        <div>{record?.creator?.userName}</div>
-        <div style={{fontSize:"11px"}}>{moment(record.creator?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
-
-      </div>,
-    }, 
-    {
-      title: t("Modified", { lng: currentLang }),
-      dataIndex: "hasLegacyCapability",
-      key: "hasLegacyCapability",
-      width: 200,
-      render: (e, record) => <div>
-      <div>{record?.modifier?.userName}</div>
-      <div style={{fontSize:"11px"}}>{moment(record.modifier?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
-
-    </div>,
-    }, 
     {
       title: "",
       dataIndex: "hasDependency",
@@ -96,46 +75,42 @@ const Organization = function ({ currentLang }) {
   };
   const handleDeleteContact=(id)=>{
     setLoading(true);
-    ServiceApi.deleteOrg(id)
+    ServiceApi.deleteContact(id)
       .then((response) => {
-        getPlaces();
+        getContacts();
         setLoading(false);
       })
       .catch((error) => {
         setLoading(false);
       });
   }
- 
-
- 
- 
 
   useEffect(() => {
-    if(location.pathname.includes("admin/add-organization"))
+    if(location.pathname.includes("admin/add-users"))
     {
       setIsAdd(true)
       const search = window.location.search;
     const params = new URLSearchParams(search);
     const eventId = params.get("id");
     if(eventId)
-    getplaceDetails(eventId)
+    getContactDetails(eventId)
     }
     else
     {
       setIsAdd(false)
-      getPlaces();
-      setPlaceDetails()
+      getContacts();
+      setContactDetails()
     }
    
   }, [location]);
 
-  const getplaceDetails = (id) => {
+  const getContactDetails = (id) => {
     setLoading(true);
-    ServiceApi.getOrgDetail(id)
+    ServiceApi.getContactDetail(id)
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setPlaceDetails(events)
+          setContactDetails(events)
           if (response.data.StatusCode !== 400) {
              
           }
@@ -147,17 +122,16 @@ const Organization = function ({ currentLang }) {
       });
   };
 
-  const getPlaces = (page = 1) => {
+  const getContacts = (page = 1) => {
     setLoading(true);
-    ServiceApi.getAllOrg()
+    ServiceApi.getAllContacts(page, currentLang === "en" ? "EN" : "FR")
       .then((response) => {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
          
-          setOrgList(events);
-          dispatch(fetchOrg(response.data.data));
-            if(response.data.totalCount)
-            setTotalPage(response.data.totalCount)
+          dispatch(fetchContact(response.data.data));
+          setContactList(events);
+        
         }
         setLoading(false);
       })
@@ -168,46 +142,47 @@ const Organization = function ({ currentLang }) {
 
   const selectSemantic = (selectObj) => {
     const searchArray = [selectObj];
-    getPlaces(1, searchArray);
+    getContacts(1, searchArray);
   };
 
   return (
     <Layout className="dashboard-layout">
       {isAdd &&
       <Breadcrumb separator=">">
-        <Breadcrumb.Item onClick={()=>navigate(`/admin/organization`)}>{t("Organization")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{placeDetails?placeDetails.name[currentLang]:t("AddOrganization")}</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={()=>navigate(`/admin/users`)}>{t("Users")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{contactDetails?contactDetails.name[currentLang]:t("Add Users")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">
       {!isAdd &&
-        <Col className="header-title" flex="0 1 300px">{t("Organization")}</Col>
+        <Col className="header-title" flex="0 1 300px">{t("Users")}</Col>
       }
         {!isAdd &&
         <Col className="flex-align">
           {/* <SemanticSearch
             onSelection={selectSemantic}
-            onClearSearch={getPlaces}
+            onClearSearch={getContacts}
             currentLang={currentLang}
           /> */}
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
-          onClick={()=>navigate(`/admin/add-organization`)}>
-            {t("Organization")}
+          onClick={()=>navigate(`/admin/add-users`)}>
+            {t("User")}
           </Button>
         </Col>
 }
       </Row>
       <Card className="segment-card">
-        {!isAdd ? <Table
+        {!isAdd ? 
+        <Table
            
-              dataSource={orgList}
+              dataSource={contactList}
               columns={eventTableHeader}
               className={"event-table"}
-              scroll={{x: 800, y: "calc(100% - 60px)" }}
+              scroll={{x: 700, y: "calc(100% - 60px)" }}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)
-                  getPlaces(
+                  getContacts(
                     page
                   )
                 },
@@ -221,22 +196,24 @@ const Organization = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    navigate(`/admin/add-organization/?id=${record.uuid}`);
-                    // setSelectedProduct(record);
-                  }, // click row
+                    navigate(`/admin/add-contact/?id=${record.uuid}`);
+                    
+                  }, 
                 };
               }}
             /> 
+       
             :
-        <AddOrganization currentLang={currentLang} orgDetails={placeDetails}/>
+           
+        <Addusers currentLang={currentLang} contactDetails={contactDetails}/>
             }
       </Card>
       {loading && <Spinner />}
     </Layout>
   );
 };
-export default Organization;
+export default AdminUsers;
 
-Organization.propTypes = {
+AdminUsers.propTypes = {
   currentLang: PropTypes.string,
 };

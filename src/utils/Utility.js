@@ -38,6 +38,10 @@ export const adminSideMenuLinks = [
       name: "Taxonomy",
       link: "/admin/taxonomy",
     },
+    {
+      name: "Users",
+      link: "/admin/users",
+    },
     
     
   ];

@@ -71,6 +71,9 @@
     min-height: 100%;
     background: #343843;
 }
+.login-root .ant-layout{
+    background: #343843;
+}
 .ant-layout.login-input-root{
     min-height: calc(100vh);
     align-items: center;

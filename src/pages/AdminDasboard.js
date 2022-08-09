@@ -22,6 +22,7 @@ import Organization from "./AdminOrg/Organization";
 import Taxonomy from "./Taxonomy/Taxonomy";
 import ServiceApi from "../services/Service";
 import Profile from "./Profile/Profile";
+import AdminUsers from "./AdminUsers/AdminUsers";
 
 const { Content, Sider } = Layout;
 
@@ -119,6 +120,8 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-organization" element={<Organization currentLang={currentLang} />} />
           <Route path="taxonomy" element={<Taxonomy currentLang={currentLang} />} />
           <Route path="add-taxonomy" element={<Taxonomy currentLang={currentLang} />} />
+          <Route path="users" element={<AdminUsers currentLang={currentLang} />} />
+          <Route path="add-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="profile" element={<Profile currentLang={currentLang} />} />
         </Routes>
       </Content>

@@ -8,6 +8,7 @@ import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
 import AddTaxonomy from "./AddTaxonomy";
+import moment from "moment";
 
 const { confirm } = Modal;
 
@@ -39,7 +40,28 @@ const Taxonomy = function ({ currentLang }) {
         </Row>
       ),
     },
+    {
+      title: t("Created", { lng: currentLang }),
+      dataIndex: "hasLegacyCapability",
+      key: "hasLegacyCapability",
+      width: 200,
+      render: (e, record) => <div>
+        <div>{record?.creator?.userName}</div>
+        <div style={{fontSize:"11px"}}>{moment(record.creator?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
 
+      </div>,
+    }, 
+    {
+      title: t("Modified", { lng: currentLang }),
+      dataIndex: "hasLegacyCapability",
+      key: "hasLegacyCapability",
+      width: 200,
+      render: (e, record) => <div>
+      <div>{record?.modifier?.userName}</div>
+      <div style={{fontSize:"11px"}}>{moment(record.modifier?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
+
+    </div>,
+    }, 
     {
       title: "",
       dataIndex: "hasDependency",
