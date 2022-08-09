@@ -1,0 +1,12 @@
+.profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+}
+.profile-keys{
+    display: flex;
+    margin-bottom: 20px;
+    font-size: 20px;
+}

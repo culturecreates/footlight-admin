@@ -21,6 +21,7 @@ import AdminPlaces from "./AdminPlace/AdminPlaces";
 import Organization from "./AdminOrg/Organization";
 import Taxonomy from "./Taxonomy/Taxonomy";
 import ServiceApi from "../services/Service";
+import Profile from "./Profile/Profile";
 
 const { Content, Sider } = Layout;
 
@@ -47,7 +48,7 @@ const AdminDashboard = function ({  currentLang }) {
 
       const menu = (
         <Menu
-        onClick={(e)=>e.key==="1"? navigate(`/`):undefined}
+        onClick={(e)=>e.key==="1"? navigate(`/`):navigate(`/admin/profile`)}
           items={[
             {
               label: "Profile",
@@ -117,6 +118,7 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-organization" element={<Organization currentLang={currentLang} />} />
           <Route path="taxonomy" element={<Taxonomy currentLang={currentLang} />} />
           <Route path="add-taxonomy" element={<Taxonomy currentLang={currentLang} />} />
+          <Route path="profile" element={<Profile currentLang={currentLang} />} />
         </Routes>
       </Content>
     </Layout>

@@ -1,4 +1,4 @@
-import { Axios } from "../utils/ServerConfig";
+import { Axios,AxiosLogin } from "../utils/ServerConfig";
 import * as moment_timezone from "moment-timezone"
 
 export default class ServiceApi {
@@ -8,6 +8,34 @@ export default class ServiceApi {
     // dd/mm/yyyy
     
   }
+
+  static loginAuth(payload) {
+    return AxiosLogin({
+      url: `login`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static addUser(payload) {
+    return AxiosLogin({
+      url: `users`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static getUser() {
+    return Axios({
+      url: `users`,
+      method: "GET",
+  
+
+    });
+  }
+
   static deleteContact(id) {
     return Axios({
       url: `contact-points/${id}`,

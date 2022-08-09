@@ -1,3 +1,22 @@
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
+export const storeCookies = (name, value) => {
+  cookies.set(name, JSON.stringify(value),
+    { path: "/" })
+
+}
+
+export const getCookies = (name) => {
+  return cookies.get(name)
+
+}
+export const removeCookies = (name) => {
+  return cookies.remove(name)
+
+}
+
 export const adminSideMenuLinks = [
     {
       name: "Events",
@@ -305,3 +324,125 @@ export const adminSideMenuLinks = [
     ]
   
     export const publics=[{"uri":"https://cultureoutaouais.com/resource/audience#GrandPublic","name":{"en":"General public","fr":"Grand public"}},{"uri":"https://cultureoutaouais.com/resource/audience#GroupesEnfants","name":{"en":"Children","fr":"Enfants"}},{"uri":"https://cultureoutaouais.com/resource/audience#Elders","name":{"en":"Elders","fr":"Aîné·e·s"}},{"uri":"https://cultureoutaouais.com/resource/audience#Adults","name":{"en":"Adults","fr":"Adultes"}},{"uri":"https://cultureoutaouais.com/resource/audience#Ado","name":{"en":"Teens","fr":"Adolescent·e·s"}}]
+
+    
+  export const adminResetPassword=[
+  
+    
+  ]
+
+  export const adminLogin=[
+    
+    {
+      name: "email",
+      title:"Email",
+      required:true,
+      placeHolder: "Enter email",
+      inputtype:"email",
+      type:"login"
+      
+    },
+    {
+      name: "password",
+      title:"Password",
+      required:true,
+      placeHolder: "Enter password",
+      inputtype:"password",
+      type:"login"
+    },
+    {
+      name: "email",
+      title:"Email",
+      required:true,
+      placeHolder: "Enter email",
+      inputtype:"email",
+      type:"resetLink"
+    },
+    {
+      name: "code",
+      title:"6-digit one-time code",
+      required:true,
+      placeHolder: "Enter one time code",
+      inputtype:"text",
+      type:"reset"
+    },
+    {
+      name: "newPassword",
+      title:"New Password",
+      required:true,
+      placeHolder: "Enter new password",
+      inputtype:"password",
+      type:"reset"
+    },
+    {
+      name: "confirmPassword",
+      title:"Confirm password",
+      required:true,
+      placeHolder: "Enter confirm password",
+      inputtype:"password",
+      type:"reset"
+    },
+    {
+      name: "firstName",
+      title:"First Name",
+      required:true,
+      placeHolder: "Enter first name",
+      inputtype:"text",
+      type:"register"
+    },
+    {
+      name: "lastName",
+      title:"Last Name",
+      required:true,
+      placeHolder: "Enter last name",
+      inputtype:"test",
+      type:"register"
+    },
+    {
+      name: "password",
+      title:"Password",
+      required:true,
+      placeHolder: "Enter password",
+      inputtype:"password",
+      type:"register"
+    },
+    {
+      name: "email",
+      title:"Email",
+      required:true,
+      placeHolder: "Enter email",
+      inputtype:"email",
+      type:"register"
+    },
+    
+  ]
+
+  export const adminProfile=[
+    
+    
+    {
+      name: "firstName",
+      title:"First Name",
+      required:true,
+      placeHolder: "Enter first name",
+      inputtype:"text",
+      type:"register"
+    },
+    {
+      name: "lastName",
+      title:"Last Name",
+      required:true,
+      placeHolder: "Enter last name",
+      inputtype:"test",
+      type:"register"
+    },
+    
+    {
+      name: "email",
+      title:"Email",
+      required:true,
+      placeHolder: "Enter email",
+      inputtype:"email",
+      type:"register"
+    },
+  ]
