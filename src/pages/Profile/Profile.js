@@ -59,15 +59,16 @@ const Profile = function ({ currentLang }) {
         {/* <div className="footlight-text-logo">Footlight Admin</div> */}
         {profileDate &&
         <>
-      {/* <Avatar
-      style={{margin:"30px"}}
-    size={{ xs: 32, sm: 40, md: 64, lg: 80, xl: 100, xxl: 100 }}
+      <Avatar
+      style={{margin:"30px", backgroundColor: "#f56a00"}}
+    size={{ xs: 50, sm: 75, md: 100, lg: 120, xl: 150, xxl: 150 }}
+    
     // src="https://joeschmoe.io/api/v1/random"
   >
                     {profileDate?.firstName?.charAt(0)}{profileDate?.lastName?.charAt(0)}
 
-    </Avatar> */}
-       <Gravatar email={profileDate?.email} size={200} style={{borderRadius:"50%",margin:"25px"}}/>
+    </Avatar>
+       {/* <Gravatar email={profileDate?.email} size={200} style={{borderRadius:"50%",margin:"25px"}}/> */}
   {
       adminProfile.map(item=>
         <div key={item.name} className="profile-keys">

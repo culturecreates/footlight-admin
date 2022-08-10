@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Row, Col,Button,Input, message,Upload } from "antd";
+import { Layout, Form, Row, Col,Button,Input, message,Upload, Avatar } from "antd";
 import React, { useState, useEffect } from "react";
 import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
@@ -194,7 +194,12 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
          </Col>
             <Col className="upload-col">
 
-            <Gravatar email={contactDetails?.email} size={200} />
+            {/* <Gravatar email={contactDetails?.email} size={200} /> */}
+
+            <Avatar shape="square" size={150}  style={{backgroundColor: "#f56a00"}}>
+            {contactDetails?.firstName?.charAt(0)}{contactDetails?.lastName?.charAt(0)}
+
+              </Avatar>
             
             {/* <Dragger
               listType="picture-card"

@@ -88,13 +88,14 @@ const AdminDashboard = function ({  currentLang }) {
         ))}
       </Menu>
       <div className="user-logout">
-      {/* <Avatar 
+      <Avatar 
+      style={{backgroundColor: "#f56a00"}}
       // src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 35 }} />}
        >
                 {getCookies("user_token")?.user?.firstName?.charAt(0)}{getCookies("user_token")?.user?.lastName?.charAt(0)}
-                </Avatar> */}
-                <Gravatar email={getCookies("user_token")?.user?.email} size={30} 
-                style={{borderRadius:"50%"}}/>
+                </Avatar>
+                {/* <Gravatar email={getCookies("user_token")?.user?.email} size={30} 
+                style={{borderRadius:"50%"}}/> */}
       <Dropdown overlay={menu} trigger={['click']}
        placement="topRight"
        arrow={{
