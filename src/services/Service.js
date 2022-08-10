@@ -37,6 +37,15 @@ export default class ServiceApi {
     });
   }
 
+  static getAllUser() {
+    return Axios({
+      url: `users/all`,
+      method: "GET",
+    
+
+    });
+  }
+
   static updatePassword(payload) {
     return Axios({
       url: `users/reset-password`,
@@ -58,6 +67,14 @@ export default class ServiceApi {
   static deleteContact(id) {
     return Axios({
       url: `contact-points/${id}`,
+      method: "DELETE",
+    
+    });
+  }
+
+  static deleteUser(id) {
+    return Axios({
+      url: `users/${id}`,
       method: "DELETE",
     
     });

@@ -1,19 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Layout, Form, Row, Col,Button,Input, message,Upload } from "antd";
 import React, { useState, useEffect } from "react";
 import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
     FileImageOutlined,
   CheckOutlined,
   CloseOutlined,
   
 } from "@ant-design/icons";
-import { adminContact, adminProfile, urlValidate } from "../../utils/Utility";
+import {  adminProfile, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContact } from "../../action";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
 
 const { Dragger } = Upload;
@@ -33,13 +32,11 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [compressedFile, setCompressedFile] = useState(null);
 
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
 
-  const contactStore = useSelector((state) => state.contact);
 
   const handleSubmit = (values) => {
    
@@ -65,7 +62,6 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       .then((response) => {
         if (response && response.data) {
             setLoading(false) 
-            const getId=response.data?.id
          
                 
             navigate(`/admin/users`);
@@ -226,7 +222,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
             size="large"
             icon={<CloseOutlined />}
             onClick={() => {
-               if (isUpdate) navigate(`/admin/users`);
+               if (isUpdate) navigate(`/admin/profile`);
               else {
                 form.resetFields();
                 

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Card, Table, Button, Modal, Avatar, Breadcrumb, Col, Row } from "antd";
-import { useTranslation, Trans } from "react-i18next";
+import { Layout, Card, Table, Modal,  Breadcrumb, Col, Row } from "antd";
+import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
-import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
+import {  ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContact, fetchPlace } from "../../action";
+
 import Addusers from "./Addusers";
 
 const { confirm } = Modal;
@@ -25,12 +23,11 @@ const AdminUsers = function ({ currentLang }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const eventTableHeader = [
     {
-      title: t("Name", { lng: currentLang }),
+      title: t("First Name", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
       render: (e, record) => (
@@ -38,7 +35,35 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record.name[currentLang]}
+          {record.firstName}
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      title: t("Last Name", { lng: currentLang }),
+      dataIndex: "name",
+      key: "name",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+              
+          {record.lastName}
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      title: t("Email", { lng: currentLang }),
+      dataIndex: "name",
+      key: "name",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+              
+          {record.email}
           </Col>
         </Row>
       ),
@@ -76,7 +101,7 @@ const AdminUsers = function ({ currentLang }) {
   };
   const handleDeleteContact=(id)=>{
     setLoading(true);
-    ServiceApi.deleteContact(id)
+    ServiceApi.deleteUser(id)
       .then((response) => {
         getContacts();
         setLoading(false);
@@ -137,6 +162,7 @@ const AdminUsers = function ({ currentLang }) {
           if (response && response.data) {
            
             setContactDetails(response.data)
+            setTotalPage(1)
             setLoading(false);
           }
         })
@@ -147,12 +173,12 @@ const AdminUsers = function ({ currentLang }) {
   };
   const getContacts = (page = 1) => {
     setLoading(true);
-    ServiceApi.getAllContacts(page, currentLang === "en" ? "EN" : "FR")
+    ServiceApi.getAllUser()
       .then((response) => {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
          
-          dispatch(fetchContact(response.data.data));
+          // dispatch(fetchContact(response.data.data));
           setContactList(events);
         
         }
@@ -163,16 +189,13 @@ const AdminUsers = function ({ currentLang }) {
       });
   };
 
-  const selectSemantic = (selectObj) => {
-    const searchArray = [selectObj];
-    getContacts(1, searchArray);
-  };
+  
 
   return (
     <Layout className="dashboard-layout">
       {isAdd &&
       <Breadcrumb separator=">">
-        <Breadcrumb.Item onClick={()=>navigate(`/admin/users`)}>{t("Users")}</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={()=>navigate(`/admin/profile`)}>{t("Users")}</Breadcrumb.Item>
         <Breadcrumb.Item >{contactDetails?contactDetails.firstName:t("Add Users")}</Breadcrumb.Item>
       </Breadcrumb>
 }
@@ -180,19 +203,15 @@ const AdminUsers = function ({ currentLang }) {
       {!isAdd &&
         <Col className="header-title" flex="0 1 300px">{t("Users")}</Col>
       }
-        {!isAdd &&
+        {/* {!isAdd &&
         <Col className="flex-align">
-          {/* <SemanticSearch
-            onSelection={selectSemantic}
-            onClearSearch={getContacts}
-            currentLang={currentLang}
-          /> */}
+         
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>navigate(`/admin/add-users`)}>
             {t("User")}
           </Button>
         </Col>
-}
+} */}
       </Row>
       <Card className="segment-card">
         {!isAdd ? 
@@ -201,7 +220,7 @@ const AdminUsers = function ({ currentLang }) {
               dataSource={contactList}
               columns={eventTableHeader}
               className={"event-table"}
-              scroll={{x: 700, y: "calc(100% - 60px)" }}
+              scroll={{x: 900, y: "calc(100% - 60px)" }}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)
@@ -219,7 +238,7 @@ const AdminUsers = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    navigate(`/admin/add-users/?id=${record.uuid}`);
+                    // navigate(`/admin/add-users/?id=${record.uuid}`);
                     
                   }, 
                 };
