@@ -52,7 +52,7 @@ const RecurringEvent = function ({
           initDate: item.startDate,
           isDeleted: false,
           time: item.customTimes
-            ? item.customTimes.sort((a,b)=>a.startTime.localeCompare(b.startTime)).map((customTime) => {
+            ? item.customTimes.sort((a,b)=>a?.startTime?.localeCompare(b?.startTime)).map((customTime) => {
                 const objTime = {
                   startTime:
                     customTime.startTime &&
