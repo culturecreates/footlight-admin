@@ -14,6 +14,7 @@ import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContact } from "../../action";
+import PasswordUpdateModal from "../../components/PasswordUpdateModal";
 
 const { Dragger } = Upload;
 const getSrcFromFile = (file) => {
@@ -23,9 +24,10 @@ const getSrcFromFile = (file) => {
       reader.onload = () => resolve(reader.result);
     });
   };
-const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
+const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
   const [compressedFile, setCompressedFile] = useState(null);
@@ -40,16 +42,10 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
   const contactStore = useSelector((state) => state.contact);
 
   const handleSubmit = (values) => {
-    const postalObj = {
-        name: {fr:values.name},
-        email:values.email,
-        description: {fr:values.description},
-        telephone:values.telephone,
-        url: {uri:values.url},
-    };
+   
     setLoading(true)
     if (contactDetails)
-    ServiceApi.updateContact(postalObj,contactDetails.uuid)
+    ServiceApi.updateUser(values)
       .then((response) => {
         if (response && response.data) {
          
@@ -57,7 +53,7 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
            
             setLoading(false)  
             message.success("Contact Updated Successfully");
-            navigate(`/admin/contacts`);
+            navigate(`/admin/profile`);
          
         }
       })
@@ -65,32 +61,14 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
         setLoading(false)
       });
       else
-      ServiceApi.addContact(postalObj)
+      ServiceApi.updateUser(values)
       .then((response) => {
         if (response && response.data) {
             setLoading(false) 
             const getId=response.data?.id
-            if (isModal) {
-              ServiceApi.getAllContacts()
-              .then((response) => {
-                setLoading(false);
-                if (response && response.data && response.data.data) {
-                  const events = response.data.data;
-                 
-                  dispatch(fetchContact(events));
-                  onsuccessAddById(getId)
+         
                 
-                }
-               
-              })
-              .catch((error) => {
-                setLoading(false);
-              });
-            }
-            
-            
-            else
-            navigate(`/admin/contacts`);
+            navigate(`/admin/users`);
             message.success("Contact Created Successfully");
            
         }
@@ -104,11 +82,10 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
     if (contactDetails) {
       setIsUpdate(true);
       form.setFieldsValue({
-        name: contactDetails.name[currentLang],
+        firstName: contactDetails.firstName,
         email:contactDetails.email,
-        description: contactDetails.description && contactDetails.description[currentLang],
-        telephone:contactDetails.telephone,
-        url: contactDetails.url?.uri,
+        lastName: contactDetails.lastName,
+       
        
         
       });
@@ -193,23 +170,30 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
                 }
               ]}
             >
-              { item.type === "area"?
-                <Input.TextArea
-                  placeholder={item.placeHolder}
-                  className="replace-input"
-                  rows={4}
-                />
-                :
+              
                 <Input
                   placeholder={item.placeHolder}
                   className="replace-input"
                   onKeyDown={handleEnter}
                 />
-              }
+              
             </Form.Item>
+
+            
            
           </>
         ))}
+
+<div>
+  {isProfile &&
+                <Button
+                  className="add-end-date-btn"
+                  onClick={() => setIsPassword(true)}
+                >
+                  {t("Change Password", { lng: currentLang })}
+                </Button>
+}
+              </div>
          </Col>
             <Col className="upload-col">
             
@@ -242,9 +226,7 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
             size="large"
             icon={<CloseOutlined />}
             onClick={() => {
-              if(isModal)
-               onsuccessAdd()
-             else if (isUpdate) navigate(`/admin/contacts`);
+               if (isUpdate) navigate(`/admin/users`);
               else {
                 form.resetFields();
                 
@@ -264,6 +246,9 @@ const Addusers = function ({ currentLang,contactDetails,isModal=false,onsuccessA
         </Form.Item>
       </Form>
       {loading && <Spinner />}
+      {isPassword && <PasswordUpdateModal isModalVisible={isPassword} setIsModalVisible={setIsPassword}
+currentLang={currentLang}
+/> }
     </Layout>
   );
 };

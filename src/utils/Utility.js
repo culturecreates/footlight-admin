@@ -450,3 +450,30 @@ export const adminSideMenuLinks = [
       type:"register"
     },
   ]
+
+  export const updatePasswordAdmin =[
+    {
+      name: "currentPassword",
+      title:"Old Password",
+      required:true,
+      placeHolder: "Enter new password",
+      inputtype:"password",
+      type:"reset"
+    },
+    {
+      name: "newPassword",
+      title:"New Password",
+      required:true,
+      placeHolder: "Enter new password",
+      inputtype:"password",
+      type:"reset"
+    },
+    {
+      name: "confirmPassword",
+      title:"Confirm password",
+      required:true,
+      placeHolder: "Enter confirm password",
+      inputtype:"password",
+      type:"reset"
+    },
+  ]

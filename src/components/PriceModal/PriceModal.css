@@ -43,3 +43,6 @@
 .price-modal .ant-modal-body{
     padding: 10px 24px;
 }
+.update-password-modal .ant-modal-body{
+    background: #343843;
+}

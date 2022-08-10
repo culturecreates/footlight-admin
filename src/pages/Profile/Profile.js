@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Avatar  } from 'antd';
+import { Avatar,Row,Col,Button  } from 'antd';
 import PropTypes from "prop-types";
 import "./Profile.css";
-
+import {
+  PlusOutlined,
+  
+   
+ } from "@ant-design/icons";
 import ServiceApi from "../../services/Service";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { adminProfile } from "../../utils/Utility";
+import { useNavigate } from "react-router-dom";
 
 const Profile = function ({ currentLang }) {
     const [profileDate, setProfileData] = useState()
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
     useEffect(()=>{
         ServiceApi.getUser()
         .then((response) => {
@@ -27,6 +33,25 @@ const Profile = function ({ currentLang }) {
     
    
   return (
+    <div>
+            <Row className="admin-event-header">
+     
+        <Col className="header-title" flex="0 1 300px">{t("Footlight Admin")}</Col>
+     
+       
+        <Col className="flex-align">
+          {/* <SemanticSearch
+            onSelection={selectSemantic}
+            onClearSearch={getContacts}
+            currentLang={currentLang}
+          /> */}
+          <Button type="primary" size={"large"}
+          onClick={()=>navigate(`/admin/add-users/?user=admin`)}>
+            {t("Update Profile")}
+          </Button>
+        </Col>
+
+      </Row>
     <div className="profile">
 
         <div className="footlight-text-logo">Footlight Admin</div>
@@ -47,6 +72,7 @@ const Profile = function ({ currentLang }) {
   }
   </>
 }
+    </div>
     </div>
   );
 };

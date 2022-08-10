@@ -11,7 +11,7 @@ import {
   DatePicker,
   Row,
   Col,
-  Radio,
+  TreeSelect,
   message,
   Divider,
   Space,
@@ -90,6 +90,31 @@ const AddEvent = function ({ currentLang, eventDetails }) {
   const orgStore = useSelector((state) => state.org);
   const audienceStore = useSelector((state) => state.audience);
   const typesStore = useSelector((state) => state.types);
+
+  const formatarray=(data)=>{
+
+    return data.map(item=>{
+      const obj={
+          value:item.identifier.uri,
+          title: item.name?.fr,
+          children:item.children?formatarrayTree(item.children):undefined
+      }
+      return obj
+    })
+ 
+ 
+   }
+   const formatarrayTree=(data)=>{
+     
+     return data.map(item=>{
+       const obj={
+         value:item.identifier.uri,
+         title: item.name?.fr,
+           children:item.children?formatarrayTree(item.children):undefined
+       }
+       return obj
+     })
+   }
   useEffect(() => {
    
 
@@ -104,7 +129,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     if (typesStore == null) {
       getTypes();
     } else {
-      setTypeList(typesStore)
+      setTypeList(formatarray(typesStore))
     }
 
     
@@ -148,7 +173,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
          
-          setTypeList(events);
+          setTypeList(formatarray(events));
           dispatch(fetchTypes(response.data.data));
            
         }
@@ -864,7 +889,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
             </div>
 
             <Form.Item name={"type"} rules={[{ required: false }]}>
-              <Select
+              {/* <Select
                 data-testid="update-two-select-dropdown"
                 placeholder={`Select Types`}
                 key="updateDropdownKey"
@@ -889,7 +914,18 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                       {item.name["fr"]}
                     </Option>
                   ))}
-              </Select>
+              </Select> */}
+              <TreeSelect
+                 style={{ width: '100%' }}
+                //  value={value}
+
+                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                 treeData={typeList}
+                 multiple
+                 placeholder="Please select"
+                //  treeDefaultExpandAll
+               
+               />
             </Form.Item> 
           </Col>
           <Col className="upload-col">

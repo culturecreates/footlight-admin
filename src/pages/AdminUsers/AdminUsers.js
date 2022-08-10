@@ -18,6 +18,7 @@ const AdminUsers = function ({ currentLang }) {
   const [contactList, setContactList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [isProfile, setIsProfile] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [defaultPage, setDefaultPage] = useState(1);
   const [contactDetails, setContactDetails] = useState()
@@ -92,8 +93,15 @@ const AdminUsers = function ({ currentLang }) {
       const search = window.location.search;
     const params = new URLSearchParams(search);
     const eventId = params.get("id");
-    if(eventId)
-    getContactDetails(eventId)
+    
+     const user = params.get("user"); 
+     if(user)
+     {
+      setIsProfile(true)
+        getUserAdmin()
+    }
+     else if(eventId)
+     getContactDetails(eventId)
     }
     else
     {
@@ -122,6 +130,21 @@ const AdminUsers = function ({ currentLang }) {
       });
   };
 
+  const getUserAdmin = () => {
+    setLoading(true);
+    ServiceApi.getUser()
+        .then((response) => {
+          if (response && response.data) {
+           
+            setContactDetails(response.data)
+            setLoading(false);
+          }
+        })
+        
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
   const getContacts = (page = 1) => {
     setLoading(true);
     ServiceApi.getAllContacts(page, currentLang === "en" ? "EN" : "FR")
@@ -150,7 +173,7 @@ const AdminUsers = function ({ currentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/users`)}>{t("Users")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{contactDetails?contactDetails.name[currentLang]:t("Add Users")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{contactDetails?contactDetails.firstName:t("Add Users")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">
@@ -196,7 +219,7 @@ const AdminUsers = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    navigate(`/admin/add-contact/?id=${record.uuid}`);
+                    navigate(`/admin/add-users/?id=${record.uuid}`);
                     
                   }, 
                 };
@@ -205,7 +228,7 @@ const AdminUsers = function ({ currentLang }) {
        
             :
            
-        <Addusers currentLang={currentLang} contactDetails={contactDetails}/>
+        <Addusers currentLang={currentLang} contactDetails={contactDetails} isProfile={isProfile}/>
             }
       </Card>
       {loading && <Spinner />}

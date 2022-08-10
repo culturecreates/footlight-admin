@@ -28,6 +28,24 @@ export default class ServiceApi {
     });
   }
 
+  static updateUser(payload) {
+    return Axios({
+      url: `users`,
+      method: "PATCH",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static updatePassword(payload) {
+    return Axios({
+      url: `users/reset-password`,
+      method: "PATCH",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
   static getUser() {
     return Axios({
       url: `users`,
