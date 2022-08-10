@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
 import { Layout, Menu,Avatar,Image,Dropdown, Space} from "antd";
+import Gravatar from 'react-gravatar'
 
 import "./AdminDashboard.css";
 import {
@@ -87,7 +88,13 @@ const AdminDashboard = function ({  currentLang }) {
         ))}
       </Menu>
       <div className="user-logout">
-      <Avatar src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 35 }} />} />
+      {/* <Avatar 
+      // src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 35 }} />}
+       >
+                {getCookies("user_token")?.user?.firstName?.charAt(0)}{getCookies("user_token")?.user?.lastName?.charAt(0)}
+                </Avatar> */}
+                <Gravatar email={getCookies("user_token")?.user?.email} size={30} 
+                style={{borderRadius:"50%"}}/>
       <Dropdown overlay={menu} trigger={['click']}
        placement="topRight"
        arrow={{

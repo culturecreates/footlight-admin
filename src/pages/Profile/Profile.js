@@ -11,6 +11,8 @@ import ServiceApi from "../../services/Service";
 import { useTranslation } from "react-i18next";
 import { adminProfile } from "../../utils/Utility";
 import { useNavigate } from "react-router-dom";
+import Gravatar from 'react-gravatar'
+
 
 const Profile = function ({ currentLang }) {
     const [profileDate, setProfileData] = useState()
@@ -54,14 +56,18 @@ const Profile = function ({ currentLang }) {
       </Row>
     <div className="profile">
 
-        <div className="footlight-text-logo">Footlight Admin</div>
+        {/* <div className="footlight-text-logo">Footlight Admin</div> */}
         {profileDate &&
         <>
-      <Avatar
+      {/* <Avatar
       style={{margin:"30px"}}
     size={{ xs: 32, sm: 40, md: 64, lg: 80, xl: 100, xxl: 100 }}
-    src="https://joeschmoe.io/api/v1/random"
-  />
+    // src="https://joeschmoe.io/api/v1/random"
+  >
+                    {profileDate?.firstName?.charAt(0)}{profileDate?.lastName?.charAt(0)}
+
+    </Avatar> */}
+       <Gravatar email={profileDate?.email} size={200} style={{borderRadius:"50%",margin:"25px"}}/>
   {
       adminProfile.map(item=>
         <div key={item.name} className="profile-keys">

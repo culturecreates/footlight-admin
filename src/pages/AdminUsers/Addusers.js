@@ -14,6 +14,7 @@ import {  adminProfile, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
+import Gravatar from 'react-gravatar'
 
 const { Dragger } = Upload;
 const getSrcFromFile = (file) => {
@@ -192,8 +193,10 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
               </div>
          </Col>
             <Col className="upload-col">
+
+            <Gravatar email={contactDetails?.email} size={200} />
             
-            <Dragger
+            {/* <Dragger
               listType="picture-card"
               className={
                 fileList.length > 0 ? "event-upload" : "ant-event-upload"
@@ -213,7 +216,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
               <p className="ant-upload-hint">
                 {t("DragAndDrop", { lng: currentLang })}
               </p>
-            </Dragger>
+            </Dragger> */}
             </Col>
             </Row>
 
