@@ -192,7 +192,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
 }
               </div>
          </Col>
-            <Col className="upload-col">
+            <Col className="upload-col user-profile-img">
 
             {/* <Gravatar email={contactDetails?.email} size={200} /> */}
 

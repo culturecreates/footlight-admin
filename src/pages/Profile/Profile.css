@@ -10,3 +10,8 @@
     margin-bottom: 20px;
     font-size: 20px;
 }
+.user-profile-img .ant-avatar-string,
+.profile .ant-avatar-string
+{
+    font-size: 45px;
+}
