@@ -184,6 +184,7 @@ const AdminEvents = function ({ currentLang }) {
       setIsAdd(false)
       getEvents();
       setEventDetails()
+      console.log("raseem")
     }
    
   }, [location]);

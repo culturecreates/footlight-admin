@@ -20,7 +20,7 @@ export const AxiosLogin = axios.create({
 Axios.interceptors.request.use(async (config) => {
   // config.baseURL = api;
   const id_token = getCookies("user_token");
-  config.headers["Authorization"] ="Bearer "+id_token.token;
+  config.headers["Authorization"] ="Bearer "+id_token?.token;
   
   return config;
 });
