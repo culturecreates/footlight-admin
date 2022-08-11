@@ -54,7 +54,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
     };
     setLoading(true)
     if (orgDetails)
-    ServiceApi.addTaxonomy(postalObj,orgDetails.uuid)
+    ServiceApi.updateTaxonomy(postalObj,orgDetails.uuid)
       .then((response) => {
         if (response && response.data) {
          
@@ -103,14 +103,17 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   };
   useEffect(() => {
     if (orgDetails) {
-        console.log(orgDetails)
+        if(orgDetails.conceptScheme?.uri === getCookies("concept_scheme")?.AUDIENCE)
+        setTreeList(audienceList)
+        else
+        setTreeList(typeList)
       setIsUpdate(true);
       form.setFieldsValue({
         name: orgDetails.name[currentLang],
-        description: orgDetails.description && orgDetails.description[currentLang],
         
-        url: orgDetails.url?.uri,
-        contact: orgDetails.contactPoint?.entityId
+        url: orgDetails.identifier.uri,
+        broader: orgDetails.broader?.uri,
+        conceptScheme: orgDetails.conceptScheme.uri,
         
       });
       

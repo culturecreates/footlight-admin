@@ -156,6 +156,8 @@ const Taxonomy = function ({ currentLang }) {
      const obj={
          value:item.identifier.uri,
          title: item.name?.fr,
+         uuid:item.uuid,
+         conceptScheme:item.conceptScheme.uri,
          children:item.children?formatarrayTree(item.children):undefined
      }
      return obj
@@ -168,6 +170,8 @@ const Taxonomy = function ({ currentLang }) {
     return data.map(item=>{
       const obj={
         value:item.identifier.uri,
+        uuid:item.uuid,
+        conceptScheme:item.conceptScheme.uri,
         title: item.name?.fr,
           children:item.children?formatarrayTree(item.children):undefined
       }
@@ -286,6 +290,7 @@ const Taxonomy = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
+                    if(!record.header)
                     navigate(`/admin/add-taxonomy/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row

@@ -243,13 +243,13 @@ export default class ServiceApi {
     });
   }
 
-  // static getAllTaxonomy() {
-  //   return Axios({
-  //     url: `taxonomy`,
-  //     method: "GET",
+  static getAllTaxonomy() {
+    return Axios({
+      url: `taxonomy`,
+      method: "GET",
 
-  //   });
-  // }
+    });
+  }
 
   static getTaxonomyType() {
     return Axios({
@@ -323,6 +323,15 @@ export default class ServiceApi {
     return Axios({
       url: `taxonomy`,
       method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static updateTaxonomy(payload) {
+    return Axios({
+      url: `taxonomy`,
+      method: "PATCH",
       data: JSON.stringify(payload),
 
     });
