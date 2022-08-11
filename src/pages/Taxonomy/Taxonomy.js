@@ -58,8 +58,9 @@ const Taxonomy = function ({ currentLang }) {
       width: 200,
       render: (e, record) => <div>
       <div>{record?.modifier?.userName}</div>
+      {record.modifier?.date &&
       <div style={{fontSize:"11px"}}>{moment(record.modifier?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
-
+      }
     </div>,
     }, 
     {
