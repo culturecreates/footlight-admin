@@ -55,20 +55,6 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Email", { lng: currentLang }),
-      dataIndex: "name",
-      key: "name",
-      render: (e, record) => (
-        <Row className="image-name">
-          
-          <Col flex="1 1 150px">
-              
-          {record.email}
-          </Col>
-        </Row>
-      ),
-    },
-    {
       title: "",
       dataIndex: "hasDependency",
       key: "hasDependency",

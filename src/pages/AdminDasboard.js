@@ -14,7 +14,7 @@ import {
     useLocation,
     useNavigate
   } from "react-router-dom";
-import { adminSideMenuLinks, getCookies, storeCookies } from "../utils/Utility";
+import { adminSideMenuLinks, getCookies, removeCookies, storeCookies } from "../utils/Utility";
 import { useTranslation,  } from "react-i18next";
 import AdminEvents from "./AddEvent/AdminEvents";
 import AdminContacts from "./AddContact/AdminContact";
@@ -48,9 +48,15 @@ const AdminDashboard = function ({  currentLang }) {
        
       }, []);
 
+      const logout=()=>{
+        removeCookies("user_token");
+        storeCookies("user_token", null);
+        navigate(`/`)
+      }
+
       const menu = (
         <Menu
-        onClick={(e)=>e.key==="1"? navigate(`/`):navigate(`/admin/profile`)}
+        onClick={(e)=>e.key==="1"?logout() :navigate(`/admin/profile`)}
           items={[
             {
               label: "Profile",

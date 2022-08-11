@@ -61,8 +61,9 @@ const AdminPlaces = function ({ currentLang }) {
       width: 200,
       render: (e, record) => <div>
         <div>{record?.creator?.userName}</div>
+        {record.creator?.date &&
         <div style={{fontSize:"11px"}}>{moment(record.creator?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
-
+        }
       </div>,
     }, 
     {
