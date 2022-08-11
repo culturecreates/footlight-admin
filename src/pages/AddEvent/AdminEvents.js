@@ -104,8 +104,9 @@ const AdminEvents = function ({ currentLang }) {
       width: 200,
       render: (e, record) => <div>
       <div>{record?.modifier?.userName}</div>
+      {record.modifier?.date &&
       <div style={{fontSize:"11px"}}>{moment(record.modifier?.date).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
-
+      }
     </div>,
     }, 
     {
@@ -261,6 +262,7 @@ const AdminEvents = function ({ currentLang }) {
               columns={eventTableHeader}
               className={"event-table"}
               scroll={{x: 1400, y: "calc(100% - 60px)" }}
+              rowKey={record => record.uuid}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)

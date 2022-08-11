@@ -196,7 +196,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
 
             {/* <Gravatar email={contactDetails?.email} size={200} /> */}
 
-            <Avatar shape="square" size={150}  style={{backgroundColor: "#f56a00"}}>
+            <Avatar shape="square" size={150}  style={{backgroundColor: "#f56a00",marginBottom:"20px"}}>
             {contactDetails?.firstName?.charAt(0)}{contactDetails?.lastName?.charAt(0)}
 
               </Avatar>

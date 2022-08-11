@@ -123,7 +123,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     if (audienceStore == null) {
       getPublics();
     } else {
-      setPublicsList(audienceStore)
+      setPublicsList(formatarray(audienceStore))
     }
 
     if (typesStore == null) {
@@ -191,7 +191,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
          
-          setPublicsList(events);
+          setPublicsList(formatarray(events));
           dispatch(fetchAudience(response.data.data));
            
         }
@@ -856,7 +856,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
             </div>
 
             <Form.Item name={"audience"} rules={[{ required: false }]}>
-              <Select
+              {/* <Select
                 data-testid="update-two-select-dropdown"
                 placeholder={`Select Audience`}
                 key="updateDropdownKey"
@@ -881,7 +881,19 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                       {item.name["fr"]}
                     </Option>
                   ))}
-              </Select>
+              </Select> */}
+
+<TreeSelect
+                 style={{ width: '100%' }}
+                //  value={value}
+
+                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                 treeData={publicsList}
+                 multiple
+                 placeholder="Please select"
+                //  treeDefaultExpandAll
+               
+               />
             </Form.Item> 
 
             <div className="update-select-title">

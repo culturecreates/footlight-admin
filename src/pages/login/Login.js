@@ -134,7 +134,7 @@ const Login = () => {
           </Form>
           <div className="forgot-create-div">
             <div onClick={()=>setLoginType(loginType==="resetLink"?"login":"resetLink")} style={{cursor:"pointer"}}>
-            {loginType==="resetLink"?"Back to login":"I forgot my password"}
+            {loginType==="resetLink"?"Back to login":"Send a new reset code"}
               
               </div>
             <div onClick={()=>createSignup()} style={{cursor:"pointer"}}>

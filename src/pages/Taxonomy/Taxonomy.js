@@ -286,7 +286,7 @@ const Taxonomy = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    // navigate(`/admin/add-organization/?id=${record.uuid}`);
+                    navigate(`/admin/add-taxonomy/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };
