@@ -166,7 +166,7 @@ export const adminSideMenuLinks = [
     {
       name: "broader",
       title:"Broader",
-      required:true,
+      required:false,
       placeHolder: "Select Contact",
       type:"Treeselect"
     },
