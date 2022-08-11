@@ -70,7 +70,7 @@ const Profile = function ({ currentLang }) {
     </Avatar>
        {/* <Gravatar email={profileDate?.email} size={200} style={{borderRadius:"50%",margin:"25px"}}/> */}
   {
-      adminProfile.map(item=>
+      adminProfile.filter(item=>item.required).map(item=>
         <div key={item.name} className="profile-keys">
         <div>{item.title}</div>
         <div>:&nbsp;{profileDate[item.name]}</div>

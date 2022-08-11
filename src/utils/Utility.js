@@ -457,6 +457,14 @@ export const adminSideMenuLinks = [
       inputtype:"email",
       type:"register"
     },
+    {
+      name: "interfaceLanguage",
+      title:"Interface Language",
+      required:false,
+      placeHolder: "Enter language",
+      inputtype:"select",
+      type:"register"
+    },
   ]
 
   export const updatePasswordAdmin =[

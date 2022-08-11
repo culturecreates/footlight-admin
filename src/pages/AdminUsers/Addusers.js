@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Row, Col,Button,Input, message,Upload, Avatar } from "antd";
+import { Layout, Form, Row, Col,Button,Input, message,Upload, Avatar,Select } from "antd";
 import React, { useState, useEffect } from "react";
 import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import PasswordUpdateModal from "../../components/PasswordUpdateModal";
 import Gravatar from 'react-gravatar'
 
 const { Dragger } = Upload;
+const {Option} =Select;
 const getSrcFromFile = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -24,6 +25,17 @@ const getSrcFromFile = (file) => {
       reader.onload = () => resolve(reader.result);
     });
   };
+
+  const conceptArray=[
+    {
+      name:"English",
+      uri:"EN"
+    },
+    {
+      name:"French",
+      uri:"FR"
+    }
+  ]
 const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -82,7 +94,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
         firstName: contactDetails.firstName,
         email:contactDetails.email,
         lastName: contactDetails.lastName,
-       
+        interfaceLanguage: contactDetails.interfaceLanguage
        
         
       });
@@ -167,12 +179,25 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
                 }
               ]}
             >
-              
+              {item.inputtype === "select"?
+                <Select
+                style={{ width: '100%' }}
+                dropdownClassName="contact-select"
+                placeholder="Select Language"
+                
+              >
+                {conceptArray.map((item) => (
+                  <Option key={item.uri} value={item.uri} title={item.name}>
+                     {  t(item.name, { lng: currentLang })}{}</Option>
+                ))}
+              </Select>
+              :
                 <Input
                   placeholder={item.placeHolder}
                   className="replace-input"
                   onKeyDown={handleEnter}
                 />
+}
               
             </Form.Item>
 
