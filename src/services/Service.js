@@ -28,6 +28,24 @@ export default class ServiceApi {
     });
   }
 
+  static resetLink(payload) {
+    return AxiosLogin({
+      url: `users/forgot-password`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static reset(payload) {
+    return AxiosLogin({
+      url: `users/reset-password`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
   static updateUser(payload) {
     return Axios({
       url: `users`,
@@ -48,7 +66,7 @@ export default class ServiceApi {
 
   static updatePassword(payload) {
     return Axios({
-      url: `users/reset-password`,
+      url: `users/modify-password`,
       method: "PATCH",
       data: JSON.stringify(payload),
 

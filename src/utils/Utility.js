@@ -363,7 +363,15 @@ export const adminSideMenuLinks = [
       type:"resetLink"
     },
     {
-      name: "code",
+      name: "email",
+      title:"Email",
+      required:true,
+      placeHolder: "Enter email",
+      inputtype:"email",
+      type:"reset"
+    },
+    {
+      name: "oneTimePassword",
       title:"6-digit one-time code",
       required:true,
       placeHolder: "Enter one time code",

@@ -57,7 +57,7 @@ const RecurringModal = ({
       setDataSource(
         dateSource.map((item) => {
           if (selectedDateId === item.id) {
-            if (item.time) item.time = [...item.time, obj].sort((a,b)=>a.startTime.localeCompare(b.startTime));
+            if (item.time) item.time = [...item.time, obj].sort((a,b)=>a.start.localeCompare(b.start));
             else item.time = [obj];
           }
           return item;

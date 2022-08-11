@@ -53,18 +53,35 @@ const Login = () => {
     });
 
     else if (loginType==="resetLink")
-    ServiceApi.addUser(values)
+    ServiceApi.resetLink(values)
     .then((response) => {
       if (response && response.data) {
        
         setLoading(false)
-        message.success("User created successfully")
-        setLoginType("login")
+        message.success("Reset link send successfully")
+        setLoginType("reset")
       }
     })
     .catch((error) => {
       setLoading(false)
     });
+
+    else if (loginType==="reset")
+   {
+     values.confirmPassword = undefined;
+     values.oneTimePassword= Number(values.oneTimePassword)
+      ServiceApi.reset(values)
+    .then((response) => {
+      if (response && response.data) {
+       
+        setLoading(false)
+        message.success("Reset password successfully")
+        setLoginType("login")
+      }
+    })
+    .catch((error) => {
+      setLoading(false)
+    });}
    
   };
 
