@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import PropTypes from "prop-types";
+import ReactPlayer from 'react-player'
 import {
   Layout,
   Form,
@@ -75,6 +76,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
   const [compressedFile, setCompressedFile] = useState(null);
   const [offerConfig, setOfferConfig] = useState();
   const [offerIds, setOfferIds] = useState([]);
+  const [youtubeLink,setYoutubeLink] = useState()
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -293,6 +295,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
       }:null,
       url:values.eventPage && {uri:values.eventPage},
       facebookUrl:values.facebookLink,
+      youtubeUrl:values.youtubeUrl,
       offerConfiguration: offerConfig,
       offers: offerIds && offerIds.map(item=>{ const obj={entityId:item}
       return obj}),
@@ -401,6 +404,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         );
         setOfferConfig(eventDetails?.offerConfiguration)
         setOfferIds(eventDetails?.offers?.map(item=>item.uuid))
+        setYoutubeLink(eventDetails?.youtubeUrl)
       form.setFieldsValue({
         contact:eventDetails.contactPoint?.uuid,
         desc: eventDetails.description ? eventDetails.description["fr"]?eventDetails.description["fr"]==="<p><br></p>"?"<p>&nbsp;</p>":eventDetails.description["fr"] : "<p>&nbsp;</p> ":"<p>&nbsp;</p>",
@@ -435,6 +439,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
           : "Canada/Eastern",
         eventPage:eventDetails.url?.uri,
         facebookLink:eventDetails.facebookUrl ,
+        youtubeUrl: eventDetails?.youtubeUrl,
         organization:eventDetails?.organizer?.organizations.map(item=>item.uuid),
         audience: eventDetails?.audience?.map(item=>item?.identifier?.uri),
         type: eventDetails?.additionalType?.map(item=>item?.identifier?.uri),
@@ -1130,7 +1135,42 @@ const AddEvent = function ({ currentLang, eventDetails }) {
             >
               <Input placeholder="Enter Event Url" className="replace-input" />
             </Form.Item>
+
+            <div className="update-select-title">
+              {t("Youtube", { lng: currentLang })} {" "} Link
             </div>
+            <Form.Item
+              name="youtubeUrl"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: false,
+                  message: "Youtube Link name required",
+                  whitespace: true,
+                },
+                {
+                  message: 'Enter valid link.',
+                  validator: (_, value) => {
+                    if (urlValidate(value)) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject('Enter valid link.');
+                    }
+                  }
+                }
+              ]}
+              validateTrigger="onBlur"
+            >
+              <Input placeholder="Enter Youtube Url" onChange={(e)=>setYoutubeLink(e.target.value)} className="replace-input" />
+       
+            </Form.Item>
+            {youtubeLink && urlValidate(youtubeLink) &&
+              <ReactPlayer url={youtubeLink} width="400px" height="300px" />
+}
+            </div>
+
+           
+            
           </Col>
         </Row>
         <div className="update-select-title">{"Description"}</div>
