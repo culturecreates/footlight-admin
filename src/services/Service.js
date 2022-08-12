@@ -55,6 +55,15 @@ export default class ServiceApi {
     });
   }
 
+  static updateSingleUser(payload,id) {
+    return Axios({
+      url: `users/${id}`,
+      method: "PATCH",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
   static getAllUser() {
     return Axios({
       url: `users/all`,
@@ -69,6 +78,15 @@ export default class ServiceApi {
       url: `users/modify-password`,
       method: "PATCH",
       data: JSON.stringify(payload),
+
+    });
+  }
+
+  static getSingleUser(id) {
+    return Axios({
+      url: `users/${id}`,
+      method: "GET",
+     
 
     });
   }

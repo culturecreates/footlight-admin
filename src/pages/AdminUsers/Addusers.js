@@ -55,12 +55,11 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
    
     setLoading(true)
     if (contactDetails)
-    ServiceApi.updateUser(values)
+    {
+      if(isProfile)
+      ServiceApi.updateUser(values)
       .then((response) => {
-        if (response && response.data) {
-         
-            
-           
+        if (response && response.data) { 
             setLoading(false)  
             message.success("Contact Updated Successfully");
             navigate(`/admin/profile`);
@@ -70,6 +69,21 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       .catch((error) => {
         setLoading(false)
       });
+      else{
+        ServiceApi.updateSingleUser(values,contactDetails.uuid)
+      .then((response) => {
+        if (response && response.data) { 
+            setLoading(false)  
+            message.success("Contact Updated Successfully");
+            navigate(`/admin/users`);
+         
+        }
+      })
+      .catch((error) => {
+        setLoading(false)
+      });
+      }
+    }
       else
       ServiceApi.updateUser(values)
       .then((response) => {
@@ -255,7 +269,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
             size="large"
             icon={<CloseOutlined />}
             onClick={() => {
-               if (isUpdate) navigate(`/admin/profile`);
+               if (isUpdate) navigate(isProfile?`/admin/profile`:`/admin/users`);
               else {
                 form.resetFields();
                 

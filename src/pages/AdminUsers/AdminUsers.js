@@ -7,7 +7,7 @@ import {  ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
-
+import moment from "moment";
 import Addusers from "./Addusers";
 
 const { confirm } = Modal;
@@ -53,6 +53,18 @@ const AdminUsers = function ({ currentLang }) {
           </Col>
         </Row>
       ),
+    },
+    {
+      title: t("Joined Date", { lng: currentLang }),
+      dataIndex: "hasLegacyCapability",
+      key: "hasLegacyCapability",
+      width: 200,
+      render: (e, record) => <div>
+        
+        {record.joined &&
+        <div>{moment(record.joined).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
+        }
+      </div>,
     },
     {
       title: "",
@@ -112,7 +124,8 @@ const AdminUsers = function ({ currentLang }) {
         getUserAdmin()
     }
      else if(eventId)
-     getContactDetails(eventId)
+    {  setIsProfile(false)
+      getContactDetails(eventId)}
     }
     else
     {
@@ -125,7 +138,7 @@ const AdminUsers = function ({ currentLang }) {
 
   const getContactDetails = (id) => {
     setLoading(true);
-    ServiceApi.getContactDetail(id)
+    ServiceApi.getSingleUser(id)
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
@@ -181,7 +194,7 @@ const AdminUsers = function ({ currentLang }) {
     <Layout className="dashboard-layout">
       {isAdd &&
       <Breadcrumb separator=">">
-        <Breadcrumb.Item onClick={()=>navigate(`/admin/profile`)}>{t("Users")}</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={()=>isProfile?navigate(`/admin/profile`):navigate(`/admin/users`)}>{t("Users")}</Breadcrumb.Item>
         <Breadcrumb.Item >{contactDetails?contactDetails.firstName:t("Add Users")}</Breadcrumb.Item>
       </Breadcrumb>
 }
@@ -224,7 +237,7 @@ const AdminUsers = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    // navigate(`/admin/add-users/?id=${record.uuid}`);
+                    navigate(`/admin/add-users/?id=${record.uuid}`);
                     
                   }, 
                 };
