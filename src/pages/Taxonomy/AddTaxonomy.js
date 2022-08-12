@@ -214,7 +214,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
             onClick={() => {
               if(isModal)
                onsuccessAdd()
-              else if (isUpdate) navigate(`/admin/contacts`);
+              else if (isUpdate) navigate(`/admin/taxonomy`);
               else {
                 form.resetFields();
                 

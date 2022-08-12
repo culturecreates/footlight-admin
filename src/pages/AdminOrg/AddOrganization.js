@@ -245,7 +245,7 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
             onClick={() => {
               if(isModal)
                onsuccessAdd()
-              else if (isUpdate) navigate(`/admin/contacts`);
+              else if (isUpdate) navigate(`/admin/organization`);
               else {
                 form.resetFields();
                 
