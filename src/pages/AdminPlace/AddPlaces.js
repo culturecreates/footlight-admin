@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Layout, Form, Input, Button, message,Select } from "antd";
 import React, { useState, useEffect } from "react";
 import PlacesAutocomplete, {
@@ -15,7 +16,7 @@ import {
 import { adminPlaces } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchPlace } from "../../action";
 
 const { Option } = Select;

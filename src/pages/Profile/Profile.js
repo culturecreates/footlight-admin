@@ -2,21 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Avatar,Row,Col,Button  } from 'antd';
 import PropTypes from "prop-types";
 import "./Profile.css";
-import {
-  PlusOutlined,
-  
-   
- } from "@ant-design/icons";
+
 import ServiceApi from "../../services/Service";
 import { useTranslation } from "react-i18next";
 import { adminProfile } from "../../utils/Utility";
 import { useNavigate } from "react-router-dom";
-import Gravatar from 'react-gravatar'
 
 
 const Profile = function ({ currentLang }) {
     const [profileDate, setProfileData] = useState()
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     useEffect(()=>{
         ServiceApi.getUser()

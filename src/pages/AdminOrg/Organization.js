@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Card, Table, Button, Modal, Avatar, Breadcrumb, Col, Row } from "antd";
-import { useTranslation, Trans } from "react-i18next";
+import { Layout, Card, Table, Button, Modal,  Breadcrumb, Col, Row } from "antd";
+import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
 import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
 import AddOrganization from "./AddOrganization";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOrg, fetchPlace } from "../../action";
+import { useDispatch } from "react-redux";
+import { fetchOrg } from "../../action";
 
 const { confirm } = Modal;
 
@@ -24,7 +24,7 @@ const Organization = function ({ currentLang }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const eventTableHeader = [
@@ -129,6 +129,7 @@ const Organization = function ({ currentLang }) {
       setPlaceDetails()
     }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const getplaceDetails = (id) => {
@@ -168,10 +169,7 @@ const Organization = function ({ currentLang }) {
       });
   };
 
-  const selectSemantic = (selectObj) => {
-    const searchArray = [selectObj];
-    getPlaces(1, searchArray);
-  };
+  
 
   return (
     <Layout className="dashboard-layout">

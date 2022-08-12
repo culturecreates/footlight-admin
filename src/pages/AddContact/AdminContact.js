@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Layout, Card, Table, Button, Modal, Avatar, Breadcrumb, Col, Row } from "antd";
-import { useTranslation, Trans } from "react-i18next";
+import { Layout, Card, Table, Button, Modal, Breadcrumb, Col, Row } from "antd";
+import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
 import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContact, fetchPlace } from "../../action";
+import { useDispatch } from "react-redux";
+import { fetchContact } from "../../action";
 import AddContact from "./AddContact";
 
 const { confirm } = Modal;
@@ -24,7 +24,7 @@ const AdminContacts = function ({ currentLang }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const eventTableHeader = [
@@ -125,6 +125,7 @@ const AdminContacts = function ({ currentLang }) {
       setContactDetails()
     }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const getContactDetails = (id) => {
@@ -154,6 +155,7 @@ const AdminContacts = function ({ currentLang }) {
          
           dispatch(fetchContact(response.data.data));
           setContactList(events);
+          setTotalPage(1)
         
         }
         setLoading(false);
@@ -163,10 +165,7 @@ const AdminContacts = function ({ currentLang }) {
       });
   };
 
-  const selectSemantic = (selectObj) => {
-    const searchArray = [selectObj];
-    getContacts(1, searchArray);
-  };
+ 
 
   return (
     <Layout className="dashboard-layout">

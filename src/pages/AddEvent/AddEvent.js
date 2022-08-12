@@ -36,7 +36,7 @@ import RecurringEvent from "../../components/RecurringEvent";
 import Compressor from "compressorjs";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAudience, fetchContact, fetchOrg, fetchPlace, fetchTypes } from "../../action";
-import { fbUrlValidate, publics, timeZone, urlValidate } from "../../utils/Utility";
+import { fbUrlValidate,  timeZone, urlValidate } from "../../utils/Utility";
 import AddNewContactModal from "../../components/AddNewContactModal";
 import PriceModal from "../../components/PriceModal/PriceModal";
 import Spinner from "../../components/Spinner";
@@ -61,7 +61,6 @@ const AddEvent = function ({ currentLang, eventDetails }) {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allLocations, setAllLocations] = useState();
-  const [eventType, setEventType] = useState("offline");
   const [fileList, setFileList] = useState([]);
   const [placeList, setPlaceList] = useState([]);
   const [orgList,setOrgList]= useState([])
@@ -84,7 +83,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     moment().format("YYYY-MM-DD")
   );
   const [endDisable, setEndDisable] = useState(moment().format("YYYY-MM-DD"));
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const placeStore = useSelector((state) => state.place);
@@ -135,6 +134,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     }
 
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(()=>{
@@ -143,6 +143,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     } else {
       setOrgList(orgStore)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[orgStore])
 
   useEffect(()=>{
@@ -151,7 +152,9 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     } else {
       setAllLocations(placeStore);
       setPlaceList(placeStore.places);
+      
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[placeStore])
 
   useEffect(()=>{
@@ -166,6 +169,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
       }));
 
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[contactStore])
 
   const getTypes = (page = 1) => {
@@ -520,6 +524,8 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         desc: "",
       });
       setFormVaue(form.getFieldsValue())
+      console.log(placeList)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDetails]);
 
   const closeWithId=(id)=>{
@@ -559,15 +565,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
   const onChangeEnd = (date, dateString) => {
     setEndDisable(moment(dateString, "MM-DD-YYYY"));
   };
-  const handleChange = (e, option) => {
-    if (e.target.value === "online") {
-      setEventType("online");
-      setPlaceList(allLocations.virtualLocations);
-    } else {
-      setEventType("offline");
-      setPlaceList(allLocations.places);
-    }
-  };
+ 
 
   const handleChangeLoc = (value,option) => {
    
@@ -584,10 +582,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
       setcheckselectedOnline(true)
     else 
       setcheckselectedOnline(false) 
-    // const selectObj = option.
-    // form.setFieldsValue({
-    //   location;"jjj"
-    // });
+    
   };
  
   const showAddModal=(typeName)=>{
@@ -604,7 +599,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         // compressedResult has the compressed file.
         // Use the compressed file to upload the images to your server.
         setCompressedFile(compressedResult);
-        console.log();
+       
       },
     });
   };
@@ -621,11 +616,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     }
   };
 
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    let customDate = moment().format("YYYY-MM-DD");
-    return current && current < moment(customDate, "YYYY-MM-DD");
-  };
+ 
   const closePriceModal = (config,ids) => {
     setOfferConfig(config);
     setOfferIds(ids)

@@ -17,22 +17,23 @@ const RecurringEvent = function ({
   form,
   eventDetails,
 }) {
-  const [startDisable, setStartDisable] = useState(
-    moment().format("YYYY-MM-DD")
-  );
-  const [endDisable, setEndDisable] = useState(moment().format("YYYY-MM-DD"));
+  // const [startDisable, setStartDisable] = useState(
+  //   moment().format("YYYY-MM-DD")
+  // );
+  const endDisable = moment().format("YYYY-MM-DD")
+  // const [endDisable, setEndDisable] = useState(moment().format("YYYY-MM-DD"));
   const [nummberofDates, setNumberofDates] = useState(numberOfDaysEvent);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [customDates, setCustomDates] = useState([]);
   const [isCustom, setIsCustom] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const onChangeStart = (date, dateString) => {
-    setStartDisable(moment(dateString, "MM-DD-YYYY"));
-  };
-  const onChangeEnd = (date, dateString) => {
-    // setEndDisable(moment(dateString, "MM-DD-YYYY"));
-  };
+  // const onChangeStart = (date, dateString) => {
+  //   setStartDisable(moment(dateString, "MM-DD-YYYY"));
+  // };
+  // const onChangeEnd = (date, dateString) => {
+  //   // setEndDisable(moment(dateString, "MM-DD-YYYY"));
+  // };
   useEffect(() => {
     if (eventDetails ) {
       if (formFields?.frequency === "CUSTOM"  || eventDetails.recurringEvent?.frequency === "CUSTOM")
@@ -90,6 +91,7 @@ const RecurringEvent = function ({
       setCustomDates(custom);
     }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDetails]);
 
   const onCustomize = (customizedDate) => {
@@ -146,6 +148,7 @@ const RecurringEvent = function ({
        setIsCustom(true);
       else setIsCustom(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formFields]);
 
   const getNumberOfWeekDays = async (start, end, daysofweek) => {

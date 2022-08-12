@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
-import { Layout, Menu,Avatar,Image,Dropdown, Space} from "antd";
-import Gravatar from 'react-gravatar'
+import { Layout, Menu,Avatar,Dropdown, Space} from "antd";
 
 import "./AdminDashboard.css";
 import {

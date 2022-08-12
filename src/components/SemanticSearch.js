@@ -5,7 +5,7 @@ import "./SemanticSearch.css";
 import { useCallback } from "react";
 import _debounce from 'lodash/debounce';
 import ServiceApi from "../services/Service";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const SemanticSearch = function ({ onSelection, onClearSearch,currentLang,searchUpdate="" }) {
     const [options, setOptions] = useState([]);
@@ -15,7 +15,7 @@ const SemanticSearch = function ({ onSelection, onClearSearch,currentLang,search
     useEffect(()=>{
       setSearchKey("")},[searchUpdate])
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const renderTitle = (title,lng) => (
         <span className="search-title">
           {t(title, { lng: lng })}
@@ -93,6 +93,7 @@ const SemanticSearch = function ({ onSelection, onClearSearch,currentLang,search
       else 
        debounceFn(value,currentLang)
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceFn = useCallback(_debounce(searchResult, 1000), []);
     const onSelect = (value,options) => {
       const selectObj = {

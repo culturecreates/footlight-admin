@@ -1,8 +1,6 @@
 import React from "react";
 import Icon from '@ant-design/icons';
 import "./Spinner.css"
-import { Spin } from "antd";
-import { LoadingOutlined } from '@ant-design/icons';
 
 
 const LoadingSvg = () => (
@@ -17,7 +15,6 @@ const LoadingSvg = () => (
 
 );
 // const antIcon = <Icon component={HeartSvg} className="spinImg" spin />;
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 
 const Spinner = function () {

@@ -1,6 +1,6 @@
-import { Row, Layout, Col,  Switch, Image } from "antd";
+import {  Layout,  } from "antd";
 import "./App.css";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation, } from "react-i18next";
 import "antd/dist/antd.min.css";
 import "antd/dist/antd.less";
 import React,{ useState , useEffect} from "react";
@@ -17,16 +17,16 @@ import Login from "./pages/login/Login";
 moment.locale("fr-ca");
 
 
-const { Header, Content } = Layout;
+const {  Content } = Layout;
 function App() {
   const [locale, setLocale] = useState(frCA);
   const [currentLang, setCurrentLang] = useState("fr");
-  const [isEnglish, setIsEnglish] = useState(false);
+  // const [isEnglish, setIsEnglish] = useState(false);
   const dispatch = useDispatch();
 
   const langStore = useSelector((state) => state.lang);
 
-  const { t, i18n } = useTranslation();
+  const {  i18n } = useTranslation();
  
  
   // const changeLocale = (e) => {
@@ -46,10 +46,11 @@ function App() {
      
     }
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [langStore]);
   function onChange(checked) {
    
-    setIsEnglish(checked)
+    // setIsEnglish(checked)
     if(!checked){
       dispatch(changeLang("fr")); 
       i18n.changeLanguage("fr");

@@ -7,7 +7,7 @@ import {
   
 } from "@ant-design/icons";
 import ServiceApi from "../services/Service";
-import { adminLogin, updatePasswordAdmin } from "../utils/Utility";
+import {  updatePasswordAdmin } from "../utils/Utility";
 import Spinner from "./Spinner";
 
 const PasswordUpdateModal = ({

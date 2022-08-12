@@ -1,10 +1,10 @@
-import { Layout, Form, Input, Button, message, Select, TreeSelect, Space, Typography } from "antd";
+import { Layout, Form, Input, Button, message, Select, TreeSelect,  } from "antd";
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
- PlusOutlined,
+ 
   CheckOutlined,
   CloseOutlined,
   
@@ -12,11 +12,9 @@ import {
 import {  adminTaxonomy, getCookies, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContact, fetchOrg } from "../../action";
 import AddNewContactModal from "../../components/AddNewContactModal";
 
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,audienceList,typeList }) {
   const [loading, setLoading] = useState(false);
@@ -25,10 +23,9 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   const [showAddContact,setShowAddContact]= useState(false)
 
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const conceptArray=[
     {
@@ -42,7 +39,6 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
   ]
 
 
-  const contactStore = useSelector((state) => state.org);
 
   const handleSubmit = (values) => {
     const postalObj = {
@@ -118,6 +114,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
       });
       
     } 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgDetails]);
 
   function handleEnter(event) {
