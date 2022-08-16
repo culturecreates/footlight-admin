@@ -1083,7 +1083,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
               </Form.Item>
 
               <div className="update-select-title">
-                {t("Youtube", { lng: currentLang })} Link
+                {t("Video", { lng: currentLang })} Link
               </div>
               <Form.Item
                 name="youtubeUrl"
@@ -1108,7 +1108,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                 validateTrigger="onBlur"
               >
                 <Input
-                  placeholder="Enter Youtube Url"
+                  placeholder="Enter video Url"
                   onChange={(e) => setYoutubeLink(e.target.value)}
                   className="replace-input"
                 />
@@ -1116,7 +1116,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
               {youtubeLink && urlValidate(youtubeLink) && (
                 youtubeLink.includes("https://vimeo.com")?
                 <>
-                <iframe title={youtubeLink} src="https://player.vimeo.com/video/633172534?h=eda036ee8b&color=ffffff&portrait=0&badge=0" width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <iframe title={youtubeLink} src={`${youtubeLink.replace("vimeo.com","player.vimeo.com/video")}?h=eda036ee8b&color=ffffff&portrait=0&badge=0`} width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                 <p><a  href="https://www.youtube.com/watch?v=ysz5S6PUM-U"><div style={{display:"none"}}>Vemio</div></a></p>
                 </>:<ReactPlayer url={youtubeLink} width="400px" height="300px" />
                 
