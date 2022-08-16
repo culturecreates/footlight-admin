@@ -49,6 +49,7 @@ const PasswordUpdateModal = ({
     })
     .catch((error) => {
       setLoading(false)
+      message.error(error.response?.data?.message)
     });
   }
   

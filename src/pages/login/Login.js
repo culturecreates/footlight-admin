@@ -10,6 +10,8 @@ const Login = () => {
   const [loginType, setLoginType] = useState("login") 
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+
   const handleLoginSubmit = (values) => {
     console.log(values)
     setLoading(true)
@@ -50,6 +52,7 @@ const Login = () => {
     })
     .catch((error) => {
       setLoading(false)
+      message.error(error.response?.data?.message)
     });
 
     else if (loginType==="resetLink")
@@ -64,6 +67,7 @@ const Login = () => {
     })
     .catch((error) => {
       setLoading(false)
+      message.error(error.response?.data?.message)
     });
 
     else if (loginType==="reset")
@@ -81,6 +85,7 @@ const Login = () => {
     })
     .catch((error) => {
       setLoading(false)
+      message.error(error.response?.data?.message)
     });}
    
   };
@@ -111,7 +116,7 @@ const Login = () => {
                loginType==="reset"?"Check Your Email":"Reset Password"}
           </div>
           
-          <Form onFinish={handleLoginSubmit} className="login-form">
+          <Form onFinish={handleLoginSubmit} className="login-form"  form={form}>
             {adminLogin.filter(item=>item.type===loginType).map(item=>
             <div key={item.name}>
             <div className="login-label">{item.title}</div>
@@ -119,6 +124,20 @@ const Login = () => {
               name={item.name}
               rules={[
                 { required: true, message: "Please input your"+item.name },
+                {
+                  message: 'Password should be same as new password',
+                  validator: (_, value) => {
+                      if(item.name === "confirmPassword")
+                    {if (form.getFieldsValue().newPassword===value) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject('Password should be same as new password');
+                    }}
+                    else
+                    return Promise.resolve();
+                  }
+                }
+            
               ]}
             >
               <Input className="login-input" placeholder={" "} type={item.inputtype} />

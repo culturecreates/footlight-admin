@@ -64,6 +64,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       })
       .catch((error) => {
         setLoading(false)
+        message.error(error.response?.data?.message)
       });
       else{
         ServiceApi.updateSingleUser(values,contactDetails.uuid)
@@ -77,6 +78,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       })
       .catch((error) => {
         setLoading(false)
+        message.error(error.response?.data?.message)
       });
       }
     }
