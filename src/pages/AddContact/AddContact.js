@@ -2,7 +2,7 @@ import { Layout, Form, Input, Button, message } from "antd";
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
  
   CheckOutlined,
@@ -12,20 +12,19 @@ import {
 import { adminContact, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchContact } from "../../action";
 
 const AddContact = function ({ currentLang,contactDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
 
-  const contactStore = useSelector((state) => state.contact);
 
   const handleSubmit = (values) => {
     const postalObj = {
@@ -102,6 +101,7 @@ const AddContact = function ({ currentLang,contactDetails,isModal=false,onsucces
       });
       
     } 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contactDetails]);
 
   function handleEnter(event) {

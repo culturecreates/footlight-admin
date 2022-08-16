@@ -21,11 +21,10 @@ const PriceModal = ({
       dollar:"",
       id: uniqid(),
   }]);
-  const [priceList, setPriceList] = useState([]);
   const [priceType, setPriceType] = useState("FREE");
   const [dollarType, setDollarTpe] = useState("CAD");
   const [form] = Form.useForm();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const handleOk = () => {
 
@@ -52,6 +51,7 @@ const PriceModal = ({
         url:offerConfig.url?.uri
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offerConfig]);
 
  const addPayant =()=>{

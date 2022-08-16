@@ -132,6 +132,7 @@ const Taxonomy = function ({ currentLang }) {
       setPlaceDetails()
     }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const getplaceDetails = (id) => {

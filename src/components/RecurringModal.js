@@ -76,6 +76,7 @@ const RecurringModal = ({
     const el1 = document.querySelector(`[data-month-id="${name}"]`);
     if (el1) el1.scrollIntoView();
     setDataSource(customDates);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible]);
 
   const handleOk = () => {
@@ -88,21 +89,21 @@ const RecurringModal = ({
     setIsModalVisible(false);
   };
 
-  const selectDate = (e) => {
-    console.log(e);
-    const eventObj = {
-      id: uniqid(),
-      name: "test name",
-      location: "test Location",
-      startDate: new Date(
-        moment(e.startDate.toLocaleDateString()).format("YYYY,M,D")
-      ),
-      endDate: new Date(
-        moment(e.endDate.toLocaleDateString()).format("YYYY,M,DD")
-      ),
-    };
-    setDataSource([...dateSource, eventObj]);
-  };
+  // const selectDate = (e) => {
+  //   console.log(e);
+  //   const eventObj = {
+  //     id: uniqid(),
+  //     name: "test name",
+  //     location: "test Location",
+  //     startDate: new Date(
+  //       moment(e.startDate.toLocaleDateString()).format("YYYY,M,D")
+  //     ),
+  //     endDate: new Date(
+  //       moment(e.endDate.toLocaleDateString()).format("YYYY,M,DD")
+  //     ),
+  //   };
+  //   setDataSource([...dateSource, eventObj]);
+  // };
 
   useEffect(() => {
     if (test) {
@@ -118,7 +119,7 @@ const RecurringModal = ({
       else setDataSource([...dateSource, test].sort((a, b) => b.startDate < a.startDate ? 1: -1));
       setTest(null);
     }
-    console.log(dateSource);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [test]);
 
   useEffect(() => {
@@ -137,6 +138,7 @@ const RecurringModal = ({
     setDateArrayCal(null)
   }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateArrayCal]);
 
   const deleteEvent = (event) => {

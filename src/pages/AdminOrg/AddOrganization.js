@@ -2,21 +2,21 @@ import { Layout, Form, Input, Button, message, Select, Divider, Space, Typograph
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
  PlusOutlined,
   CheckOutlined,
   CloseOutlined,
   
 } from "@ant-design/icons";
-import { adminContact, adminOrg, urlValidate } from "../../utils/Utility";
+import {  adminOrg, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContact, fetchOrg } from "../../action";
 import AddNewContactModal from "../../components/AddNewContactModal";
 
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
   const [showAddContact,setShowAddContact]= useState(false)
 
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -110,6 +110,7 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
       });
       
     } 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgDetails]);
 
   function handleEnter(event) {
@@ -137,6 +138,7 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
       }));
 
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[contactStore])
 
   const getContacts = (page = 1) => {

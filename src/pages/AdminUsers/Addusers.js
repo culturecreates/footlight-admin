@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Row, Col,Button,Input, message,Upload, Avatar,Select } from "antd";
+import { Layout, Form, Row, Col,Button,Input, message, Avatar,Select } from "antd";
 import React, { useState, useEffect } from "react";
-import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-    FileImageOutlined,
   CheckOutlined,
   CloseOutlined,
   
@@ -14,17 +12,15 @@ import {  adminProfile, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
-import Gravatar from 'react-gravatar'
 
-const { Dragger } = Upload;
 const {Option} =Select;
-const getSrcFromFile = (file) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file.originFileObj);
-      reader.onload = () => resolve(reader.result);
-    });
-  };
+// const getSrcFromFile = (file) => {
+//     return new Promise((resolve) => {
+//       const reader = new FileReader();
+//       reader.readAsDataURL(file.originFileObj);
+//       reader.onload = () => resolve(reader.result);
+//     });
+//   };
 
   const conceptArray=[
     {
@@ -40,9 +36,9 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [fileList, setFileList] = useState([]);
-  const [isUpload, setIsUpload] = useState(false);
-  const [compressedFile, setCompressedFile] = useState(null);
+  // const [fileList, setFileList] = useState([]);
+  // const [isUpload, setIsUpload] = useState(false);
+  // const [compressedFile, setCompressedFile] = useState(null);
 
 
   const { t } = useTranslation();
@@ -68,6 +64,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       })
       .catch((error) => {
         setLoading(false)
+        message.error(error.response?.data?.message)
       });
       else{
         ServiceApi.updateSingleUser(values,contactDetails.uuid)
@@ -81,6 +78,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       })
       .catch((error) => {
         setLoading(false)
+        message.error(error.response?.data?.message)
       });
       }
     }
@@ -129,32 +127,32 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   }
   }
 
-  const onChange = (info) => {
-    setIsUpload(true);
-    setFileList(info.fileList);
-    new Compressor(info.fileList[0].originFileObj, {
-      // quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
-      convertSize: 200000,
-      success: (compressedResult) => {
-        // compressedResult has the compressed file.
-        // Use the compressed file to upload the images to your server.
-        setCompressedFile(compressedResult);
-        console.log();
-      },
-    });
-  };
-  const onPreview = async (file) => {
-    const src = file.url || (await getSrcFromFile(file));
-    const imgWindow = window.open(src);
+  // const onChange = (info) => {
+  //   setIsUpload(true);
+  //   setFileList(info.fileList);
+  //   new Compressor(info.fileList[0].originFileObj, {
+  //     // quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
+  //     convertSize: 200000,
+  //     success: (compressedResult) => {
+  //       // compressedResult has the compressed file.
+  //       // Use the compressed file to upload the images to your server.
+  //       setCompressedFile(compressedResult);
+  //       console.log();
+  //     },
+  //   });
+  // };
+  // const onPreview = async (file) => {
+  //   const src = file.url || (await getSrcFromFile(file));
+  //   const imgWindow = window.open(src);
 
-    if (imgWindow) {
-      const image = new Image();
-      image.src = src;
-      imgWindow.document.write(image.outerHTML);
-    } else {
-      window.location.href = src;
-    }
-  };
+  //   if (imgWindow) {
+  //     const image = new Image();
+  //     image.src = src;
+  //     imgWindow.document.write(image.outerHTML);
+  //   } else {
+  //     window.location.href = src;
+  //   }
+  // };
   return (
     <Layout className="add-event-layout">
       <Form

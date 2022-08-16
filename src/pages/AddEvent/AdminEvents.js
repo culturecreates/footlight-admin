@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Layout, Card, Table, Button, Switch, Avatar, Breadcrumb, Col, Row,Modal } from "antd";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import "../AdminDashboard.css";
 import { PlusOutlined, ExclamationCircleOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate,useLocation } from "react-router-dom";
@@ -25,7 +25,7 @@ const AdminEvents = function ({ currentLang }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const placeStore = useSelector((state) => state.place);
 
@@ -35,6 +35,7 @@ const AdminEvents = function ({ currentLang }) {
       getAllPlaces()
     }
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getAllPlaces = () => {
     ServiceApi.getAllPlaces()
@@ -188,6 +189,7 @@ const AdminEvents = function ({ currentLang }) {
       console.log("raseem")
     }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const getEventDetails = (id) => {

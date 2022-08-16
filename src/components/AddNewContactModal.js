@@ -1,6 +1,4 @@
-import { Checkbox, Modal } from "antd";
-import { useEffect, useState } from "react";
-import moment from "moment";
+import {  Modal } from "antd";
 import AddContact from "../pages/AddContact/AddContact";
 import AddPlaces from "../pages/AdminPlace/AddPlaces";
 import AddOrganization from "../pages/AdminOrg/AddOrganization";
@@ -12,9 +10,7 @@ const AddNewContactModal = ({
   closeWithId,
   type
 }) => {
-  const [checkOptions, setCheckOptions] = useState([]);
-  const [selectedCheckbox, setSelectedCheckbox] = useState([]);
-  const [checkAll, setCheckAll] = useState(false);
+  
   const handleOk = () => {
     
 
