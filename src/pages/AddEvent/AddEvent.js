@@ -1114,8 +1114,14 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                 />
               </Form.Item>
               {youtubeLink && urlValidate(youtubeLink) && (
-                <ReactPlayer url={youtubeLink} width="400px" height="300px" />
+                youtubeLink.includes("https://vimeo.com")?
+                <>
+                <iframe title={youtubeLink} src="https://player.vimeo.com/video/633172534?h=eda036ee8b&color=ffffff&portrait=0&badge=0" width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <p><a  href="https://www.youtube.com/watch?v=ysz5S6PUM-U"><div style={{display:"none"}}>Vemio</div></a></p>
+                </>:<ReactPlayer url={youtubeLink} width="400px" height="300px" />
+                
               )}
+             
             </div>
           </Col>
         </Row>
