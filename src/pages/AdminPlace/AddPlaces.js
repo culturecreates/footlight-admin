@@ -106,7 +106,7 @@ const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAd
           ServiceApi.updatePlace(placeObj,placeDetails.uuid)
             .then((response) => {
                 setLoading(false)
-              message.success("Place Created Successfully");
+              message.success("Place Updated Successfully");
               navigate(`/admin/places`);
             })
             .catch((error) => {
