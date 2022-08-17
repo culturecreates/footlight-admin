@@ -58,9 +58,9 @@ const Profile = function ({ currentLang }) {
       style={{margin:"30px", backgroundColor: "#f56a00"}}
     size={{ xs: 50, sm: 75, md: 100, lg: 120, xl: 150, xxl: 150 }}
     
-    // src="https://joeschmoe.io/api/v1/random"
+     src={profileDate.profileImage}
   >
-                    {profileDate?.firstName?.charAt(0)}{profileDate?.lastName?.charAt(0)}
+                    {/* {profileDate?.firstName?.charAt(0)}{profileDate?.lastName?.charAt(0)} */}
 
     </Avatar>
        {/* <Gravatar email={profileDate?.email} size={200} style={{borderRadius:"50%",margin:"25px"}}/> */}

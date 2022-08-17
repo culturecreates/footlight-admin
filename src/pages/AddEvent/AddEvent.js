@@ -42,7 +42,7 @@ import {
   fetchPlace,
   fetchTypes,
 } from "../../action";
-import { fbUrlValidate, timeZone, urlValidate } from "../../utils/Utility";
+import { fbUrlValidate, timeZone, urlValidate, videoUrlValidate } from "../../utils/Utility";
 import AddNewContactModal from "../../components/AddNewContactModal";
 import PriceModal from "../../components/PriceModal/PriceModal";
 import Spinner from "../../components/Spinner";
@@ -1091,16 +1091,16 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                 rules={[
                   {
                     required: false,
-                    message: "Youtube Link name required",
+                    message: "Video Link required",
                     whitespace: true,
                   },
                   {
-                    message: "Enter valid link.",
+                    message: "Enter valid video link.",
                     validator: (_, value) => {
-                      if (urlValidate(value)) {
+                      if (videoUrlValidate(value)) {
                         return Promise.resolve();
                       } else {
-                        return Promise.reject("Enter valid link.");
+                        return Promise.reject("Enter valid video link.");
                       }
                     },
                   },
@@ -1113,8 +1113,8 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                   className="replace-input"
                 />
               </Form.Item>
-              {youtubeLink && urlValidate(youtubeLink) && (
-                youtubeLink.includes("https://vimeo.com")?
+              {youtubeLink && videoUrlValidate(youtubeLink) && (
+                youtubeLink.includes("vimeo.com")?
                 <>
                 <iframe title={youtubeLink} src={`${youtubeLink.replace("vimeo.com","player.vimeo.com/video")}?h=eda036ee8b&color=ffffff&portrait=0&badge=0`} width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                 <p><a  href="https://www.youtube.com/watch?v=ysz5S6PUM-U"><div style={{display:"none"}}>Vemio</div></a></p>
