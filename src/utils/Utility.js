@@ -68,6 +68,17 @@ export const adminSideMenuLinks = [
     return regexp.test(url);
   }
 
+  export const  videoUrlValidate = (url) => {
+    
+    var expression = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    var regexp = new RegExp(expression);
+    var newexp = /^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/;
+    var regexpnew = new RegExp(newexp);
+    if(!url||url.length===0 )
+        return true    
+    return regexp.test(url)||regexpnew.test(url);
+  }
+
   export const adminContact=[
     {
       name: "name",
