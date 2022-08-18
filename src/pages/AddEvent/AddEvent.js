@@ -287,7 +287,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         : null,
       url: values.eventPage && { uri: values.eventPage },
       facebookUrl: values.facebookLink,
-      youtubeUrl: values.youtubeUrl,
+      videoUrl: values.videoUrl,
       offerConfiguration: offerConfig,
       offers:
         offerIds &&
@@ -420,7 +420,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         );
       setOfferConfig(eventDetails?.offerConfiguration);
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
-      setYoutubeLink(eventDetails?.youtubeUrl);
+      setYoutubeLink(eventDetails?.videoUrl);
       form.setFieldsValue({
         contact: eventDetails.contactPoint?.uuid,
         desc: eventDetails.description
@@ -463,7 +463,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
           : "Canada/Eastern",
         eventPage: eventDetails.url?.uri,
         facebookLink: eventDetails.facebookUrl,
-        youtubeUrl: eventDetails?.youtubeUrl,
+        videoUrl: eventDetails?.videoUrl,
         organization: eventDetails?.organizer?.organizations.map(
           (item) => item.uuid
         ),
@@ -1086,7 +1086,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                 {t("Video", { lng: currentLang })} Link
               </div>
               <Form.Item
-                name="youtubeUrl"
+                name="videoUrl"
                 className="status-comment-item"
                 rules={[
                   {
