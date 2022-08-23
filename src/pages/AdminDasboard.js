@@ -135,7 +135,9 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-taxonomy" element={<Taxonomy currentLang={currentLang} />} />
           <Route path="users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="add-users" element={<AdminUsers currentLang={currentLang} />} />
+          <Route path="invite-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="profile" element={<Profile currentLang={currentLang} />} />
+         
         </Routes>
       </Content>
     </Layout>

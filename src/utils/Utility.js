@@ -411,7 +411,8 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter first name",
       inputtype:"text",
-      type:"register"
+      type:"register",
+      disabled: true
     },
     {
       name: "lastName",
@@ -419,7 +420,8 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter last name",
       inputtype:"test",
-      type:"register"
+      type:"register",
+      disabled: true
     },
     {
       name: "password",
@@ -435,7 +437,8 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter email",
       inputtype:"email",
-      type:"register"
+      type:"register",
+      disabled: true
     },
     
   ]
