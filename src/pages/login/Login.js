@@ -31,6 +31,7 @@ const Login = () => {
       })
       .catch((error) => {
         setLoading(false)
+        message.error(error.response?.data?.message)
       });
     }
   },[])
