@@ -8,7 +8,7 @@ import {
   CloseOutlined,
   
 } from "@ant-design/icons";
-import {  adminProfile, urlValidate } from "../../utils/Utility";
+import {  adminProfile, removeCookies, storeCookies, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
@@ -126,7 +126,19 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       input.select()
   }
   }
-
+  const handleDeleteContact=(id,type)=>{
+    setLoading(true);
+    ServiceApi.deleteUser(id,type)
+      .then((response) => {
+        removeCookies("user_token");
+        storeCookies("user_token", null);
+        navigate(`/`)
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  }
   // const onChange = (info) => {
   //   setIsUpload(true);
   //   setFileList(info.fileList);
@@ -244,6 +256,17 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
             </Row>
 
         <Form.Item className="submit-items">
+          {isProfile &&
+        <Button
+            size="large"
+            type="text" danger
+            onClick={() => {
+              handleDeleteContact(contactDetails.id,"deactivate")
+            }}
+          >
+            Deactivate my account
+          </Button>
+}
           <Button
             size="large"
             icon={<CloseOutlined />}
