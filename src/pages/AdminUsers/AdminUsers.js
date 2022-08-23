@@ -236,11 +236,13 @@ const AdminUsers = function ({ currentLang }) {
      if(user)
      {
       setIsProfile(true)
-        getUserAdmin()
+      getUserAdmin()
     }
      else if(eventId)
-    {  setIsProfile(false)
-      getContactDetails(eventId)}
+    { 
+       setIsProfile(false)
+      getContactDetails(eventId)
+    }
     }
     else
     {
@@ -321,7 +323,8 @@ const AdminUsers = function ({ currentLang }) {
         <Col className="flex-align">
          
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
-          onClick={()=>navigate(`/admin/invite-users`)}>
+          onClick={()=>{setIsProfile(false)
+          navigate(`/admin/invite-users`)}}>
             {t("Invite User")}
           </Button>
         </Col>
