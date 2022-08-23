@@ -15,3 +15,7 @@
 {
     font-size: 45px;
 }
+
+.user-list-layout .ant-table-body{
+    margin-bottom: 35px;
+}

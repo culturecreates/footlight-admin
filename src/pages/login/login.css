@@ -107,3 +107,6 @@
 .login-root .spin{
     right: 50%;
 }
+.login-root .ant-input[disabled]{
+    color: black;
+}

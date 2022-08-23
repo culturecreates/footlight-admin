@@ -113,7 +113,7 @@ function App() {
         <Router>
         <Routes>
           <Route path="/" element={<Login currentLang={currentLang} locale={locale}/>} />
-
+          <Route path="invitation/:id" element={<Login currentLang={currentLang} />} />
           <Route path="/admin/*" element={<AdminDashboard currentLang={currentLang} locale={locale}/>} />
         </Routes>
       </Router>

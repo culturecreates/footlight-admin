@@ -83,14 +83,14 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       }
     }
       else
-      ServiceApi.updateUser(values)
+      ServiceApi.inviteUser(values)
       .then((response) => {
         if (response && response.data) {
             setLoading(false) 
          
                 
             navigate(`/admin/users`);
-            message.success("Contact Created Successfully");
+            message.success("Invite send Successfully");
            
         }
       })
@@ -229,38 +229,18 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
 }
               </div>
          </Col>
+         {isProfile &&
             <Col className="upload-col user-profile-img">
 
-            {/* <Gravatar email={contactDetails?.email} size={200} /> */}
 
             <Avatar shape="square" size={150}  style={{backgroundColor: "#f56a00",marginBottom:"20px"}}
             src={contactDetails?.profileImage}>
-            {/* {contactDetails?.firstName?.charAt(0)}{contactDetails?.lastName?.charAt(0)} */}
 
               </Avatar>
             
-            {/* <Dragger
-              listType="picture-card"
-              className={
-                fileList.length > 0 ? "event-upload" : "ant-event-upload"
-              }
-              fileList={fileList}
-              onChange={onChange}
-              onPreview={onPreview}
-              aspect="3/3"
-              accept="image/*"
-            >
-              <p className="ant-upload-drag-icon">
-                <FileImageOutlined />
-              </p>
-              <p className="ant-upload-text">
-                {t("FileUpload", { lng: currentLang })}
-              </p>
-              <p className="ant-upload-hint">
-                {t("DragAndDrop", { lng: currentLang })}
-              </p>
-            </Dragger> */}
+         
             </Col>
+}
             </Row>
 
         <Form.Item className="submit-items">

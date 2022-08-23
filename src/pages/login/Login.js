@@ -1,6 +1,6 @@
-import React ,{useState}from "react";
+import React ,{useEffect, useState}from "react";
 import "./login.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { Form,  Input, Button, Layout, Row, Col, message,Image } from "antd";
 import { adminLogin, storeCookies } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
@@ -11,9 +11,32 @@ const Login = () => {
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const params = useParams();
+
+  useEffect(()=>{
+    if(params && params.id)
+    {
+      setLoginType("register")
+      ServiceApi.invitedUser(params.id)
+      .then((response) => {
+        if (response && response.data) {
+         
+          form.setFieldsValue({
+            firstName:response.data.data.firstName,
+            lastName:response.data.data.lastName,
+            email: response.data.data.email
+          })
+         
+        }
+      })
+      .catch((error) => {
+        setLoading(false)
+      });
+    }
+  },[])
 
   const handleLoginSubmit = (values) => {
-    console.log(values)
+   
     setLoading(true)
     if(loginType==="login")
     ServiceApi.loginAuth(values)
@@ -41,7 +64,12 @@ const Login = () => {
     });
 
     else if (loginType==="register")
-    ServiceApi.addUser(values)
+   {
+     const obj={
+      invitationId: params.id,
+      password: values.password
+     }
+      ServiceApi.acceptInvite(obj)
     .then((response) => {
       if (response && response.data) {
        
@@ -54,6 +82,7 @@ const Login = () => {
       setLoading(false)
       message.error(error.response?.data?.message)
     });
+  }
 
     else if (loginType==="resetLink")
     ServiceApi.resetLink(values)
@@ -140,7 +169,7 @@ const Login = () => {
             
               ]}
             >
-              <Input className="login-input" placeholder={" "} type={item.inputtype} />
+              <Input className="login-input" placeholder={" "} type={item.inputtype} disabled={item.disabled}/>
             </Form.Item>
             </div>
            )}
@@ -158,9 +187,11 @@ const Login = () => {
             "Forgot password"}
               
               </div>
+              {loginType !=="login" &&
             <div onClick={()=>createSignup()} style={{cursor:"pointer"}}>
               {loginType==="login"?"Create account":loginType==="resetLink"?"I already have reset code":"Back to login"}
               </div>
+}
             </div>
         </div>
       </Layout>

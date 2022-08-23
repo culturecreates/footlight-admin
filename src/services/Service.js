@@ -55,6 +55,33 @@ export default class ServiceApi {
     });
   }
 
+  static inviteUser(payload) {
+    return Axios({
+      url: `invite`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static acceptInvite(payload) {
+    return Axios({
+      url: `invite/accept`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static invitedUser(id) {
+    return Axios({
+      url: `invite/${id}`,
+      method: "GET",
+      
+
+    });
+  }
+
   static updateSingleUser(payload,id) {
     return Axios({
       url: `users/${id}`,
@@ -68,7 +95,7 @@ export default class ServiceApi {
     return Axios({
       url: `users/all`,
       method: "GET",
-    
+      params:{includeInactiveUsers:true}
 
     });
   }
@@ -108,10 +135,37 @@ export default class ServiceApi {
     });
   }
 
-  static deleteUser(id) {
+  static deleteUser(id,type) {
+    if(type==="delete")
     return Axios({
       url: `users/${id}`,
       method: "DELETE",
+    
+    });
+    else if(type==="withdraw")
+    return Axios({
+      url: `invite/withdraw/${id}`,
+      method: "POST",
+    
+    });
+    else if(type==="reactivate")
+    return Axios({
+      url: `users/activate/${id}`,
+      method: "PATCH",
+    
+    });
+    else
+    return Axios({
+      url: `users/deactivate/${id}`,
+      method: "PATCH",
+    
+    });
+  }
+
+  static deActiveUser(id) {
+    return Axios({
+      url: `users/deactivate/${id}`,
+      method: "PATCH",
     
     });
   }
