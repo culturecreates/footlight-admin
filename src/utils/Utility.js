@@ -479,6 +479,14 @@ export const adminSideMenuLinks = [
       inputtype:"select",
       type:"register"
     },
+    {
+      name: "role",
+      title:"Role",
+      required:false,
+      placeHolder: "Enter role",
+      inputtype:"select",
+      type:"register"
+    },
   ]
 
   export const updatePasswordAdmin =[

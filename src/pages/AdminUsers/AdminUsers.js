@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
 import moment from "moment";
 import Addusers from "./Addusers";
+import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
@@ -22,6 +23,8 @@ const AdminUsers = function ({ currentLang }) {
   const [contactDetails, setContactDetails] = useState()
   const navigate = useNavigate();
   const location = useLocation();
+
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
 
   const { t } = useTranslation();
 
@@ -50,6 +53,20 @@ const AdminUsers = function ({ currentLang }) {
           <Col flex="1 1 150px">
               
           {record.lastName}
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      title: t("Role", { lng: currentLang }),
+      dataIndex: "role",
+      key: "role",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+              
+          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
           </Col>
         </Row>
       ),
@@ -123,6 +140,20 @@ const AdminUsers = function ({ currentLang }) {
       </div>,
     },
     {
+      title: t("Role", { lng: currentLang }),
+      dataIndex: "role",
+      key: "role",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+              
+          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          </Col>
+        </Row>
+      ),
+    },
+    {
       title: "",
       dataIndex: "hasDependency",
       key: "hasDependency",
@@ -163,6 +194,20 @@ const AdminUsers = function ({ currentLang }) {
         <div>{moment(record.lastLogin).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
         }
       </div>,
+    },
+    {
+      title: t("Role", { lng: currentLang }),
+      dataIndex: "role",
+      key: "role",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+              
+          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          </Col>
+        </Row>
+      ),
     },
     {
       title: t("Invited Date", { lng: currentLang }),
@@ -260,6 +305,7 @@ const AdminUsers = function ({ currentLang }) {
         if (response && response.data && response.data) {
           const events = response.data;
           setContactDetails(events)
+          setIsProfile(false)
           if (response.data.StatusCode !== 400) {
              
           }
@@ -321,12 +367,14 @@ const AdminUsers = function ({ currentLang }) {
       }
         {!isAdd &&
         <Col className="flex-align">
-         
+         { checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN") &&
+
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>{setIsProfile(false)
           navigate(`/admin/invite-users`)}}>
             {t("Invite User")}
           </Button>
+}
         </Col>
 }
       </Row>
@@ -356,7 +404,9 @@ const AdminUsers = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    // navigate(`/admin/add-users/?id=${record.uuid}`);
+                    const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                   navigate(`/admin/add-users/?id=${record.uuid}`);
                     
                   }, 
                 };
@@ -386,6 +436,10 @@ const AdminUsers = function ({ currentLang }) {
              return {
                onClick: (event) => {
                  event.stopPropagation()
+                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+
+                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                   navigate(`/admin/add-users/?id=${record.uuid}`);
                  // navigate(`/admin/add-users/?id=${record.uuid}`);
                  
                }, 
@@ -415,7 +469,10 @@ const AdminUsers = function ({ currentLang }) {
              return {
                onClick: (event) => {
                  event.stopPropagation()
-                 // navigate(`/admin/add-users/?id=${record.uuid}`);
+                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+
+                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                   navigate(`/admin/add-users/?id=${record.uuid}`);
                  
                }, 
              };

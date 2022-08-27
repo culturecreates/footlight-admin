@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookies, removeCookies } from "./Utility";
 
-export const api = "http://3.96.80.223:3000/";
+export const api = process.env.REACT_APP_BASE_URL;
 export const Axios = axios.create({
   baseURL: api,
   headers: {
