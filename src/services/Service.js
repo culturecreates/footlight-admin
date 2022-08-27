@@ -109,6 +109,15 @@ export default class ServiceApi {
     });
   }
 
+  static modifyRole(payload) {
+    return Axios({
+      url: `users/modify-role`,
+      method: "PATCH",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
   static getSingleUser(id) {
     return Axios({
       url: `users/${id}`,
@@ -127,6 +136,14 @@ export default class ServiceApi {
     });
   }
 
+  static getUserRoles() {
+    return Axios({
+      url: `users/roles`,
+      method: "GET",
+  
+
+    });
+  }
   static deleteContact(id) {
     return Axios({
       url: `contact-points/${id}`,

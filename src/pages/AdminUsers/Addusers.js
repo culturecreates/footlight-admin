@@ -36,7 +36,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  // const [fileList, setFileList] = useState([]);
+  const [roleList, setRoleList] = useState([]);
   // const [isUpload, setIsUpload] = useState(false);
   // const [compressedFile, setCompressedFile] = useState(null);
 
@@ -53,7 +53,9 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
     if (contactDetails)
     {
       if(isProfile)
-      ServiceApi.updateUser(values)
+      {
+        values.role = undefined;
+        ServiceApi.updateUser(values)
       .then((response) => {
         if (response && response.data) { 
             setLoading(false)  
@@ -65,8 +67,26 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       .catch((error) => {
         setLoading(false)
         message.error(error.response?.data?.message)
-      });
+      });}
       else{
+        const obj={
+          userId: contactDetails.uuid,
+          role: values.role,
+          calendarId: "CULTURE_OUTAOUAIS"
+        }
+        ServiceApi.modifyRole(obj,contactDetails.uuid)
+      .then((response) => {
+        if (response && response.data) { 
+            
+         
+        }
+      })
+      .catch((error) => {
+        setLoading(false)
+        message.error(error.response?.data?.message)
+      });
+      
+        values.role = undefined;
         ServiceApi.updateSingleUser(values,contactDetails.uuid)
       .then((response) => {
         if (response && response.data) { 
@@ -83,6 +103,8 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       }
     }
       else
+      {
+        values.calendarId = "CULTURE_OUTAOUAIS"
       ServiceApi.inviteUser(values)
       .then((response) => {
         if (response && response.data) {
@@ -97,22 +119,39 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
       .catch((error) => {
         setLoading(false)
       });
+    }
   };
 
   useEffect(() => {
     if (contactDetails) {
       setIsUpdate(true);
+      const roleValue = contactDetails?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
       form.setFieldsValue({
         firstName: contactDetails.firstName,
         email:contactDetails.email,
         lastName: contactDetails.lastName,
-        interfaceLanguage: contactDetails.interfaceLanguage
+        interfaceLanguage: contactDetails.interfaceLanguage,
+        role:roleValue?.role
        
         
       });
       
     } 
+   
   }, [contactDetails]);
+
+  useEffect(()=>{
+    ServiceApi.getUserRoles()
+    .then((response) => {
+      if (response && response.data) {
+        
+        setRoleList(response.data)
+      }
+    })
+    .catch((error) => {
+      setLoading(false)
+    });
+  },[])
 
   function handleEnter(event) {
     if (event.keyCode === 13) {
@@ -208,12 +247,21 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
                 style={{ width: '100%' }}
                 dropdownClassName="contact-select"
                 placeholder="Select Language"
+                disabled={item.name==="role" && isProfile}
                 
               >
-                {conceptArray.map((item) => (
+
+                {item.name==="role"?
+                 roleList.map((item) => (
+                  <Option key={item} value={item} title={item}>
+                     {  t(item, { lng: currentLang })}{}</Option>
+                ))
+                :
+                conceptArray.map((item) => (
                   <Option key={item.uri} value={item.uri} title={item.name}>
                      {  t(item.name, { lng: currentLang })}{}</Option>
-                ))}
+                ))
+                }
               </Select>
               :
                 <Input
