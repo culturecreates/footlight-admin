@@ -12,6 +12,7 @@ import SemanticSearch from "../../components/SemanticSearch";
 import AddEvent from "./AddEvent";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlace } from "../../action";
+import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
@@ -28,6 +29,9 @@ const AdminEvents = function ({ currentLang }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const placeStore = useSelector((state) => state.place);
+
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+
 
   useEffect(() => {
     if( placeStore==null)
@@ -130,11 +134,14 @@ const AdminEvents = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event)}
          
         />
+        :
+        <></>
       ),
     },
   ];
@@ -284,6 +291,7 @@ const AdminEvents = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
+                    if(getCookies("user_token")?.user?.id===record.uuid ||(checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
                     navigate(`/admin/add-event/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row

@@ -8,7 +8,7 @@ import {
   CloseOutlined,
   
 } from "@ant-design/icons";
-import {  adminProfile, removeCookies, storeCookies, urlValidate } from "../../utils/Utility";
+import {  adminProfile, getCookies, removeCookies, storeCookies, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
@@ -178,6 +178,18 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
         setLoading(false);
       });
   }
+  const disableAdmin=(item)=>{
+    const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+    if(item ==="role")
+    {
+      if(checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))
+      return false;
+    else
+      return true
+    } 
+      else
+      return false 
+  }
   // const onChange = (info) => {
   //   setIsUpload(true);
   //   setFileList(info.fileList);
@@ -247,7 +259,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
                 style={{ width: '100%' }}
                 dropdownClassName="contact-select"
                 placeholder="Select Language"
-                disabled={item.name==="role" && isProfile}
+                disabled={  disableAdmin(item.name)}
                 
               >
 
