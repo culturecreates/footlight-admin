@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 import ServiceApi from "../../services/Service";
 import AddTaxonomy from "./AddTaxonomy";
 import moment from "moment";
+import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
@@ -24,6 +25,7 @@ const Taxonomy = function ({ currentLang }) {
   const location = useLocation();
 
   const { t } = useTranslation();
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
 
   const eventTableHeader = [
     {
@@ -71,11 +73,14 @@ const Taxonomy = function ({ currentLang }) {
       width:100,
       render: (e, record) => (
         !record.header &&
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event)}
          
         />
+        :<></>
       ),
     },
   ];
@@ -262,10 +267,13 @@ const Taxonomy = function ({ currentLang }) {
             onClearSearch={getPlaces}
             currentLang={currentLang}
           /> */}
+                 { checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN") &&
+
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>navigate(`/admin/add-taxonomy`)}>
             {t("Taxonomy")}
           </Button>
+}
         </Col>
 }
       </Row>
@@ -293,7 +301,8 @@ const Taxonomy = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    if(!record.header)
+                    if(!record.header && checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")
+                    )
                     navigate(`/admin/add-taxonomy/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row

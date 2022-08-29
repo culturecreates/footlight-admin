@@ -89,11 +89,14 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event,"deactivate")}
          
         />
+        :
+        <></>
       ),
     },
   ];
@@ -159,12 +162,15 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <div className="admin-event-header">
         <Button type="primary"  size={"medium"}
         onClick={(event)=> handleDelete(record, event,"withdraw")}>
           {t("Cancel Invitation")}
         </Button>
         </div>
+        :
+        <></>
       ),
     },
   ];
@@ -227,6 +233,7 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <div className="admin-event-header">
         <Button type="primary"  size={"medium"}
         onClick={()=>handleDeleteContact(record.uuid,"reactivate")}>
@@ -238,6 +245,8 @@ const AdminUsers = function ({ currentLang }) {
          
         />
         </div>
+        :
+        <></>
       ),
     },
   ];
