@@ -12,6 +12,7 @@ import ServiceApi from "../../services/Service";
 import AddPlaces from "./AddPlaces";
 import { useDispatch } from "react-redux";
 import { fetchPlace } from "../../action";
+import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
@@ -27,6 +28,8 @@ const AdminPlaces = function ({ currentLang }) {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+
 
   const eventTableHeader = [
     {
@@ -85,11 +88,12 @@ const AdminPlaces = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
+        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event)}
          
-        />
+        />:<></>
       ),
     },
   ];
@@ -238,7 +242,8 @@ const AdminPlaces = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    navigate(`/admin/add-place/?id=${record.uuid}`);
+                    if(getCookies("user_token")?.user?.id===record.creator?.userId ||(checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
+                     navigate(`/admin/add-place/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };
