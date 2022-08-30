@@ -122,9 +122,13 @@ const AdminEvents = function ({ currentLang }) {
      width:120,
       render: (e, record) => (
         <Switch
-          className="publish-switch"
+          className={checkAdmin && (checkAdmin.role === "GUEST") && record?.publishState==="Pending Review"?"pending-switch":
+          record?.publishState==="Pending Review"?"pending-switch":
+          "publish-switch"}
+          disabled={checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?false:
+          checkAdmin && (checkAdmin.role === "GUEST" || checkAdmin.role === "CONTRIBUTOR") && getCookies("user_token")?.user?.id===record?.creator?.userId ?false:true}
           onChange={(checked,event) => handleSwitch(checked,record, event)}
-          defaultChecked={false}
+          defaultChecked={record.publishState==="Published" || (checkAdmin && (checkAdmin.role === "GUEST") &&  record.publishState && record.publishState==="Pending Review")?true:false}
         />
       ),
     },
@@ -175,6 +179,21 @@ const AdminEvents = function ({ currentLang }) {
   }
   const handleSwitch = (checked,record,event) => {
     event.stopPropagation()
+    setLoading(true);
+    ServiceApi.publishEvents(record.uuid)
+      .then((response) => {
+        console.log(checked)
+        if (response && response.data && response.data) {
+          const newList= eventList.map(item=>item.uuid===record.uuid?
+            {...item,publishState:checked?
+              checkAdmin && (checkAdmin.role === "GUEST")?"Pending Review":"Published":"Draft"}:item)
+            setEventList(newList)
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
  
 
@@ -291,8 +310,8 @@ const AdminEvents = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    if(getCookies("user_token")?.user?.id===record.uuid ||(checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
-                    navigate(`/admin/add-event/?id=${record.uuid}`);
+                    if(getCookies("user_token")?.user?.id===record.creator?.userId ||(checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
+                     navigate(`/admin/add-event/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };

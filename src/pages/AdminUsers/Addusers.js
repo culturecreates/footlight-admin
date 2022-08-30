@@ -77,7 +77,20 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
         ServiceApi.modifyRole(obj,contactDetails.uuid)
       .then((response) => {
         if (response && response.data) { 
-            
+          values.role = undefined;
+          ServiceApi.updateSingleUser(values,contactDetails.uuid)
+        .then((response) => {
+          if (response && response.data) { 
+              setLoading(false)  
+              message.success("Contact Updated Successfully");
+              navigate(`/admin/users`);
+           
+          }
+        })
+        .catch((error) => {
+          setLoading(false)
+          message.error(error.response?.data?.message)
+        });
          
         }
       })
@@ -86,20 +99,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
         message.error(error.response?.data?.message)
       });
       
-        values.role = undefined;
-        ServiceApi.updateSingleUser(values,contactDetails.uuid)
-      .then((response) => {
-        if (response && response.data) { 
-            setLoading(false)  
-            message.success("Contact Updated Successfully");
-            navigate(`/admin/users`);
-         
-        }
-      })
-      .catch((error) => {
-        setLoading(false)
-        message.error(error.response?.data?.message)
-      });
+       
       }
     }
       else
