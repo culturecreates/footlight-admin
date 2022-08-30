@@ -133,7 +133,7 @@
 .dashboard-layout-home{
     min-height: calc(100vh );
 }
-.publish-switch.ant-switch-checked {
+.ant-switch.publish-switch.ant-switch-checked {
     background: #23a543;
 }
 
@@ -195,4 +195,11 @@
     font-size: 18px;
     line-height: 25px;
     color: #fff;
+}
+
+.ant-switch.pending-switch{
+    background: chocolate;
+}
+.ant-switch-checked.ant-switch.pending-switch{
+    background: chocolate;
 }

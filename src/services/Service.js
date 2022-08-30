@@ -288,6 +288,15 @@ export default class ServiceApi {
     });
   }
 
+  static publishEvents(id) {
+    return Axios({
+      url: `events/${id}/publish/toggle`,
+      method: "POST",
+      
+
+    });
+  }
+
   static getContactDetail(id) {
     return Axios({
       url: `contact-points/${id}`,
