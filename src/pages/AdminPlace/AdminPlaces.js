@@ -91,8 +91,7 @@ const AdminPlaces = function ({ currentLang }) {
         checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <DeleteOutlined
           style={{fontSize:"23px"}}
-          onClick={(event) => handleDelete(record, event)}
-         
+          onClick={(event) => handleDelete(record, event)} 
         />:<></>
       ),
     },
