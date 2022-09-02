@@ -125,10 +125,10 @@ const AdminEvents = function ({ currentLang }) {
           className={checkAdmin && (checkAdmin.role === "GUEST") && record?.publishState==="Pending Review"?"pending-switch":
           record?.publishState==="Pending Review"?"pending-switch":
           "publish-switch"}
-          disabled={checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?false:
+          disabled={checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN" || checkAdmin.role === "EDITOR")?false:
           checkAdmin && (checkAdmin.role === "GUEST" || checkAdmin.role === "CONTRIBUTOR") && getCookies("user_token")?.user?.id===record?.creator?.userId ?false:true}
           onChange={(checked,event) => handleSwitch(checked,record, event)}
-          defaultChecked={record.publishState==="Published" || (checkAdmin && (checkAdmin.role === "GUEST") &&  record.publishState && record.publishState==="Pending Review")?true:false}
+          defaultChecked={(record.publishState==="Published" ||  record.publishState==="Pending Review")?true:false}
         />
       ),
     },

@@ -198,8 +198,13 @@
 }
 
 .ant-switch.pending-switch{
-    background: chocolate;
+    background: #e5e81d;
 }
 .ant-switch-checked.ant-switch.pending-switch{
-    background: chocolate;
+    background: #e5e81d;
+}
+.admin-event-header .ant-btn-primary.reactivate-btn{
+    border-color: #d1cbcb;
+    background: #fff;
+    color: #000;
 }
