@@ -154,7 +154,7 @@ export default class ServiceApi {
   static deactivateCurrentUser() {
     
     return Axios({
-      url: `users/deactivate`,
+      url: `users/deactivate-logged-in-user`,
       method: "PATCH",
     
     });
