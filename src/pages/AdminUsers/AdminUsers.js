@@ -89,7 +89,7 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
-        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+        getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event,"deactivate")}
@@ -165,7 +165,7 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:200,
       render: (e, record) => (
-        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+        getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
         <div className="admin-event-header">
         <Button type="primary"  size={"medium"}
         onClick={(event)=> handleDelete(record, event,"withdraw")}>
@@ -236,7 +236,7 @@ const AdminUsers = function ({ currentLang }) {
       key: "hasDependency",
       width:200,
       render: (e, record) => (
-        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+        getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
         <div className="admin-event-header">
         <Button type="primary"  size={"medium"} className="reactivate-btn"
         onClick={(event)=>handleDeleteContact(record.uuid,"reactivate",event)}>
@@ -380,7 +380,7 @@ const AdminUsers = function ({ currentLang }) {
       }
         {!isAdd &&
         <Col className="flex-align">
-         { checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN") &&
+         {getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")) &&
 
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>{setIsProfile(false)
@@ -418,7 +418,7 @@ const AdminUsers = function ({ currentLang }) {
                   onClick: (event) => {
                     event.stopPropagation()
                     const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
-                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                 if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);
                     
                   }, 
@@ -452,7 +452,7 @@ const AdminUsers = function ({ currentLang }) {
                  event.stopPropagation()
                  const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
 
-                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                 if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);
                  // navigate(`/admin/add-users/?id=${record.uuid}`);
                  
@@ -488,7 +488,7 @@ const AdminUsers = function ({ currentLang }) {
                  event.stopPropagation()
                  const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
 
-                 if(roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN"))
+                 if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);
                  
                }, 
