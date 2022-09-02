@@ -151,7 +151,14 @@ export default class ServiceApi {
     
     });
   }
-
+  static deactivateCurrentUser() {
+    
+    return Axios({
+      url: `users/deactivate`,
+      method: "PATCH",
+    
+    });
+  }
   static deleteUser(id,type) {
     if(type==="delete")
     return Axios({

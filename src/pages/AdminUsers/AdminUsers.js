@@ -66,7 +66,7 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
           </Col>
         </Row>
       ),
@@ -106,6 +106,7 @@ const AdminUsers = function ({ currentLang }) {
       title: t("Invited", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
+      width: 250,
       render: (e, record) => (
         <Row className="image-name">
           
@@ -120,12 +121,13 @@ const AdminUsers = function ({ currentLang }) {
       title: t("Invited by", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
+      width: 250,
       render: (e, record) => (
         <Row className="image-name">
           
           <Col flex="1 1 150px">
               
-          {record.invitedby}
+          {record.invitedBy}
           </Col>
         </Row>
       ),
@@ -137,8 +139,8 @@ const AdminUsers = function ({ currentLang }) {
       width: 200,
       render: (e, record) => <div>
         
-        {record.joined &&
-        <div>{moment(record.joined).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
+        {record.invitedOn &&
+        <div>{moment(record.invitedOn).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
         }
       </div>,
     },
@@ -146,12 +148,13 @@ const AdminUsers = function ({ currentLang }) {
       title: t("Role", { lng: currentLang }),
       dataIndex: "role",
       key: "role",
+      width:150,
       render: (e, record) => (
         <Row className="image-name">
           
           <Col flex="1 1 150px">
               
-          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
           </Col>
         </Row>
       ),
@@ -160,7 +163,7 @@ const AdminUsers = function ({ currentLang }) {
       title: "",
       dataIndex: "hasDependency",
       key: "hasDependency",
-      width:100,
+      width:200,
       render: (e, record) => (
         checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <div className="admin-event-header">
@@ -190,17 +193,17 @@ const AdminUsers = function ({ currentLang }) {
         </Row>
       ),
     },
-    {
-      title: t("Last Login", { lng: currentLang }),
-      dataIndex: "name",
-      key: "name",
-      render: (e, record) => <div>
+    // {
+    //   title: t("Last Login", { lng: currentLang }),
+    //   dataIndex: "name",
+    //   key: "name",
+    //   render: (e, record) => <div>
         
-        {record.lastLogin &&
-        <div>{moment(record.lastLogin).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
-        }
-      </div>,
-    },
+    //     {record.lastLogin &&
+    //     <div>{moment(record.lastLogin).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
+    //     }
+    //   </div>,
+    // },
     {
       title: t("Role", { lng: currentLang }),
       dataIndex: "role",
@@ -210,20 +213,20 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN": record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
           </Col>
         </Row>
       ),
     },
     {
-      title: t("Invited Date", { lng: currentLang }),
+      title: t("Deactivated Date", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,
       render: (e, record) => <div>
         
-        {record.joined &&
-        <div>{moment(record.joined).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
+        {record.deactivatedOn &&
+        <div>{moment(record.deactivatedOn).tz("Canada/Eastern").format("DD-MM-YYYY")}</div>
         }
       </div>,
     },
@@ -231,12 +234,12 @@ const AdminUsers = function ({ currentLang }) {
       title: "",
       dataIndex: "hasDependency",
       key: "hasDependency",
-      width:100,
+      width:200,
       render: (e, record) => (
         checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
         <div className="admin-event-header">
-        <Button type="primary"  size={"medium"}
-        onClick={()=>handleDeleteContact(record.uuid,"reactivate")}>
+        <Button type="primary"  size={"medium"} className="reactivate-btn"
+        onClick={(event)=>handleDeleteContact(record.uuid,"reactivate",event)}>
           {t("Reactivate")}
         </Button>
         <DeleteOutlined
@@ -258,7 +261,7 @@ const AdminUsers = function ({ currentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteContact(record.uuid,type)
+        handleDeleteContact(type==="withdraw"?record.invitationId: record.uuid,type,event)
       },
   
       onCancel() {
@@ -266,7 +269,8 @@ const AdminUsers = function ({ currentLang }) {
       },
     });
   };
-  const handleDeleteContact=(id,type)=>{
+  const handleDeleteContact=(id,type,event)=>{
+    event.stopPropagation()
     setLoading(true);
     ServiceApi.deleteUser(id,type)
       .then((response) => {
@@ -421,6 +425,7 @@ const AdminUsers = function ({ currentLang }) {
                 };
               }}
             /> 
+            {(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN"))) &&
 
 <Table
            
@@ -455,6 +460,9 @@ const AdminUsers = function ({ currentLang }) {
              };
            }}
          /> 
+          }
+                      {(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN"))) &&
+
          <Table
            
            dataSource={contactList.inactive}
@@ -487,6 +495,7 @@ const AdminUsers = function ({ currentLang }) {
              };
            }}
          /> 
+          }
        </>
             :
            

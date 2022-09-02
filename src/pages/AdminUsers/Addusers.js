@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Row, Col,Button,Input, message, Avatar,Select } from "antd";
+import { Layout, Form, Row, Col,Button,Input, message, Avatar,Select,Modal } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   CheckOutlined,
   CloseOutlined,
-  
+  ExclamationCircleOutlined
 } from "@ant-design/icons";
 import {  adminProfile, getCookies, removeCookies, storeCookies, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
@@ -14,6 +14,8 @@ import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
 
 const {Option} =Select;
+const { confirm } = Modal;
+
 // const getSrcFromFile = (file) => {
 //     return new Promise((resolve) => {
 //       const reader = new FileReader();
@@ -166,17 +168,30 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   }
   }
   const handleDeleteContact=(id,type)=>{
-    setLoading(true);
-    ServiceApi.deleteUser(id,type)
-      .then((response) => {
-        removeCookies("user_token");
-        storeCookies("user_token", null);
-        navigate(`/`)
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-      });
+    confirm({
+      title: `Are you sure to ${type==="delete"?"delete":type==="withdraw"?"withdraw":"deactivate"}?`,
+      icon: <ExclamationCircleOutlined />,
+      content: ' This action cannot be undone.',
+  
+      onOk() {
+        setLoading(true);
+        ServiceApi.deactivateCurrentUser()
+          .then((response) => {
+            removeCookies("user_token");
+            storeCookies("user_token", null);
+            navigate(`/`)
+            setLoading(false);
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      },
+  
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+   
   }
   const disableAdmin=(item)=>{
     const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
