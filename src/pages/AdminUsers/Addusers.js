@@ -197,7 +197,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
     const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
     if(item ==="role")
     {
-      if(checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))
+      if(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
       return false;
     else
       return true

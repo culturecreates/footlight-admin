@@ -73,7 +73,7 @@ const Taxonomy = function ({ currentLang }) {
       width:100,
       render: (e, record) => (
         !record.header &&
-        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+        getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
 
         <DeleteOutlined
           style={{fontSize:"23px"}}
@@ -267,7 +267,7 @@ const Taxonomy = function ({ currentLang }) {
             onClearSearch={getPlaces}
             currentLang={currentLang}
           /> */}
-                 { checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN") &&
+                 { getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")) &&
 
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>navigate(`/admin/add-taxonomy`)}>
@@ -301,7 +301,7 @@ const Taxonomy = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    if(!record.header && checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")
+                    if(!record.header && (getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
                     )
                     navigate(`/admin/add-taxonomy/?id=${record.uuid}`);
                     // setSelectedProduct(record);

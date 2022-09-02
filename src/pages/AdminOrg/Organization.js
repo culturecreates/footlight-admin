@@ -74,7 +74,7 @@ const Organization = function ({ currentLang }) {
       key: "hasDependency",
       width:100,
       render: (e, record) => (
-        checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")?
+        getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
         <DeleteOutlined
           style={{fontSize:"23px"}}
           onClick={(event) => handleDelete(record, event)}
@@ -225,7 +225,7 @@ const Organization = function ({ currentLang }) {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    if(getCookies("user_token")?.user?.id===record.creator?.userId ||(checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
+                    if(getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))))
                      navigate(`/admin/add-organization/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row
