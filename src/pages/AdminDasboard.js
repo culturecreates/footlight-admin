@@ -23,6 +23,7 @@ import Taxonomy from "./Taxonomy/Taxonomy";
 import ServiceApi from "../services/Service";
 import Profile from "./Profile/Profile";
 import AdminUsers from "./AdminUsers/AdminUsers";
+import Calendars from "./AdminCalendar/Calendars";
 
 const { Content, Sider } = Layout;
 
@@ -80,7 +81,7 @@ const AdminDashboard = function ({  currentLang }) {
         selectedKeys={[routePath]}
         style={{ height: "100%", borderRight: 0 }}
       >
-        {sideMenuLinks.map((item) => (
+        {sideMenuLinks.filter(item=>item.isShow).map((item) => (
           <Menu.Item key={item.link} className="side-menu-item">
             <div className="side-menu-div">
              
@@ -137,6 +138,8 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="invite-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="profile" element={<Profile currentLang={currentLang} />} />
+          <Route path="calendars" element={<Calendars currentLang={currentLang} />} />
+          <Route path="add-calendar" element={<Calendars currentLang={currentLang} />} />
          
         </Routes>
       </Content>

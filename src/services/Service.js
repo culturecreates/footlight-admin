@@ -210,6 +210,14 @@ export default class ServiceApi {
     });
   }
 
+  static deleteCal(id) {
+    return Axios({
+      url: `calendar-metadata/${id}`,
+      method: "DELETE",
+    
+    });
+  }
+
   static deleteTaxonomy(id) {
     return Axios({
       url: `taxonomy/${id}`,
@@ -227,7 +235,7 @@ export default class ServiceApi {
   }
   static calendarInfo() {
     return Axios({
-      url: `calendar-info`,
+      url: `calendar-metadata/info`,
       method: "GET",
     
     });
@@ -251,6 +259,13 @@ export default class ServiceApi {
   static getAllOrg() {
     return Axios({
       url: `organizations`,
+      method: "GET",
+    });
+  }
+
+  static getAllCalendar() {
+    return Axios({
+      url: `calendar-metadata`,
       method: "GET",
     });
   }
@@ -325,6 +340,16 @@ export default class ServiceApi {
     return Axios({
       url: `organizations/${id}`,
       method: "GET",
+      
+
+    });
+  }
+
+  static getCalDetail(id) {
+    return Axios({
+      url: `calendar-metadata/{name}`,
+      method: "GET",
+      params:{'calendar-name':id}
       
 
     });
@@ -424,6 +449,14 @@ export default class ServiceApi {
     });
   }
 
+  static addCalendar(payload) {
+    return Axios({
+      url: `calendar-metadata`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
   static addTaxonomy(payload) {
     return Axios({
       url: `taxonomy`,
@@ -479,6 +512,15 @@ export default class ServiceApi {
   static updateOrg(payload,id) {
     return Axios({
       url: `organizations/${id}`,
+      method: "PATCH",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static updateCalendar(payload,id) {
+    return Axios({
+      url: `calendar-metadata/${id}`,
       method: "PATCH",
       data: JSON.stringify(payload),
 

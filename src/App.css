@@ -323,3 +323,6 @@
   align-items: center;
   height: 100%;
 }
+.ql-editor {
+  white-space: normal !important;
+}
