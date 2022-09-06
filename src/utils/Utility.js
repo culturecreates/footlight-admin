@@ -21,27 +21,38 @@ export const adminSideMenuLinks = [
     {
       name: "Events",
       link: "/admin/events",
+      isShow: true
     },
     {
       name: "Places",
       link: "/admin/places",
+      isShow: true
     },
     {
       name: "Contact",
       link: "/admin/contacts",
+      isShow: true
     },
     {
       name: "Organization",
       link: "/admin/organization",
+      isShow: true
     },
     {
       name: "Taxonomy",
       link: "/admin/taxonomy",
+      isShow: true
     },
     {
       name: "Users",
       link: "/admin/users",
+      isShow: true
     },
+    // {
+    //   name: "Calendars",
+    //   link: "/admin/calendars",
+    //   isShow:getCookies("user_token")?.user?.isSuperAdmin
+    // },
     
     
   ];
@@ -441,6 +452,25 @@ export const adminSideMenuLinks = [
       disabled: true
     },
     
+  ]
+
+  export const adminCalendar=[
+    {
+      name: "name",
+      title:"Name",
+      required:true,
+      placeHolder: "Enter name",
+      inputtype:"text",
+      type:"register"
+    },
+    {
+      name: "interfaceLanguage",
+      title:"Interface Language",
+      required:false,
+      placeHolder: "Enter language",
+      inputtype:"select",
+      type:"select"
+    },
   ]
 
   export const adminProfile=[
