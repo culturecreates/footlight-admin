@@ -48,11 +48,11 @@ export const adminSideMenuLinks = [
       link: "/admin/users",
       isShow: true
     },
-    // {
-    //   name: "Calendars",
-    //   link: "/admin/calendars",
-    //   isShow:getCookies("user_token")?.user?.isSuperAdmin
-    // },
+    {
+      name: "Calendars",
+      link: "/admin/calendars",
+      isShow:getCookies("user_token")?.user?.isSuperAdmin
+    },
     
     
   ];
