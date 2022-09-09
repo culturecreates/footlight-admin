@@ -297,6 +297,9 @@ const Taxonomy = function ({ currentLang }) {
                 hideOnSinglePage: true,
                 showSizeChanger: false
               }}
+              rowClassName={(record, index) =>
+                getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) ? 'enable-row' : 'disable-row'
+              }
               onRow={(record, rowIndex) => {
                 return {
                   onClick: (event) => {
