@@ -43,30 +43,39 @@ const AdminDashboard = function ({  currentLang }) {
        
       }, [location]);
       useEffect(() => {
-        ServiceApi.calendarInfo()
-      .then((response) => {
-        storeCookies("concept_scheme", response.data.conceptSchemes);
-      })
-      .catch((error) => {
-        
-      });
+       
       getCalendars()
       }, []);
 
       const getCalendars = (page = 1) => {
-        // setLoading(true);
+        setLoading(true);
         ServiceApi.getAllCalendar()
           .then((response) => {
             if (response && response.data && response.data.data) {
               const events = response.data.data;
              
               setCalList(events);
-              
+              ServiceApi.getCalDetail(events[0].uuid)
+              .then((response) => {
+                storeCookies("concept_scheme", response.data.conceptSchemes);
+              })
+              .catch((error) => {
+                
+              });
              const userCalendar= getCookies("user_calendar")
              if(userCalendar)
-              setCalTitle(userCalendar?.name?.fr)
+              {
+                setCalTitle(userCalendar)
+                
+              }
              else
-             setCalTitle(events[0].name.fr) 
+              {
+                storeCookies("user_calendar", events[0].name.fr);
+                setCalTitle(events[0].name.fr) 
+                storeCookies("calendar-id", events[0].uuid);
+              
+              }
+
             }
             setLoading(false);
           })
@@ -102,9 +111,13 @@ const AdminDashboard = function ({  currentLang }) {
     }
     const selectCalendar =(item)=>{
       setCalTitle(item.name.fr)
+    
+      storeCookies("user_calendar", item.name.fr);
+      storeCookies("calendar-id", item.uuid);
       setOpenKeys([])
-      storeCookies("user_calendar", item);
+      window.location.reload()
     }
+  
   return (
     <Layout className="dashboard-layout-home">
     <Sider width={250} className="dashboard-sider">
@@ -173,7 +186,7 @@ const AdminDashboard = function ({  currentLang }) {
     
       <Content
         className="admin-content">
-       
+       {!loading &&
         <Routes>
           <Route path="events" element={<AdminEvents currentLang={currentLang} />} />
           <Route path="add-event" element={<AdminEvents currentLang={currentLang} />} />
@@ -193,6 +206,7 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-calendar" element={<Calendars currentLang={currentLang} />} />
          
         </Routes>
+}
       </Content>
     </Layout>
     {loading && <Spinner />}
