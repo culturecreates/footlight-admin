@@ -14,10 +14,14 @@ const Login = () => {
   const params = useParams();
 
   useEffect(()=>{
-    if(params && params.id)
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const code = params.get("invitationId");
+    
+    if(code)
     {
       setLoginType("register")
-      ServiceApi.invitedUser(params.id)
+      ServiceApi.invitedUser(code)
       .then((response) => {
         if (response && response.data) {
          

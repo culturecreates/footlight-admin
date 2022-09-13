@@ -24,7 +24,7 @@ const Calendars = function ({ currentLang }) {
 
   const { t } = useTranslation();
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
 
   const eventTableHeader = [

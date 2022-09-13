@@ -30,7 +30,7 @@ const AdminEvents = function ({ currentLang }) {
   const dispatch = useDispatch();
   const placeStore = useSelector((state) => state.place);
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
 
   useEffect(() => {

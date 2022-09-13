@@ -27,7 +27,7 @@ const Organization = function ({ currentLang }) {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
 
   const eventTableHeader = [

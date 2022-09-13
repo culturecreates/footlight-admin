@@ -5,7 +5,7 @@ import "./Profile.css";
 
 import ServiceApi from "../../services/Service";
 import { useTranslation } from "react-i18next";
-import { adminProfile } from "../../utils/Utility";
+import { adminProfile, getCookies } from "../../utils/Utility";
 import { useNavigate } from "react-router-dom";
 
 
@@ -72,6 +72,10 @@ const Profile = function ({ currentLang }) {
         </div>
         )
   }
+  <div className="profile-keys">
+        <div>{"Role"}</div>
+        <div>:&nbsp;{profileDate?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}</div>
+        </div>
   </>
 }
     </div>

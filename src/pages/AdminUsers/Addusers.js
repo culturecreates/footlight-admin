@@ -74,7 +74,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
         const obj={
           userId: contactDetails.uuid,
           role: values.role,
-          calendarId: "CULTURE_OUTAOUAIS"
+          calendarId: getCookies("calendar-id")
         }
         ServiceApi.modifyRole(obj,contactDetails.uuid)
       .then((response) => {
@@ -106,7 +106,8 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
     }
       else
       {
-        values.calendarId = "CULTURE_OUTAOUAIS"
+        values.calendarId = getCookies("calendar-id")
+        values.calendarName = getCookies("user_calendar")
       ServiceApi.inviteUser(values)
       .then((response) => {
         if (response && response.data) {
@@ -127,7 +128,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   useEffect(() => {
     if (contactDetails) {
       setIsUpdate(true);
-      const roleValue = contactDetails?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+      const roleValue = contactDetails?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
       form.setFieldsValue({
         firstName: contactDetails.firstName,
         email:contactDetails.email,
@@ -194,7 +195,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
    
   }
   const disableAdmin=(item)=>{
-    const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+    const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
     if(item ==="role")
     {
       if(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
