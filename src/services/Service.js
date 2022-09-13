@@ -235,7 +235,7 @@ export default class ServiceApi {
   }
   static calendarInfo() {
     return Axios({
-      url: `info`,
+      url: `calendar-info`,
       method: "GET",
     
     });
