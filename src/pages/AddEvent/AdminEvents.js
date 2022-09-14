@@ -30,7 +30,7 @@ const AdminEvents = function ({ currentLang }) {
   const dispatch = useDispatch();
   const placeStore = useSelector((state) => state.place);
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
 
   useEffect(() => {
@@ -306,6 +306,9 @@ const AdminEvents = function ({ currentLang }) {
                 hideOnSinglePage: true,
                 showSizeChanger: false
               }}
+              rowClassName={(record, index) =>
+                getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) ? 'enable-row' : 'disable-row'
+              }
               onRow={(record, rowIndex) => {
                 return {
                   onClick: (event) => {

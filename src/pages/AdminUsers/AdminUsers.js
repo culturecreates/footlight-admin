@@ -24,7 +24,7 @@ const AdminUsers = function ({ currentLang }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
   const { t } = useTranslation();
 
@@ -66,7 +66,7 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}
           </Col>
         </Row>
       ),
@@ -154,7 +154,7 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN":record?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}
           </Col>
         </Row>
       ),
@@ -213,7 +213,7 @@ const AdminUsers = function ({ currentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record.isSuperAdmin?"SUPER_ADMIN": record?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")?.role}
+          {record.isSuperAdmin?"SUPER_ADMIN": record?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}
           </Col>
         </Row>
       ),
@@ -380,7 +380,7 @@ const AdminUsers = function ({ currentLang }) {
       }
         {!isAdd &&
         <Col className="flex-align">
-         {getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")) &&
+         {(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN"))) &&
 
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>{setIsProfile(false)
@@ -413,11 +413,14 @@ const AdminUsers = function ({ currentLang }) {
                 hideOnSinglePage: true,
                 showSizeChanger: false
               }}
+              rowClassName={(record, index) =>
+                getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) ? 'enable-row' : 'disable-row'
+              }
               onRow={(record, rowIndex) => {
                 return {
                   onClick: (event) => {
                     event.stopPropagation()
-                    const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+                    const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);
                     
@@ -450,7 +453,7 @@ const AdminUsers = function ({ currentLang }) {
              return {
                onClick: (event) => {
                  event.stopPropagation()
-                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);
@@ -482,11 +485,14 @@ const AdminUsers = function ({ currentLang }) {
              hideOnSinglePage: true,
              showSizeChanger: false
            }}
+           rowClassName={(record, index) =>
+            getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) ? 'enable-row' : 'disable-row'
+          }
            onRow={(record, rowIndex) => {
              return {
                onClick: (event) => {
                  event.stopPropagation()
-                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+                 const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
                    navigate(`/admin/add-users/?id=${record.uuid}`);

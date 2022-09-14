@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/AdminDasboard";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLang } from "./action";
 import Login from "./pages/login/Login";
+import { getCookies } from "./utils/Utility";
 
 moment.locale("fr-ca");
 
@@ -113,7 +114,9 @@ function App() {
         <Router>
         <Routes>
           <Route path="/" element={<Login currentLang={currentLang} locale={locale}/>} />
-          <Route path="invitation/:id" element={<Login currentLang={currentLang} />} />
+          <Route path="join" element={<Login currentLang={currentLang} />} />
+          <Route path="accept" element={<Login currentLang={currentLang} />} />
+
           <Route path="/admin/*" element={<AdminDashboard currentLang={currentLang} locale={locale}/>} />
         </Routes>
       </Router>

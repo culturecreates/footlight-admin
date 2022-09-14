@@ -42,6 +42,9 @@
 .event-table tr td{
     cursor: pointer;
 }
+.event-table tr.disable-row td{
+    cursor: auto;
+}
 .image-name span{
     margin-right: 10px;
 }
@@ -207,4 +210,12 @@
     border-color: #d1cbcb;
     background: #fff;
     color: #000;
+}
+.cal-menu-div{
+    color: #837d7d;
+    font-weight: 700;
+    font-size: 16px;
+}
+.dashboard-sider .cal-menu.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #474543;
 }

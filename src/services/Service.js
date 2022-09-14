@@ -95,7 +95,16 @@ export default class ServiceApi {
     return Axios({
       url: `users/all`,
       method: "GET",
-      params:{includeInactiveUsers:true}
+      params:{includeInactiveUsers:true,includeCalendarFilter:true}
+
+    });
+  }
+
+  static getAllUserSearch() {
+    return Axios({
+      url: `users/all`,
+      method: "GET",
+      params:{includeInactiveUsers:true,includeCalendarFilter:false}
 
     });
   }
@@ -151,6 +160,16 @@ export default class ServiceApi {
     
     });
   }
+
+  static leaveCalendar() {
+    
+    return Axios({
+      url: `users/logged-in/leave-calendar`,
+      method: "PATCH",
+    
+    });
+  }
+
   static deactivateCurrentUser() {
     
     return Axios({
@@ -212,8 +231,9 @@ export default class ServiceApi {
 
   static deleteCal(id) {
     return Axios({
-      url: `calendar-metadata/${id}`,
+      url: `calendar-metadata/{id}`,
       method: "DELETE",
+      params:{id}
     
     });
   }
@@ -347,9 +367,9 @@ export default class ServiceApi {
 
   static getCalDetail(id) {
     return Axios({
-      url: `calendar-metadata/{name}`,
+      url: `calendar-metadata/{id}`,
       method: "GET",
-      params:{'calendar-name':id}
+      params:{'id':id}
       
 
     });
@@ -520,8 +540,9 @@ export default class ServiceApi {
 
   static updateCalendar(payload,id) {
     return Axios({
-      url: `calendar-metadata/${id}`,
+      url: `calendar-metadata/{id}`,
       method: "PATCH",
+      params:{id:id},
       data: JSON.stringify(payload),
 
     });

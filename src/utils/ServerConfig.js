@@ -20,8 +20,10 @@ export const AxiosLogin = axios.create({
 Axios.interceptors.request.use(async (config) => {
   // config.baseURL = api;
   const id_token = getCookies("user_token");
+  const id_cal = getCookies("calendar-id");
+  console.log("raseem",id_cal)
   config.headers["Authorization"] ="Bearer "+id_token?.token;
-  
+  config.headers["calendar-id"] = id_cal;
   return config;
 });
 Axios.interceptors.response.use(function (response) {

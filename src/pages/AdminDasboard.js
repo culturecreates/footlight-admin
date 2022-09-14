@@ -24,11 +24,16 @@ import ServiceApi from "../services/Service";
 import Profile from "./Profile/Profile";
 import AdminUsers from "./AdminUsers/AdminUsers";
 import Calendars from "./AdminCalendar/Calendars";
+import Spinner from "../components/Spinner";
 
 const { Content, Sider } = Layout;
 
 const AdminDashboard = function ({  currentLang }) {
     const [routePath, setRoutePath] = useState("/admin/events");
+    const [loading, setLoading] = useState(false);
+    const [calList, setCalList] = useState([]);
+    const [calTitle, setCalTitle] = useState("")
+    const [openKeys, setOpenKeys] = useState([])
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
@@ -38,15 +43,46 @@ const AdminDashboard = function ({  currentLang }) {
        
       }, [location]);
       useEffect(() => {
-        ServiceApi.calendarInfo()
-      .then((response) => {
-        storeCookies("concept_scheme", response.data.conceptSchemes);
-      })
-      .catch((error) => {
-        
-      });
        
+      getCalendars()
       }, []);
+
+      const getCalendars = (page = 1) => {
+        setLoading(true);
+        ServiceApi.getAllCalendar()
+          .then((response) => {
+            if (response && response.data && response.data.data) {
+              const events = response.data.data;
+             
+              setCalList(events);
+              ServiceApi.getCalDetail(events[0].uuid)
+              .then((response) => {
+                storeCookies("concept_scheme", response.data.conceptSchemes);
+              })
+              .catch((error) => {
+                
+              });
+             const userCalendar= getCookies("user_calendar")
+             if(userCalendar)
+              {
+                setCalTitle(userCalendar)
+                
+              }
+             else
+              {
+                storeCookies("user_calendar", events[0].name.fr);
+                setCalTitle(events[0].name.fr) 
+                storeCookies("calendar-id", events[0].uuid);
+              
+              }
+
+            }
+            setLoading(false);
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      };
 
       const logout=()=>{
         removeCookies("user_token");
@@ -70,18 +106,46 @@ const AdminDashboard = function ({  currentLang }) {
           ]}
         />
       );
+      const onOpenChange = _openKeys => {
+        setOpenKeys(_openKeys)
+    }
+    const selectCalendar =(item)=>{
+      setCalTitle(item.name.fr)
+    
+      storeCookies("user_calendar", item.name.fr);
+      storeCookies("calendar-id", item.uuid);
+      setOpenKeys([])
+      window.location.reload()
+    }
+  
   return (
     <Layout className="dashboard-layout-home">
     <Sider width={250} className="dashboard-sider">
       {/* <img src={WalmartIcon} alt="logo" className="dashboard-logo" /> */}
-      <div className="app-text">{ "Culture Outaouais"}</div>
-
+      <div className="app-text"></div>
+      {/* { "Culture Outaouais"} */}
+      <Menu
+      mode="inline"
+      openKeys={openKeys}
+      className="cal-menu"
+      onOpenChange={onOpenChange}>
+  
+  <Menu.SubMenu key="root-cal" title={
+     <div style={{margin:0}} className="app-text">
+       {calTitle}</div>}>
+    {calList.map(item=>
+    <Menu.Item key={item.uuid} onClick={()=>selectCalendar(item)}>
+      <div className="cal-menu-div">{item.name.fr}
+      </div></Menu.Item>
+    )}
+  </Menu.SubMenu>
+</Menu>
       <Menu
         mode="inline"
         selectedKeys={[routePath]}
         style={{ height: "100%", borderRight: 0 }}
       >
-        {sideMenuLinks.filter(item=>item.isShow).map((item) => (
+        {sideMenuLinks.filter(item=>item.isShow===true).map((item) => (
           <Menu.Item key={item.link} className="side-menu-item">
             <div className="side-menu-div">
              
@@ -122,7 +186,7 @@ const AdminDashboard = function ({  currentLang }) {
     
       <Content
         className="admin-content">
-       
+       {!loading &&
         <Routes>
           <Route path="events" element={<AdminEvents currentLang={currentLang} />} />
           <Route path="add-event" element={<AdminEvents currentLang={currentLang} />} />
@@ -142,8 +206,10 @@ const AdminDashboard = function ({  currentLang }) {
           <Route path="add-calendar" element={<Calendars currentLang={currentLang} />} />
          
         </Routes>
+}
       </Content>
     </Layout>
+    {loading && <Spinner />}
   </Layout>
   );
 };

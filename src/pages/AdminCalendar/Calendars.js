@@ -24,7 +24,7 @@ const Calendars = function ({ currentLang }) {
 
   const { t } = useTranslation();
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId==="CULTURE_OUTAOUAIS")
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
 
   const eventTableHeader = [
@@ -200,7 +200,7 @@ const Calendars = function ({ currentLang }) {
                   onClick: (event) => {
                     event.stopPropagation()
                     if(getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))))
-                     navigate(`/admin/add-calendar/?id=${record.name?.fr}`);
+                     navigate(`/admin/add-calendar/?id=${record.uuid}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };
