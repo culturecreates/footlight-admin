@@ -1,6 +1,6 @@
 import React ,{useEffect, useState}from "react";
 import "./login.css";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate,useParams,useLocation } from "react-router-dom";
 import { Form,  Input, Button, Layout, Row, Col, message,Image } from "antd";
 import { adminLogin, storeCookies } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const params = useParams();
-
+  const location = useLocation();
   useEffect(()=>{
     const search = window.location.search;
     const params = new URLSearchParams(search);
@@ -20,6 +20,28 @@ const Login = () => {
     
     if(code)
     {
+      if(location.pathname.includes("accept"))
+      {
+        setLoading(true)
+        const obj={
+          invitationId: code,
+         
+         }
+          ServiceApi.acceptInvite(obj)
+        .then((response) => {
+          if (response && response.data) {
+           
+            setLoading(false)
+            message.success("Invitation accepted successfully")
+            navigate("/admin/events");
+          }
+        })
+        .catch((error) => {
+          setLoading(false)
+          message.error(error.response?.data?.message)
+        });
+      }
+      else{
       setLoginType("register")
       ServiceApi.invitedUser(code)
       .then((response) => {
@@ -38,6 +60,7 @@ const Login = () => {
         message.error(error.response?.data?.message)
       });
     }
+  }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 

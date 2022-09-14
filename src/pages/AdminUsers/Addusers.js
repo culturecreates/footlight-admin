@@ -170,12 +170,28 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   }
   const handleDeleteContact=(id,type)=>{
     confirm({
-      title: `Are you sure to ${type==="delete"?"delete":type==="withdraw"?"withdraw":"deactivate"}?`,
+      title: `Are you sure to ${type==="leave"?"Leave Calendar":type==="withdraw"?"withdraw":"deactivate"}?`,
       icon: <ExclamationCircleOutlined />,
       content: ' This action cannot be undone.',
   
       onOk() {
         setLoading(true);
+        if(type==="leave")
+        {
+          ServiceApi.leaveCalendar()
+          .then((response) => {
+            removeCookies("user_token");
+            storeCookies("user_token", null);
+            storeCookies("user_calendar", null);
+            storeCookies("calendar-id", null);
+            navigate(`/`)
+            setLoading(false);
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+        }
+        else
         ServiceApi.deactivateCurrentUser()
           .then((response) => {
             removeCookies("user_token");
@@ -333,6 +349,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
 
         <Form.Item className="submit-items">
           {isProfile &&
+          <>
         <Button
             size="large"
             type="text" danger
@@ -342,6 +359,16 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
           >
             Deactivate my account
           </Button>
+          <Button
+            size="large"
+            type="text" danger
+            onClick={() => {
+              handleDeleteContact(contactDetails.id,"leave")
+            }}
+          >
+            Leave Calendar
+          </Button>
+          </>
 }
           <Button
             size="large"

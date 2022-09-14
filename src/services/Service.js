@@ -95,7 +95,16 @@ export default class ServiceApi {
     return Axios({
       url: `users/all`,
       method: "GET",
-      params:{includeInactiveUsers:true}
+      params:{includeInactiveUsers:true,includeCalendarFilter:true}
+
+    });
+  }
+
+  static getAllUserSearch() {
+    return Axios({
+      url: `users/all`,
+      method: "GET",
+      params:{includeInactiveUsers:true,includeCalendarFilter:false}
 
     });
   }
@@ -151,6 +160,16 @@ export default class ServiceApi {
     
     });
   }
+
+  static leaveCalendar() {
+    
+    return Axios({
+      url: `users/logged-in/leave-calendar`,
+      method: "PATCH",
+    
+    });
+  }
+
   static deactivateCurrentUser() {
     
     return Axios({

@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/AdminDasboard";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLang } from "./action";
 import Login from "./pages/login/Login";
+import { getCookies } from "./utils/Utility";
 
 moment.locale("fr-ca");
 
