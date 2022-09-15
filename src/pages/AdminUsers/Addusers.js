@@ -52,6 +52,7 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const navigate = useNavigate();
 
 
+  const checkAdmin=  getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
   const handleSubmit = (values) => {
    
@@ -405,7 +406,7 @@ const handleKeyPress = (ev) => {
                 }
               </Select>
               :
-              item.inputtype === "auto"?
+              item.inputtype === "auto" && getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
               <AutoComplete
               dropdownMatchSelectWidth={252}
               style={{

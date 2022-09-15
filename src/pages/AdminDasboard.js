@@ -37,7 +37,7 @@ const AdminDashboard = function ({  currentLang }) {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
-    const sideMenuLinks= adminSideMenuLinks;
+    const sideMenuLinks= getCookies("user_token")?.user?.isSuperAdmin?adminSideMenuLinks: adminSideMenuLinks.filter(item=>item.isShow===true);
     useEffect(() => {
         setRoutePath(location.pathname);
        
@@ -145,7 +145,7 @@ const AdminDashboard = function ({  currentLang }) {
         selectedKeys={[routePath]}
         style={{ height: "100%", borderRight: 0 }}
       >
-        {sideMenuLinks.filter(item=>item.isShow===true).map((item) => (
+        {sideMenuLinks.map((item) => (
           <Menu.Item key={item.link} className="side-menu-item">
             <div className="side-menu-div">
              

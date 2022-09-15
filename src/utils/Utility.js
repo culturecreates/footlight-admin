@@ -51,7 +51,7 @@ export const adminSideMenuLinks = [
     {
       name: "Calendars",
       link: "/admin/calendars",
-      isShow:getCookies("user_token")?.user?.isSuperAdmin
+      isShow:false
     },
     
     
