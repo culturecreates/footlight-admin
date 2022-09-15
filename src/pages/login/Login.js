@@ -2,7 +2,7 @@ import React ,{useEffect, useState}from "react";
 import "./login.css";
 import { useNavigate,useParams,useLocation } from "react-router-dom";
 import { Form,  Input, Button, Layout, Row, Col, message,Image } from "antd";
-import { adminLogin, storeCookies } from "../../utils/Utility";
+import { adminLogin, getCookies, storeCookies } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 
@@ -33,7 +33,8 @@ const Login = () => {
            
             setLoading(false)
             message.success("Invitation accepted successfully")
-            navigate("/admin/events");
+            if(getCookies("user_token"))
+              navigate("/admin/events");
           }
         })
         .catch((error) => {

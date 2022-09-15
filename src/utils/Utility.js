@@ -51,7 +51,7 @@ export const adminSideMenuLinks = [
     {
       name: "Calendars",
       link: "/admin/calendars",
-      isShow:getCookies("user_token")?.user?.isSuperAdmin
+      isShow:false
     },
     
     
@@ -481,7 +481,7 @@ export const adminSideMenuLinks = [
       title:"First Name",
       required:true,
       placeHolder: "Enter first name",
-      inputtype:"text",
+      inputtype:"auto",
       type:"register"
     },
     {

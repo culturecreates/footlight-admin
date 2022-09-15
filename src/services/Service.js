@@ -100,11 +100,12 @@ export default class ServiceApi {
     });
   }
 
-  static getAllUserSearch() {
+  static getAllUserSearch(value) {
     return Axios({
       url: `users/all`,
       method: "GET",
-      params:{includeInactiveUsers:true,includeCalendarFilter:false}
+      params:{includeInactiveUsers:true,includeCalendarFilter:false,"search": value}
+     
 
     });
   }
