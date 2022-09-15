@@ -481,7 +481,7 @@ export const adminSideMenuLinks = [
       title:"First Name",
       required:true,
       placeHolder: "Enter first name",
-      inputtype:"text",
+      inputtype:"auto",
       type:"register"
     },
     {

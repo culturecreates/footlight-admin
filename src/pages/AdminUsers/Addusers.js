@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Row, Col,Button,Input, message, Avatar,Select,Modal } from "antd";
+import { Layout, Form, Row, Col,Button,Input, message, Avatar,Select,Modal, AutoComplete } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,8 @@ import {  adminProfile, getCookies, removeCookies, storeCookies, urlValidate } f
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import PasswordUpdateModal from "../../components/PasswordUpdateModal";
+import { useCallback } from "react";
+import _debounce from 'lodash/debounce';
 
 const {Option} =Select;
 const { confirm } = Modal;
@@ -39,6 +41,8 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   const [isUpdate, setIsUpdate] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [roleList, setRoleList] = useState([]);
+  const [searchKey, setSearchKey] = useState("")
+  const [options, setOptions] = useState([]);
   // const [isUpload, setIsUpload] = useState(false);
   // const [compressedFile, setCompressedFile] = useState(null);
 
@@ -248,6 +252,99 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
   //     window.location.href = src;
   //   }
   // };
+
+  const onSelect = (value,options) => {
+    const selectObj = {
+      type: options.options,
+      name: options.key,
+      from:"search",
+      uri:options.key,
+    };
+   
+    const roleValue = options.options?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
+    form.setFieldsValue({
+      firstName: options.options.firstName,
+      email:options.options.email,
+      lastName: options.options.lastName,
+      interfaceLanguage: options.options.interfaceLanguage,
+      role:roleValue?.role
+     
+      
+    });
+   
+  };
+  
+  const searchResult = (query,lng) =>{
+        
+    ServiceApi.getAllUserSearch(query)
+    .then((response) => {
+      if (response && response.data && response.data.data) {
+        const events = response.data.data;
+        // setOptions(events.active)
+        const array=[
+          {
+              label: "Active Users",
+              options: events.active.map(item=>{
+                const obj=renderItem(item.firstName,item,item.uuid)
+                return obj
+              })
+            },
+            {
+              label: "Invited Users",
+              options: events.invited.map(item=>{
+                const obj=renderItem(item.firstName,item,item.uuid)
+                return obj
+              })
+            },
+          ]
+        setOptions(array.filter(item=>item.options.length!==0))
+      }
+    })
+    .catch((error) => {
+    });
+}
+const renderItem = (title,types,uuid="") => ({
+  value: title,
+  options:types,
+  key: uuid,
+
+  // key: types === "places"?uuid:title,
+  label: (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      {title}
+      
+    </div>
+  ),
+});
+const handleSearch = (value) => {
+  setSearchKey(value)
+  if(value.length === 0)
+   {setOptions([])
+     }
+  else 
+   debounceFn(value,currentLang)
+};
+const debounceFn = useCallback(_debounce(searchResult, 1000), []);
+const handleKeyPress = (ev) => {
+  
+  };
+  const handleInputSearch=(value)=>{
+    const selectObj = {
+      type: "queryString",
+      name:value,
+      from:"search"
+    };
+   
+  }
+  const handleClearPress = () => {
+   
+   
+    };
   return (
     <Layout className="add-event-layout">
       <Form
@@ -308,6 +405,23 @@ const Addusers = function ({ currentLang,contactDetails,isProfile }) {
                 }
               </Select>
               :
+              item.inputtype === "auto"?
+              <AutoComplete
+              dropdownMatchSelectWidth={252}
+              style={{
+                width: 450,
+              }}
+              options={options}
+              onSelect={(val, option) => onSelect(val, option)}
+              onSearch={handleSearch}
+              onKeyPress={handleKeyPress}
+              value={searchKey}
+              
+            >
+              <Input allowClear size="large" placeholder={t("Search", { lng: currentLang })} onClear={handleClearPress}
+              onSearch={handleInputSearch} value={searchKey}/>
+            </AutoComplete>
+            :
                 <Input
                   placeholder={item.placeHolder}
                   className="replace-input"
