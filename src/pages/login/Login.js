@@ -96,8 +96,11 @@ const Login = () => {
 
     else if (loginType==="register")
    {
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const code = params.get("invitationId");
      const obj={
-      invitationId: params.id,
+      invitationId: code,
       password: values.password
      }
       ServiceApi.acceptInvite(obj)
