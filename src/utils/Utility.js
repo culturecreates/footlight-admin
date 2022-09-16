@@ -471,6 +471,14 @@ export const adminSideMenuLinks = [
       inputtype:"select",
       type:"select"
     },
+    {
+      name: "contact",
+      title:"Contact",
+      required:true,
+      placeHolder: "Enter contact",
+      inputtype:"text",
+      type:"register"
+    },
   ]
 
   export const adminProfile=[
