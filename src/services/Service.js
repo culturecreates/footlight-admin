@@ -119,11 +119,14 @@ export default class ServiceApi {
     });
   }
 
-  static modifyRole(payload) {
-    return Axios({
+  static modifyRole(payload,calId) {
+    const id_token = getCookies("user_token");
+    return AxiosLogin({
       url: `users/modify-role`,
       method: "PATCH",
       data: JSON.stringify(payload),
+      headers:{"calendar-id":calId,
+      "Authorization":"Bearer "+id_token?.token}
 
     });
   }
@@ -162,11 +165,13 @@ export default class ServiceApi {
     });
   }
 
-  static leaveCalendar() {
-    
-    return Axios({
+  static leaveCalendar(calId) {
+    const id_token = getCookies("user_token");
+    return AxiosLogin({
       url: `users/logged-in/leave-calendar`,
       method: "PATCH",
+      headers:{"calendar-id":calId,
+      "Authorization":"Bearer "+id_token?.token}
     
     });
   }

@@ -25,6 +25,8 @@ import Profile from "./Profile/Profile";
 import AdminUsers from "./AdminUsers/AdminUsers";
 import Calendars from "./AdminCalendar/Calendars";
 import Spinner from "../components/Spinner";
+import { useDispatch } from "react-redux";
+import { fetchCal } from "../action";
 
 const { Content, Sider } = Layout;
 
@@ -37,6 +39,7 @@ const AdminDashboard = function ({  currentLang }) {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const sideMenuLinks= getCookies("user_token")?.user?.isSuperAdmin?adminSideMenuLinks: adminSideMenuLinks.filter(item=>item.isShow===true);
     useEffect(() => {
         setRoutePath(location.pathname);
@@ -55,6 +58,7 @@ const AdminDashboard = function ({  currentLang }) {
               const events = response.data.data;
              
               setCalList(events);
+              dispatch(fetchCal(events));
               ServiceApi.getCalDetail(events[0].uuid)
               .then((response) => {
                 storeCookies("concept_scheme", response.data.conceptSchemes);
@@ -63,7 +67,7 @@ const AdminDashboard = function ({  currentLang }) {
                 
               });
              const userCalendar= getCookies("user_calendar")
-             if(userCalendar)
+             if(userCalendar && userCalendar != "null")
               {
                 setCalTitle(userCalendar)
                 

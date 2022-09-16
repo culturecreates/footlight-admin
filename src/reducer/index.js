@@ -8,6 +8,7 @@ import audience from "./AudienceReducer"
 import types from "./TypesReducer"
 import events from "./EventsReducer"
 import eventBack from "./EventBackReducer"
+import cal from "./CalReducer"
 
 export default combineReducers({
   filter,
@@ -18,6 +19,7 @@ export default combineReducers({
   types,
   events,
   eventBack,
-  lang
+  lang,
+  cal
   
 });
