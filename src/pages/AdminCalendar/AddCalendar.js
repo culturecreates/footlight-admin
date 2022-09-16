@@ -40,6 +40,7 @@ const AddCalendar = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
     const postalObj = {
         name: {fr:values.name},
         contentLanguages: values.interfaceLanguage,
+        contact: values.contact
         
     };
     setLoading(true)
@@ -85,7 +86,7 @@ const AddCalendar = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
       form.setFieldsValue({
         name: orgDetails.name[currentLang],
         interfaceLanguage: orgDetails.contentLanguages,
-        
+        contact:orgDetails.contact
   
         
       });
