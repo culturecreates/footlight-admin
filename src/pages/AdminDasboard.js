@@ -36,6 +36,7 @@ const AdminDashboard = function ({  currentLang }) {
     const [calList, setCalList] = useState([]);
     const [calTitle, setCalTitle] = useState("")
     const [openKeys, setOpenKeys] = useState([])
+    const [contentLang, setContentLang] = useState("fr")
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
@@ -70,6 +71,7 @@ const AdminDashboard = function ({  currentLang }) {
              if(userCalendar && userCalendar != "null")
               {
                 setCalTitle(userCalendar)
+                setContentLang(getCookies("content-lang"))
                 
               }
              else
@@ -77,7 +79,8 @@ const AdminDashboard = function ({  currentLang }) {
                 storeCookies("user_calendar", events[0].name.fr);
                 setCalTitle(events[0].name.fr) 
                 storeCookies("calendar-id", events[0].uuid);
-              
+                setContentLang(events[0].contentLanguages==="FR"?"fr":"en")
+                storeCookies("content-lang",events[0].contentLanguages==="FR"?"fr":"en");
               }
 
             }
@@ -118,6 +121,7 @@ const AdminDashboard = function ({  currentLang }) {
     
       storeCookies("user_calendar", item.name.fr);
       storeCookies("calendar-id", item.uuid);
+      storeCookies("content-lang",item.contentLanguages==="FR"?"fr":"en");
       setOpenKeys([])
       window.location.reload()
     }
@@ -125,9 +129,7 @@ const AdminDashboard = function ({  currentLang }) {
   return (
     <Layout className="dashboard-layout-home">
     <Sider width={250} className="dashboard-sider">
-      {/* <img src={WalmartIcon} alt="logo" className="dashboard-logo" /> */}
       <div className="app-text"></div>
-      {/* { "Culture Outaouais"} */}
       <Menu
       mode="inline"
       openKeys={openKeys}
@@ -166,10 +168,8 @@ const AdminDashboard = function ({  currentLang }) {
       style={{backgroundColor: "#f56a00"}}
       src={getCookies("user_token")?.user?.profileImage}
        >
-                {/* {getCookies("user_token")?.user?.firstName?.charAt(0)}{getCookies("user_token")?.user?.lastName?.charAt(0)} */}
                 </Avatar>
-                {/* <Gravatar email={getCookies("user_token")?.user?.email} size={30} 
-                style={{borderRadius:"50%"}}/> */}
+               
       <Dropdown overlay={menu} trigger={['click']}
        placement="topRight"
        arrow={{
@@ -192,22 +192,22 @@ const AdminDashboard = function ({  currentLang }) {
         className="admin-content">
        {!loading &&
         <Routes>
-          <Route path="events" element={<AdminEvents currentLang={currentLang} />} />
-          <Route path="add-event" element={<AdminEvents currentLang={currentLang} />} />
-          <Route path="places" element={<AdminPlaces currentLang={currentLang} />} />
-          <Route path="add-place" element={<AdminPlaces currentLang={currentLang} />} />
-          <Route path="contacts" element={<AdminContacts currentLang={currentLang} />} />
-          <Route path="add-contact" element={<AdminContacts currentLang={currentLang} />} />
-          <Route path="organization" element={<Organization currentLang={currentLang} />} />
-          <Route path="add-organization" element={<Organization currentLang={currentLang} />} />
-          <Route path="taxonomy" element={<Taxonomy currentLang={currentLang} />} />
-          <Route path="add-taxonomy" element={<Taxonomy currentLang={currentLang} />} />
+          <Route path="events" element={<AdminEvents currentLang={currentLang} contentLang={contentLang}/>} />
+          <Route path="add-event" element={<AdminEvents currentLang={currentLang} contentLang={contentLang}/>} />
+          <Route path="places" element={<AdminPlaces currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="add-place" element={<AdminPlaces currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="contacts" element={<AdminContacts currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="add-contact" element={<AdminContacts currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="organization" element={<Organization currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="add-organization" element={<Organization currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="taxonomy" element={<Taxonomy currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="add-taxonomy" element={<Taxonomy currentLang={currentLang} contentLang={contentLang} />} />
           <Route path="users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="add-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="invite-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="profile" element={<Profile currentLang={currentLang} />} />
-          <Route path="calendars" element={<Calendars currentLang={currentLang} />} />
-          <Route path="add-calendar" element={<Calendars currentLang={currentLang} />} />
+          <Route path="calendars" element={<Calendars currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="add-calendar" element={<Calendars currentLang={currentLang} contentLang={contentLang} />} />
          
         </Routes>
 }

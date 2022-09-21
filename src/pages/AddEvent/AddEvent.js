@@ -56,7 +56,7 @@ const getSrcFromFile = (file) => {
     reader.onload = () => resolve(reader.result);
   });
 };
-const AddEvent = function ({ currentLang, eventDetails }) {
+const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [formValue, setFormVaue] = useState();
   const [checkselectedOnline, setcheckselectedOnline] = useState(false);
   const [checkselectedOffline, setcheckselectedOffline] = useState(false);
@@ -255,10 +255,10 @@ const AddEvent = function ({ currentLang, eventDetails }) {
     }
     const eventObj = {
       name: {
-        fr: values.title,
+        [contentLang]: values.title,
       },
       description: {
-        fr: values.desc,
+        [contentLang]: values.desc,
       },
       startDate: !isRecurring
         ? ServiceApi.parseDate(
@@ -424,10 +424,10 @@ const AddEvent = function ({ currentLang, eventDetails }) {
       form.setFieldsValue({
         contact: eventDetails.contactPoint?.uuid,
         desc: eventDetails.description
-          ? eventDetails.description["fr"]
-            ? eventDetails.description["fr"] === "<p><br></p>"
+          ? eventDetails.description[contentLang]
+            ? eventDetails.description[contentLang] === "<p><br></p>"
               ? "<p>&nbsp;</p>"
-              : eventDetails.description["fr"]
+              : eventDetails.description[contentLang]
             : "<p>&nbsp;</p> "
           : "<p>&nbsp;</p>",
         location:
@@ -445,7 +445,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
                 : "Canada/Eastern"
             )
           : undefined,
-        title: eventDetails.name["fr"],
+        title: eventDetails.name[contentLang],
         endTime: eventDetails.endDate
           ? moment(new Date(eventDetails.endDate), "HH-mm").tz(
               eventDetails.scheduleTimezone
@@ -546,7 +546,7 @@ const AddEvent = function ({ currentLang, eventDetails }) {
         desc: "",
       });
     setFormVaue(form.getFieldsValue());
-    console.log(placeList);
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDetails]);
 

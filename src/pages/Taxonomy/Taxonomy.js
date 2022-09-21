@@ -13,7 +13,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const Taxonomy = function ({ currentLang }) {
+const Taxonomy = function ({ currentLang, contentLang }) {
   const [taxonomyList, setTaxonomyList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -313,7 +313,7 @@ const Taxonomy = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddTaxonomy currentLang={currentLang} orgDetails={placeDetails}
+        <AddTaxonomy currentLang={currentLang} contentLang={contentLang} orgDetails={placeDetails}
         audienceList={audienceList} typeList={typeList}/>
             }
       </Card>
