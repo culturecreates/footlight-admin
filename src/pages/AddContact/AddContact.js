@@ -15,7 +15,7 @@ import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
 import { fetchContact } from "../../action";
 
-const AddContact = function ({ currentLang,contactDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
+const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -28,9 +28,9 @@ const AddContact = function ({ currentLang,contactDetails,isModal=false,onsucces
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {fr:values.name},
+        name: {[contentLang]:values.name},
         email:values.email,
-        description: {fr:values.description},
+        description: {[contentLang]:values.description},
         telephone:values.telephone,
         url: {uri:values.url},
     };
@@ -91,9 +91,9 @@ const AddContact = function ({ currentLang,contactDetails,isModal=false,onsucces
     if (contactDetails) {
       setIsUpdate(true);
       form.setFieldsValue({
-        name: contactDetails.name[currentLang],
+        name: contactDetails.name[contentLang],
         email:contactDetails.email,
-        description: contactDetails.description && contactDetails.description[currentLang],
+        description: contactDetails.description && contactDetails.description[contentLang],
         telephone:contactDetails.telephone,
         url: contactDetails.url?.uri,
        

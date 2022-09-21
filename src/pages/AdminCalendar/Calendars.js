@@ -12,7 +12,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const Calendars = function ({ currentLang }) {
+const Calendars = function ({ currentLang, contentLang }) {
   const [calList, setCalList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -207,7 +207,7 @@ const Calendars = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddCalendar currentLang={currentLang} orgDetails={calendarDetails}/>
+        <AddCalendar currentLang={currentLang} contentLang={contentLang} orgDetails={calendarDetails}/>
             }
       </Card>
       {loading && <Spinner />}

@@ -24,7 +24,7 @@ const conceptArray=[
     uri:"FR"
   }
 ]
-const AddCalendar = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
+const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   
@@ -38,7 +38,7 @@ const AddCalendar = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {fr:values.name},
+        name: {[contentLang]:values.name},
         contentLanguages: values.interfaceLanguage,
         contact: values.contact
         
@@ -81,10 +81,10 @@ const AddCalendar = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
 
   useEffect(() => {
     if (orgDetails) {
-        console.log(orgDetails)
+        
       setIsUpdate(true);
       form.setFieldsValue({
-        name: orgDetails.name[currentLang],
+        name: orgDetails.name[contentLang],
         interfaceLanguage: orgDetails.contentLanguages,
         contact:orgDetails.contact
   

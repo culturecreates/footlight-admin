@@ -16,7 +16,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const AdminEvents = function ({ currentLang }) {
+const AdminEvents = function ({ currentLang,contentLang }) {
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -321,7 +321,7 @@ const AdminEvents = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddEvent currentLang={currentLang} eventDetails={eventDetails}/>
+        <AddEvent currentLang={currentLang} contentLang={contentLang} eventDetails={eventDetails}/>
             }
       </Card>
       {loading && <Spinner />}

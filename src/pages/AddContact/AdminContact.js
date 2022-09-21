@@ -15,7 +15,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const AdminContacts = function ({ currentLang }) {
+const AdminContacts = function ({ currentLang,contentLang }) {
   const [contactList, setContactList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -238,7 +238,7 @@ const AdminContacts = function ({ currentLang }) {
        
             :
            
-        <AddContact currentLang={currentLang} contactDetails={contactDetails}/>
+        <AddContact currentLang={currentLang} contentLang={contentLang} contactDetails={contactDetails}/>
             }
       </Card>
       {loading && <Spinner />}

@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { fetchPlace } from "../../action";
 
 const { Option } = Select;
-const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
+const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -84,11 +84,11 @@ const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAd
           const placeObj = {
             name: {
               
-              fr: values.name,
+              [contentLang]: values.name,
             },
             description: {
               
-              fr: values.description,
+              [contentLang]: values.description,
             },
             
            
@@ -124,11 +124,11 @@ const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAd
           const placeObj = {
             name: {
               
-              fr: values.name,
+              [contentLang]: values.name,
             },
             description: {
               
-              fr: values.description,
+              [contentLang]: values.description,
             },
             
            
@@ -189,7 +189,7 @@ const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAd
     if (placeDetails) {
       setIsUpdate(true);
       form.setFieldsValue({
-        name: placeDetails.name[currentLang],
+        name: placeDetails.name[contentLang],
         addressCountry:placeDetails.postalAddress?.addressCountry,
         addressLocality: placeDetails.postalAddress?.addressLocality,
         addressRegion:placeDetails.postalAddress?.addressRegion,
@@ -199,7 +199,7 @@ const AddPlaces = function ({ currentLang,placeDetails,isModal=false,onsuccessAd
         streetAddress: placeDetails.postalAddress?.streetAddress,
         latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
-        description: placeDetails.description && placeDetails.description[currentLang]
+        description: placeDetails.description && placeDetails.description[contentLang]
       });
       
     } else
