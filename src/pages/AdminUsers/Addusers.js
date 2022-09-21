@@ -227,8 +227,16 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
               removeCookies("calendar-id");
               storeCookies("user_calendar", null);
               storeCookies("calendar-id", undefined);
-              window.location.reload()
+              
               setLoading(false);
+              if(contactDetails?.roles.filter(item => item.status == "ACTIVE").length>1)
+               window.location.reload()
+              else
+              {
+                removeCookies("user_token");
+              storeCookies("user_token", null);
+              navigate(`/`)
+              } 
             })
             .catch((error) => {
               setLoading(false);
