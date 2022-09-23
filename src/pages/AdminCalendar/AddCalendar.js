@@ -17,11 +17,15 @@ const { Option } = Select;
 const conceptArray=[
   {
     name:"English",
-    uri:"EN"
+    uri:"ENGLISH"
   },
   {
     name:"French",
-    uri:"FR"
+    uri:"FRENCH"
+  },
+  {
+    name:"Bilingual",
+    uri:"BILINGUAL"
   }
 ]
 const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {

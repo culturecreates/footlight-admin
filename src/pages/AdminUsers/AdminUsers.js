@@ -30,7 +30,7 @@ const AdminUsers = function ({ currentLang }) {
 
   const eventTableHeader = [
     {
-      title: t("First Name", { lng: currentLang }),
+      title: t("FirstName", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
       render: (e, record) => (
@@ -44,7 +44,7 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Last Name", { lng: currentLang }),
+      title: t("LastName", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
       render: (e, record) => (
@@ -72,7 +72,7 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Joined Date", { lng: currentLang }),
+      title: t("JoinedDate", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,
@@ -118,7 +118,7 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Invited by", { lng: currentLang }),
+      title: t("Invitedby", { lng: currentLang }),
       dataIndex: "name",
       key: "name",
       width: 250,
@@ -133,7 +133,7 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Invited Date", { lng: currentLang }),
+      title: t("InvitedDate", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,
@@ -219,7 +219,7 @@ const AdminUsers = function ({ currentLang }) {
       ),
     },
     {
-      title: t("Deactivated Date", { lng: currentLang }),
+      title: t("DeactivatedDate", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       width: 200,

@@ -1022,7 +1022,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               </Form.Item>
 
               <div className="update-select-title">
-                {t("Facebook Link", { lng: currentLang })}
+                {t("FacebookLink", { lng: currentLang })}
               </div>
               <Form.Item
                 name="facebookLink"
@@ -1125,7 +1125,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             </div>
           </Col>
         </Row>
-        <div className="update-select-title">{"Description"}</div>
+        <div className="update-select-title">{t("Description", { lng: currentLang })}</div>
 
         <EventEditor />
 

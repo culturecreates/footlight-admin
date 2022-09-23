@@ -68,10 +68,11 @@ const AdminDashboard = function ({  currentLang }) {
                 
               });
              const userCalendar= getCookies("user_calendar")
-             if(userCalendar && userCalendar != "null")
+             const contentCal = getCookies("content-lang")
+             if(userCalendar && userCalendar != "null" && contentCal)
               {
                 setCalTitle(userCalendar)
-                setContentLang(getCookies("content-lang"))
+                setContentLang(contentCal)
                 
               }
              else
