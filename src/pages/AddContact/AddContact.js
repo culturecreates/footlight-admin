@@ -125,7 +125,7 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminContact.map((item) => (
+        {adminContact.filter(item=>item.isMulti==false).map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
             <Form.Item
