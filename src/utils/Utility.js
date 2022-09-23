@@ -96,35 +96,56 @@ export const adminSideMenuLinks = [
       title:"Name",
       required:true,
       placeHolder: "Enter Contact Name",
-      type:"text"
+      type:"text",
+      isMulti:false
+    },
+    {
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter Contact Name",
+      type:"text",
+      isMulti:true
     },
     {
       name: "description",
       title:"Description",
       required:false,
       placeHolder: "Enter Description",
-      type:"area"
+      type:"area",
+      isMulti:false
+    },
+    {
+      name: "descriptionEn",
+      title:"Description @en",
+      required:false,
+      placeHolder: "Enter Description",
+      type:"area",
+      isMulti:true
     },
     {
       name: "url",
       title:"Site Web",
       required:true,
       placeHolder: "Enter Url",
-      type:"text"
+      type:"text",
+      isMulti:false
     },
     {
       name: "email",
       title:"Email",
       required:false,
       placeHolder: "Enter email",
-      type:"text"
+      type:"text",
+      isMulti:false
     },
     {
       name: "telephone",
       title:"Telephone",
       required:false,
       placeHolder: "Enter Telephone",
-      type:"text"
+      type:"text",
+      isMulti:false
     },
     
   ]

@@ -327,7 +327,7 @@ export default class ServiceApi {
 
   static getEventDetail(id,isAdmin= false,includeJsonld=true) {
     return Axios({
-      url: `events/${id}`,
+      url: `event/${id}`,
       method: "GET",
       params:{
         isAdmin:true,
