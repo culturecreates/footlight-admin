@@ -329,10 +329,10 @@ export default class ServiceApi {
     return Axios({
       url: `event/${id}`,
       method: "GET",
-      params:{
-        isAdmin:true,
-        includeJsonld:includeJsonld
-      }
+      // params:{
+      //   isAdmin:true,
+      //   includeJsonld:includeJsonld
+      // }
     });
   }
 
