@@ -15,7 +15,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const Organization = function ({ currentLang }) {
+const Organization = function ({ currentLang,contentLang }) {
   const [orgList, setOrgList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -236,7 +236,7 @@ const Organization = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddOrganization currentLang={currentLang} orgDetails={placeDetails}/>
+        <AddOrganization currentLang={currentLang} contentLang={contentLang} orgDetails={placeDetails}/>
             }
       </Card>
       {loading && <Spinner />}

@@ -18,7 +18,7 @@ import AddNewContactModal from "../../components/AddNewContactModal";
 
 const { Option } = Select;
 
-const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
+const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [contactList, setContactList] = useState([]);
@@ -35,8 +35,8 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {fr:values.name},
-        description: {fr:values.description},
+        name: {[contentLang]:values.name},
+        description: {[contentLang]:values.description},
         url: {uri:values.url},
         contactPoint: values.contact ?{
             entityId: values.contact
@@ -101,8 +101,8 @@ const AddOrganization = function ({ currentLang,orgDetails,isModal=false,onsucce
         console.log(orgDetails)
       setIsUpdate(true);
       form.setFieldsValue({
-        name: orgDetails.name[currentLang],
-        description: orgDetails.description && orgDetails.description[currentLang],
+        name: orgDetails.name[contentLang],
+        description: orgDetails.description && orgDetails.description[contentLang],
         
         url: orgDetails.url?.uri,
         contact: orgDetails.contactPoint?.entityId

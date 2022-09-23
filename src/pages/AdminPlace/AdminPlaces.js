@@ -16,7 +16,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const AdminPlaces = function ({ currentLang }) {
+const AdminPlaces = function ({ currentLang, contentLang }) {
   const [placeList, setPlaceList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -252,7 +252,7 @@ const AdminPlaces = function ({ currentLang }) {
               }}
             /> 
             :
-        <AddPlaces currentLang={currentLang} placeDetails={placeDetails}/>
+        <AddPlaces currentLang={currentLang} contentLang={contentLang} placeDetails={placeDetails}/>
             }
       </Card>
       {loading && <Spinner />}

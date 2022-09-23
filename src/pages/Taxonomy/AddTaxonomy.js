@@ -16,7 +16,7 @@ import AddNewContactModal from "../../components/AddNewContactModal";
 
 const { Option } = Select;
 
-const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAdd,audienceList,typeList }) {
+const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false,onsuccessAdd,audienceList,typeList }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [treeList, setTreeList] = useState([]);
@@ -42,7 +42,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {fr:values.name},
+        name: {[contentLang]:values.name},
         
         identifier: {uri:values.url},
         broader: {uri:values.broader},
@@ -105,7 +105,7 @@ const AddTaxonomy = function ({ currentLang,orgDetails,isModal=false,onsuccessAd
         setTreeList(typeList)
       setIsUpdate(true);
       form.setFieldsValue({
-        name: orgDetails.name[currentLang],
+        name: orgDetails.name[contentLang],
         
         url: orgDetails.identifier.uri,
         broader: orgDetails.broader?.uri,

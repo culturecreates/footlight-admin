@@ -308,7 +308,7 @@ export default class ServiceApi {
   static eventList(page=1,filterArray=[],lng="fr") {
     console.log(filterArray,filterArray.find((o) => o.type === "queryString")&&filterArray.find((o) => o.type === "queryString").name)
     return Axios({
-      url: `events/list/admin-view`,
+      url: `events/event-list/admin-view`,
       method: "GET",
       params:{
          "language":lng,
@@ -338,7 +338,7 @@ export default class ServiceApi {
 
   static publishEvents(id) {
     return Axios({
-      url: `events/${id}/publish/toggle`,
+      url: `event/${id}/publish/toggle`,
       method: "POST",
       
 
@@ -418,7 +418,7 @@ export default class ServiceApi {
 
   static addEvent(payload) {
     return Axios({
-      url: `events`,
+      url: `event`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -426,7 +426,7 @@ export default class ServiceApi {
   }
   static updateEvent(payload,id) {
     return Axios({
-      url: `events/${id}`,
+      url: `event/${id}`,
       method: "PATCH",
       data: JSON.stringify(payload),
 
@@ -438,7 +438,7 @@ export default class ServiceApi {
     formdata.append("files",payload)
     formdata.append("files",new File([compressedFile], "compressed"+compressedFile.name))
     return Axios({
-      url: `events/${id}/image-upload`,
+      url: `event/${id}/image-upload`,
       method: "PATCH",
       headers: {
         'Content-Type': 'multipart/form-data'

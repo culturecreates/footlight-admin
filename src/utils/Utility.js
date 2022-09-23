@@ -465,7 +465,7 @@ export const adminSideMenuLinks = [
     },
     {
       name: "interfaceLanguage",
-      title:"Interface Language",
+      title:"Content Language",
       required:false,
       placeHolder: "Enter language",
       inputtype:"select",
