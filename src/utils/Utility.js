@@ -97,7 +97,7 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter Contact Name",
       type:"text",
-      isMulti:false
+      isMulti:false,
     },
     {
       name: "nameEn",
@@ -156,21 +156,40 @@ export const adminSideMenuLinks = [
       title:"Name",
       required:true,
       placeHolder: "Enter Orgnization Name",
-      type:"text"
+      type:"text",
+      isMulti:false
+    },
+    {
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter Orgnization Name",
+      type:"text",
+      isMulti:true
     },
     {
       name: "description",
       title:"Description",
       required:false,
       placeHolder: "Enter Description",
-      type:"area"
+      type:"area",
+      isMulti:false
+    },
+    {
+      name: "descriptionEn",
+      title:"Description @en",
+      required:false,
+      placeHolder: "Enter Description",
+      type:"area",
+      isMulti:true
     },
     {
       name: "url",
       title:"Site Web",
       required:false,
       placeHolder: "Enter Url",
-      type:"text"
+      type:"text",
+      isMulti:false
     },
   
     {
@@ -178,7 +197,8 @@ export const adminSideMenuLinks = [
       title:"Contact",
       required:false,
       placeHolder: "Select Contact",
-      type:"select"
+      type:"select",
+      isMulti:false
     },
     
   ]
@@ -189,14 +209,24 @@ export const adminSideMenuLinks = [
       title:"Name",
       required:true,
       placeHolder: "Enter Taxonomy Name",
-      type:"text"
+      type:"text",
+      isMulti:false
+    },
+    {
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter Taxonomy Name",
+      type:"text",
+      isMulti:true
     },
     {
       name: "url",
       title:"Identifier",
       required:true,
       placeHolder: "Enter Url",
-      type:"text"
+      type:"text",
+      isMulti:false
     },
   
     {
@@ -204,87 +234,115 @@ export const adminSideMenuLinks = [
       title:"Concept Scheme",
       required:true,
       placeHolder: "Select Concept",
-      type:"select"
+      type:"select",
+      isMulti:false
     },
     {
       name: "broader",
       title:"Broader",
       required:false,
       placeHolder: "Select Contact",
-      type:"Treeselect"
+      type:"Treeselect",
+      isMulti:false
     },
     
   ]
   export const adminPlaces = [
     {
       name: "name",
-      title:"PlaceName",
+      title:"Name",
       required:true,
       placeHolder: "Enter Place Name",
-      type:"geo"
+      type:"geo",
+      isMulti:false,
+    },
+    {
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter Place Name",
+      type:"geo",
+      isMulti:true
     },
     {
       name: "addressCountry",
       title:"Country",
       required:true,
       placeHolder: "Enter Country",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "addressLocality",
       title:"Locality",
       required:true,
       placeHolder: "Enter Locality",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "addressRegion",
       title:"Region",
       required:true,
       placeHolder: "Enter Region",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "postalCode",
       title:"PostalCode",
       required:true,
       placeHolder: "Enter Postal code",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "streetAddress",
       title:"StreetAddress",
       required:true,
       placeHolder: "Enter Street Address",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "latitude",
       title:"Latitude",
       required:false,
       placeHolder: "Enter Latitude",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "longitude",
       title:"Longitude",
       required:false,
       placeHolder: "Enter Longitude",
-      type:"text"
+      type:"text",
+      isMulti:false,
     },
     {
       name: "description",
       title:"Description",
       required:false,
       placeHolder: "Enter Description",
-      type:"area"
+      type:"area",
+      isMulti:false,
+    },
+    {
+      name: "descriptionEn",
+      title:"Description @en",
+      required:false,
+      placeHolder: "Enter Description",
+      type:"area",
+      isMulti:true,
     },
     {
       name: "containedInPlace",
       title:"ContainedInPlace",
       required:false,
       placeHolder: "Enter containedInPlace",
-      type:"select"
+      type:"select",
+      isMulti:false,
     },
     
     

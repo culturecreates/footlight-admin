@@ -80,8 +80,11 @@ const AdminDashboard = function ({  currentLang }) {
                 storeCookies("user_calendar", events[0].name.fr);
                 setCalTitle(events[0].name.fr) 
                 storeCookies("calendar-id", events[0].uuid);
-                setContentLang(events[0].contentLanguages==="FR"?"fr":"en")
-                storeCookies("content-lang",events[0].contentLanguages==="FR"?"fr":"en");
+                setContentLang(events[0].contentLanguages==="FR"?"fr":
+                events[0].contentLanguages==="BILINGUAL"?"bilengual":"en")
+                storeCookies("content-lang",events[0].contentLanguages==="FR"?"fr":
+                events[0].contentLanguages==="BILINGUAL"?"bilengual":
+                "en");
               }
 
             }
@@ -122,7 +125,9 @@ const AdminDashboard = function ({  currentLang }) {
     
       storeCookies("user_calendar", item.name.fr);
       storeCookies("calendar-id", item.uuid);
-      storeCookies("content-lang",item.contentLanguages==="FR"?"fr":"en");
+      storeCookies("content-lang",item.contentLanguages==="FR"?"fr":
+      item.contentLanguages==="BILINGUAL"?"bilengual":
+                "en");
       setOpenKeys([])
       window.location.reload()
     }

@@ -28,12 +28,21 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {[contentLang]:values.name},
+        
         email:values.email,
-        description: {[contentLang]:values.description},
+       
         telephone:values.telephone,
         url: {uri:values.url},
     };
+    if(contentLang == "bilengual")
+    {
+      postalObj.name = {fr:values.name, en: values.nameEn};
+      postalObj.description= {fr:values.description ,en:values.descriptionEn}
+    }
+    else{
+     postalObj.name = {[contentLang]:values.name};
+     postalObj.description= {[contentLang]:values.description}
+    }
     setLoading(true)
     if (contactDetails)
     ServiceApi.updateContact(postalObj,contactDetails.uuid)
@@ -99,6 +108,21 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
        
         
       });
+      if(contentLang == "bilengual")
+      {
+        form.setFieldsValue({
+          name: contactDetails.name?.fr,
+          nameEn: contactDetails.name?.en,
+          description: contactDetails.description && contactDetails.description?.fr,
+          descriptionEn: contactDetails.description && contactDetails.description?.en,
+        })
+      }
+      else{
+        form.setFieldsValue({
+          name: contactDetails.name[contentLang],
+          description: contactDetails.description && contactDetails.description[contentLang],
+        })
+      }
       
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,9 +149,10 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminContact.filter(item=>item.isMulti==false).map((item) => (
+        {adminContact.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
-            <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
+            <div className="update-select-title">{t(item.title,{ lng: currentLang })} {((item.title == "Name" || item.title == "Description" ) && contentLang == "bilengual") && "@fr" }
+           </div>
             <Form.Item
               name={item.name}
               className="status-comment-item"

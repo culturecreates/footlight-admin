@@ -103,6 +103,15 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             },
             
           };
+          if(contentLang == "bilengual")
+          {
+            placeObj.name = {fr:values.name, en: values.nameEn};
+            placeObj.description= {fr:values.description ,en:values.descriptionEn}
+          }
+          else{
+            placeObj.name = {[contentLang]:values.name};
+            placeObj.description= {[contentLang]:values.description}
+          }
           ServiceApi.updatePlace(placeObj,placeDetails.uuid)
             .then((response) => {
                 setLoading(false)
@@ -143,6 +152,15 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             },
             
           };
+          if(contentLang == "bilengual")
+          {
+            placeObj.name = {fr:values.name, en: values.nameEn};
+            placeObj.description= {fr:values.description ,en:values.descriptionEn}
+          }
+          else{
+            placeObj.name = {[contentLang]:values.name};
+            placeObj.description= {[contentLang]:values.description}
+          }
           ServiceApi.addPlace(placeObj)
             .then((response) => {
                
@@ -201,6 +219,22 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
         description: placeDetails.description && placeDetails.description[contentLang]
       });
+
+      if(contentLang == "bilengual")
+      {
+        form.setFieldsValue({
+          name: placeDetails.name?.fr,
+          nameEn: placeDetails.name?.en,
+          description: placeDetails.description && placeDetails.description?.fr,
+          descriptionEn: placeDetails.description && placeDetails.description?.en,
+        })
+      }
+      else{
+        form.setFieldsValue({
+          name: placeDetails.name[contentLang],
+          description: placeDetails.description && placeDetails.description[contentLang],
+        })
+      }
       
     } else
       form.setFieldsValue({
@@ -233,9 +267,10 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminPlaces.map((item) => (
+        {adminPlaces.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
-            <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
+            <div className="update-select-title">{t(item.title,{ lng: currentLang })}
+            {((item.title == "Name" || item.title == "Description" ) && contentLang == "bilengual") && " @fr" }</div>
             <Form.Item
               name={item.name}
               className="status-comment-item"

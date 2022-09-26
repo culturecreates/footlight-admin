@@ -5,7 +5,7 @@ import {    Form  } from "antd";
 
 var Size = Quill.import("attributors/style/size");
 Size.whitelist = ["12px", "16px", "18px"];
-const EventEditor = function ({currentLang
+const EventEditor = function ({currentLang,formName="desc"
 }) {
     const [htmlFile, setHtmlFile] = useState("");
 
@@ -93,7 +93,7 @@ const EventEditor = function ({currentLang
       };
       
   return (
-    <Form.Item name={"desc"} rules={[{ required: false }]}>
+    <Form.Item name={formName} rules={[{ required: false }]}>
     <ReactQuill
     theme={"snow"}
     value={htmlFile || ""}

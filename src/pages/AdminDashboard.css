@@ -219,3 +219,8 @@
 .dashboard-sider .cal-menu.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: #474543;
 }
+.flex-centre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
