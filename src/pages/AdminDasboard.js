@@ -30,13 +30,14 @@ import { fetchCal } from "../action";
 
 const { Content, Sider } = Layout;
 
-const AdminDashboard = function ({  currentLang }) {
+const AdminDashboard = function () {
     const [routePath, setRoutePath] = useState("/admin/events");
     const [loading, setLoading] = useState(false);
     const [calList, setCalList] = useState([]);
     const [calTitle, setCalTitle] = useState("")
     const [openKeys, setOpenKeys] = useState([])
     const [contentLang, setContentLang] = useState("fr")
+    const [currentLang, setCurrentLang] = useState("en")
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
@@ -47,7 +48,11 @@ const AdminDashboard = function ({  currentLang }) {
        
       }, [location]);
       useEffect(() => {
-       
+        if(getCookies("user_token")?.user?.interfaceLanguage)
+        {
+          const lang = getCookies("user_token")?.user?.interfaceLanguage;
+         setCurrentLang(lang=="FR"?"fr":"en")
+        }
       getCalendars()
       }, []);
 
