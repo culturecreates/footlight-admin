@@ -219,3 +219,28 @@
 .dashboard-sider .cal-menu.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: #474543;
 }
+.flex-centre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-status-postponed{
+    background: red;
+    display: inline-block;
+    padding: 1px 15px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.event-status-cancelled{
+    background: yellow;
+    display: inline-block;
+    padding: 1px 15px;
+    border-radius: 10px;
+    color: #000;
+    font-size: 13px;
+    font-weight: 600;
+}

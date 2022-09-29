@@ -339,7 +339,7 @@ export default class ServiceApi {
   static publishEvents(id) {
     return Axios({
       url: `event/${id}/publish/toggle`,
-      method: "POST",
+      method: "PATCH",
       
 
     });

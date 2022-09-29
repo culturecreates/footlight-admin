@@ -48,6 +48,15 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
         broader: {uri:values.broader},
         conceptScheme: {uri:values.conceptScheme},
     };
+    if(contentLang == "bilengual")
+    {
+      postalObj.name = {fr:values.name, en: values.nameEn};
+    
+    }
+    else{
+     postalObj.name = {[contentLang]:values.name};
+     
+    }
     setLoading(true)
     if (orgDetails)
     ServiceApi.updateTaxonomy(postalObj,orgDetails.uuid)
@@ -112,6 +121,19 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
         conceptScheme: orgDetails.conceptScheme.uri,
         
       });
+      if(contentLang == "bilengual")
+      {
+        form.setFieldsValue({
+          name: orgDetails.name?.fr,
+          nameEn: orgDetails.name?.en,
+         
+        })
+      }
+      else{
+        form.setFieldsValue({
+          name: orgDetails.name[contentLang],
+        })
+      }
       
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,9 +164,10 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminTaxonomy.map((item) => (
+        {adminTaxonomy.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
-            <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
+            <div className="update-select-title">{t(item.title,{ lng: currentLang })}
+            {((item.title == "Name" ) && contentLang == "bilengual") && "@fr" }</div>
             <Form.Item
               name={item.name}
               className="status-comment-item"

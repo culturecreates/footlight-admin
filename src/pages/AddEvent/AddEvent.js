@@ -42,7 +42,7 @@ import {
   fetchPlace,
   fetchTypes,
 } from "../../action";
-import { fbUrlValidate, timeZone, urlValidate, videoUrlValidate } from "../../utils/Utility";
+import { fbUrlValidate, getCookies, timeZone, urlValidate, videoUrlValidate } from "../../utils/Utility";
 import AddNewContactModal from "../../components/AddNewContactModal";
 import PriceModal from "../../components/PriceModal/PriceModal";
 import Spinner from "../../components/Spinner";
@@ -94,6 +94,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const orgStore = useSelector((state) => state.org);
   const audienceStore = useSelector((state) => state.audience);
   const typesStore = useSelector((state) => state.types);
+
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
   const formatarray = (data) => {
     return data.map((item) => {
@@ -254,12 +256,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         });
     }
     const eventObj = {
-      name: {
-        [contentLang]: values.title,
-      },
-      description: {
-        [contentLang]: values.desc,
-      },
+      languages: values.languages,
+      eventStatus: values.eventStatus,
       startDate: !isRecurring
         ? ServiceApi.parseDate(
             moment(values.startDate).format("YYYY-MM-DD"),
@@ -322,6 +320,15 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           })
         : undefined,
     };
+    if(contentLang == "bilengual")
+    {
+      eventObj.name = {fr:values.title, en: values.titleEn};
+      eventObj.description= {fr:values.desc ,en:values.descEn}
+    }
+    else{
+      eventObj.name = {[contentLang]:values.title};
+      eventObj.description= {[contentLang]:values.desc}
+    }
     if (isEndDate && !isRecurring)
       eventObj.endDate = moment(values.endDate).format("YYYY-MM-DDTHH:mm:ss");
     if (isRecurring) {
@@ -422,6 +429,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
       setYoutubeLink(eventDetails?.videoUrl);
       form.setFieldsValue({
+        languages: eventDetails.languages,
+        eventStatus: eventDetails.eventStatus,
         contact: eventDetails.contactPoint?.uuid,
         desc: eventDetails.description
           ? eventDetails.description[contentLang]
@@ -472,6 +481,31 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           (item) => item?.identifier?.uri
         ),
       });
+      if(contentLang == "bilengual")
+      {
+        form.setFieldsValue({
+          title: eventDetails.name?.fr,
+          titleEn: eventDetails.name?.en,
+          desc: eventDetails.description && eventDetails.description.fr? (eventDetails.description.fr == "<p><br></p>"
+          ? "<p>&nbsp;</p>"
+          : eventDetails.description.fr):"<p>&nbsp;</p>",
+          descEn: eventDetails.description && eventDetails.description.en? (eventDetails.description.en == "<p><br></p>"
+          ? "<p>&nbsp;</p>"
+          : eventDetails.description.en):"<p>&nbsp;</p>",
+        })
+      }
+      else{
+        form.setFieldsValue({
+          title: eventDetails.name[contentLang],
+          desc: eventDetails.description
+          ? eventDetails.description[contentLang]
+            ? eventDetails.description[contentLang] === "<p><br></p>"
+              ? "<p>&nbsp;</p>"
+              : eventDetails.description[contentLang]
+            : "<p>&nbsp;</p> "
+          : "<p>&nbsp;</p>",
+        })
+      }
       if (eventDetails.locations) {
         const eventFormLoc = eventDetails.locations.map((item) => {
           const obj = {
@@ -544,6 +578,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         frequency: "DAILY",
         timeZone: "Canada/Eastern",
         desc: "",
+        descEn:""
       });
     setFormVaue(form.getFieldsValue());
    
@@ -627,6 +662,23 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     setOfferConfig(config);
     setOfferIds(ids);
   };
+
+  const handlePublish = (id) => {
+    
+    setLoading(true);
+    ServiceApi.publishEvents(id)
+      .then((response) => {
+        
+        if (response && response.data && response.data) {
+          message.success("Event published successfully")
+          navigate(`/admin/events`);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
   return (
     <Layout className="add-event-layout">
       <Form
@@ -641,7 +693,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       >
         <Row>
           <Col flex="0 1 450px">
-            <div className="update-select-title">{t("Title")}</div>
+            <div className="update-select-title">{t("Title")} {contentLang == "bilengual" && "@fr"}</div>
             <Form.Item
               name="title"
               className="status-comment-item"
@@ -655,6 +707,25 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             >
               <Input placeholder="Enter Event Name" className="replace-input" />
             </Form.Item>
+            {
+              contentLang == "bilengual" &&
+              <>
+              <div className="update-select-title">{t("Title")} @en</div>
+            <Form.Item
+              name="titleEn"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: true,
+                  message: "Event name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Event Name" className="replace-input" />
+            </Form.Item>
+              </>
+            }
             {!isRecurring && (
               <div className="flex-align">
                 <div className="date-div">
@@ -1125,9 +1196,69 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             </div>
           </Col>
         </Row>
+        <div style={{display:contentLang == "bilengual" && "flex"}}>
+          <div style={{minWidth:"50%", marginRight:"5px"}}>
         <div className="update-select-title">{t("Description", { lng: currentLang })}</div>
 
-        <EventEditor />
+        <EventEditor formName="desc"/>
+        </div>
+        {
+              contentLang == "bilengual" &&
+              <div style={{minWidth:"50%"}}>
+              <div className="update-select-title">{t("Description", { lng: currentLang })} @en</div>
+
+<EventEditor formName="descEn" />
+</div>
+        }
+        </div>
+
+        <Row>
+          <Col flex="0 1 450px">
+          <div className="update-select-title">{t("EventStatus", { lng: currentLang })}</div>
+        <Form.Item
+        name="eventStatus"
+        className="status-comment-item"
+        rules={[{ required: false, message: "Status required" }]}
+      >
+        <Select
+          style={{ width: 337 }}
+          placeholder={`Select Event Status`}
+          key="updateDropdownKey"
+          className="search-select"
+          optionFilterProp="children"
+          defaultValue="SCHEDULED"
+          // onChange={handleChange}
+        >
+          <Option value="SCHEDULED">SCHEDULED</Option>
+          <Option value="POSTPONED">POSTPONED</Option>
+          <Option value="CANCELLED">CANCELLED</Option>
+        </Select>
+      </Form.Item>
+      </Col>
+      <Col>
+      <div className="update-select-title">{t("Language", { lng: currentLang })}</div>
+        <Form.Item
+        name="languages"
+        className="status-comment-item"
+        rules={[{ required: false, message: "Language required" }]}
+      >
+        <Select
+          style={{ width: 337 }}
+          placeholder={`Select Language`}
+          key="updateDropdownKey"
+          className="search-select"
+          optionFilterProp="children"
+          mode="multiple"
+          // defaultValue="French"
+          // onChange={handleChange}
+        >
+          <Option value="English">English</Option>
+          <Option value="French">French</Option>
+          
+        </Select>
+      </Form.Item>
+      </Col>
+      </Row>
 
         <Form.Item className="submit-items">
           <Button
@@ -1153,6 +1284,22 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           >
             {isUpdate ? "Update" : "Save"}
           </Button>
+          {eventDetails && ((getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN" || checkAdmin.role === "EDITOR")))
+          ||(checkAdmin && (checkAdmin.role === "GUEST" || checkAdmin.role === "CONTRIBUTOR") && getCookies("user_token")?.user?.id===eventDetails?.creator?.userId )
+          )&& eventDetails.publishState=="Draft" &&
+          <div className="flex-centre">
+            <div style={{width:"125px"}}>This event is in draft mode</div>
+            <Button
+            size="large"
+            
+            onClick={() => {
+              handlePublish(eventDetails.uuid)
+            }}
+          >
+            Publish
+          </Button>
+          </div>
+}
         </Form.Item>
       </Form>
       {showAddContact && (

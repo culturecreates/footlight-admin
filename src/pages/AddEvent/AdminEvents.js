@@ -68,7 +68,13 @@ const AdminEvents = function ({ currentLang,contentLang }) {
           <Avatar size="large" src={record?.image?.thumbnail?.uri} />
           </Col>
           <Col flex="1 1 150px">
+            <div>
           {record.name[currentLang]}
+          </div>
+          {record.eventStatus && record.eventStatus !=="SCHEDULED" &&
+          <div className={record.eventStatus==="POSTPONED"?"event-status-postponed"
+          :"event-status-cancelled"}>POSTPONED</div>}
+
           </Col>
         </Row>
       ),
