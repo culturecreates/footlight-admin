@@ -256,7 +256,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         });
     }
     const eventObj = {
-     
+      languages: values.languages,
+      eventStatus: values.eventStatus,
       startDate: !isRecurring
         ? ServiceApi.parseDate(
             moment(values.startDate).format("YYYY-MM-DD"),
@@ -428,6 +429,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
       setYoutubeLink(eventDetails?.videoUrl);
       form.setFieldsValue({
+        languages: eventDetails.languages,
+        eventStatus: eventDetails.eventStatus,
         contact: eventDetails.contactPoint?.uuid,
         desc: eventDetails.description
           ? eventDetails.description[contentLang]
@@ -690,7 +693,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       >
         <Row>
           <Col flex="0 1 450px">
-            <div className="update-select-title">{t("Title")}</div>
+            <div className="update-select-title">{t("Title")} {contentLang == "bilengual" && "@fr"}</div>
             <Form.Item
               name="title"
               className="status-comment-item"
@@ -1208,6 +1211,54 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 </div>
         }
         </div>
+
+        <Row>
+          <Col flex="0 1 450px">
+          <div className="update-select-title">{t("EventStatus", { lng: currentLang })}</div>
+        <Form.Item
+        name="eventStatus"
+        className="status-comment-item"
+        rules={[{ required: false, message: "Status required" }]}
+      >
+        <Select
+          style={{ width: 337 }}
+          placeholder={`Select Event Status`}
+          key="updateDropdownKey"
+          className="search-select"
+          optionFilterProp="children"
+          defaultValue="SCHEDULED"
+          // onChange={handleChange}
+        >
+          <Option value="SCHEDULED">SCHEDULED</Option>
+          <Option value="POSTPONED">POSTPONED</Option>
+          <Option value="CANCELLED">CANCELLED</Option>
+        </Select>
+      </Form.Item>
+      </Col>
+      <Col>
+      <div className="update-select-title">{t("Language", { lng: currentLang })}</div>
+        <Form.Item
+        name="languages"
+        className="status-comment-item"
+        rules={[{ required: false, message: "Language required" }]}
+      >
+        <Select
+          style={{ width: 337 }}
+          placeholder={`Select Language`}
+          key="updateDropdownKey"
+          className="search-select"
+          optionFilterProp="children"
+          mode="multiple"
+          // defaultValue="French"
+          // onChange={handleChange}
+        >
+          <Option value="English">English</Option>
+          <Option value="French">French</Option>
+          
+        </Select>
+      </Form.Item>
+      </Col>
+      </Row>
 
         <Form.Item className="submit-items">
           <Button

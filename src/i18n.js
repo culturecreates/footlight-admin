@@ -10,6 +10,7 @@ i18n
     resources: {
       en: {
         translations: {
+          EventStatus:"Event Status",
           "Event Type":"Event Type",
           DeactivatedDate:"Deactivated Date",
           Deactivated:"Deactivated",
@@ -87,6 +88,7 @@ i18n
       },
       fr: {
         translations: {
+          EventStatus:"Événement Status",
           "Event Type":"Type d'événement",
           DeactivatedDate:"Date de désactivation",
           Deactivated:"Désactivé",
