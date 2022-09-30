@@ -540,15 +540,26 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter name",
       inputtype:"text",
-      type:"register"
+      type:"register",
+      isMulti:false
     },
     {
-      name: "interfaceLanguage",
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter name",
+      inputtype:"text",
+      type:"register",
+      isMulti:true
+    },
+    {
+      name: "contentLanguage",
       title:"Content Language",
       required:false,
       placeHolder: "Enter language",
       inputtype:"select",
-      type:"select"
+      type:"select",
+      isMulti:false
     },
     {
       name: "contact",
@@ -556,7 +567,8 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter contact",
       inputtype:"text",
-      type:"register"
+      type:"register",
+      isMulti:false
     },
   ]
 

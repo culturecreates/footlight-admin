@@ -73,7 +73,7 @@ const AdminEvents = function ({ currentLang,contentLang }) {
           </div>
           {record.eventStatus && record.eventStatus !=="SCHEDULED" &&
           <div className={record.eventStatus==="POSTPONED"?"event-status-postponed"
-          :"event-status-cancelled"}>POSTPONED</div>}
+          :"event-status-cancelled"}>{record.eventStatus}</div>}
 
           </Col>
         </Row>
