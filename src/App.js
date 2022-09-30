@@ -40,12 +40,12 @@ function App() {
   //   }
   // };
   useEffect(() => {
-    if( langStore)
-    {
+    // if( langStore)
+    // {
       
-      onChange(langStore==="en"?true:false)
+    //   onChange(langStore==="en"?true:false)
      
-    }
+    // }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [langStore]);
@@ -60,7 +60,7 @@ function App() {
      moment.locale("fr-ca");
     }
     
-    // window.location.href = '/user/capability' ;  
+   
     else
     {
       dispatch(changeLang("en")); 
@@ -70,7 +70,7 @@ function App() {
      moment.locale("en");
     }
    
-    // window.location.href = '/admin/segment' ;
+  
     
     
   }

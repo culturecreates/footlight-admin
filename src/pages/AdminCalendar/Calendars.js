@@ -12,7 +12,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const Calendars = function ({ currentLang, contentLang }) {
+const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
   const [calList, setCalList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -136,6 +136,7 @@ const Calendars = function ({ currentLang, contentLang }) {
           const events = response.data.data;
          
           setCalList(events);
+          updateContentLang(events)
          
             if(response.data.totalCount)
             setTotalPage(response.data.totalCount)

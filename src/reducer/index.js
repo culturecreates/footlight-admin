@@ -9,6 +9,7 @@ import types from "./TypesReducer"
 import events from "./EventsReducer"
 import eventBack from "./EventBackReducer"
 import cal from "./CalReducer"
+import langContent from "./LangContentReducer"
 
 export default combineReducers({
   filter,
@@ -20,6 +21,7 @@ export default combineReducers({
   events,
   eventBack,
   lang,
-  cal
+  cal,
+  langContent
   
 });

@@ -5,12 +5,16 @@ import "./Profile.css";
 
 import ServiceApi from "../../services/Service";
 import { useTranslation } from "react-i18next";
-import { adminProfile, getCookies } from "../../utils/Utility";
+import { adminProfile, getCookies, storeCookies } from "../../utils/Utility";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLang } from "../../action";
 
 
-const Profile = function ({ currentLang }) {
+const Profile = function ({ currentLang,setStoreLang }) {
     const [profileDate, setProfileData] = useState()
+    const dispatch = useDispatch();
+    const {  i18n } = useTranslation();
     const { t } = useTranslation();
     const navigate = useNavigate();
     useEffect(()=>{
@@ -19,6 +23,10 @@ const Profile = function ({ currentLang }) {
           if (response && response.data) {
            
             setProfileData(response.data)
+            const lang = response.data?.interfaceLanguage;
+        storeCookies("user_lang",lang=="FR"?"fr":"en" );
+        dispatch(changeLang(lang=="FR"?"fr":"en")); 
+        setStoreLang(lang=="FR"?"fr":"en")
           }
         })
         .catch((error) => {
