@@ -102,7 +102,7 @@ export const adminSideMenuLinks = [
     {
       name: "nameEn",
       title:"Name @en",
-      required:true,
+      required:false,
       placeHolder: "Enter Contact Name",
       type:"text",
       isMulti:true
@@ -162,7 +162,7 @@ export const adminSideMenuLinks = [
     {
       name: "nameEn",
       title:"Name @en",
-      required:true,
+      required: false,
       placeHolder: "Enter Orgnization Name",
       type:"text",
       isMulti:true
@@ -215,7 +215,7 @@ export const adminSideMenuLinks = [
     {
       name: "nameEn",
       title:"Name @en",
-      required:true,
+      required: false,
       placeHolder: "Enter Taxonomy Name",
       type:"text",
       isMulti:true
@@ -259,7 +259,7 @@ export const adminSideMenuLinks = [
     {
       name: "nameEn",
       title:"Name @en",
-      required:true,
+      required:false,
       placeHolder: "Enter Place Name",
       type:"geo",
       isMulti:true
