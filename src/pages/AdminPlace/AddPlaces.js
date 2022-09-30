@@ -13,7 +13,7 @@ import {
   CloseOutlined,
   
 } from "@ant-design/icons";
-import { adminPlaces } from "../../utils/Utility";
+import { adminPlaces, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
@@ -91,7 +91,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               [contentLang]: values.description,
             },
             
-           
+           openingHours: values.openingHours,
+
             postalAddressId: {
               entityId: placeDetails.postalAddress.uuid,
             },
@@ -140,7 +141,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               [contentLang]: values.description,
             },
             
-           
+            openingHours: values.openingHours,
             postalAddressId: {
               entityId: response.data.id,
             },
@@ -208,6 +209,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       setIsUpdate(true);
       form.setFieldsValue({
         name: placeDetails.name[contentLang],
+        openingHours: placeDetails.openingHours,
         addressCountry:placeDetails.postalAddress?.addressCountry,
         addressLocality: placeDetails.postalAddress?.addressLocality,
         addressRegion:placeDetails.postalAddress?.addressRegion,
@@ -355,6 +357,36 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           </>
         ))}
 
+<div className="update-select-title">
+                {t("Opening Hours", { lng: currentLang })} 
+              </div>
+              <Form.Item
+                name="openingHours"
+                className="status-comment-item"
+                rules={[
+                  {
+                    required: false,
+                    message: "Event name required",
+                    whitespace: true,
+                  },
+                  {
+                    message: "Enter valid url.",
+                    validator: (_, value) => {
+                      if (urlValidate(value)) {
+                        return Promise.resolve();
+                      } else {
+                        return Promise.reject("Enter valid url.");
+                      }
+                    },
+                  },
+                ]}
+                validateTrigger="onBlur"
+              >
+                <Input
+                  placeholder="Enter Opening hours Url"
+                  className="replace-input"
+                />
+              </Form.Item>
         <Form.Item className="submit-items">
           <Button
             size="large"

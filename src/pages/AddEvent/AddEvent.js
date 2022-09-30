@@ -716,7 +716,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               className="status-comment-item"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Event name required",
                   whitespace: true,
                 },
