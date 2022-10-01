@@ -1210,7 +1210,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         </Row>
         <div style={{display:contentLang == "bilengual" && "flex"}}>
           <div style={{minWidth:"50%", marginRight:"5px"}}>
-        <div className="update-select-title">{t("Description", { lng: currentLang })}</div>
+        <div className="update-select-title">{t("Description", { lng: currentLang })} {contentLang == "bilengual" && "@fr"}</div>
 
         <EventEditor formName="desc"/>
         </div>

@@ -82,7 +82,7 @@ const Profile = function ({ currentLang,setStoreLang }) {
   }
   <div className="profile-keys">
         <div>{"Role"}</div>
-        <div>:&nbsp;{profileDate?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}</div>
+        <div>:&nbsp;{profileDate.isSuperAdmin?"Super Admin": profileDate?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))?.role}</div>
         </div>
   </>
 }

@@ -488,7 +488,7 @@ export const adminSideMenuLinks = [
     },
     {
       name: "nameEn",
-      title:"Name @en",
+      title:"Name",
       required:true,
       placeHolder: "Enter name",
       inputtype:"text",

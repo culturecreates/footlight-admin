@@ -152,7 +152,8 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
       >
         {adminCalendar.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
-            <div className="update-select-title">{t(item.title,{ lng: currentLang })} {((item.title == "Name" || item.title == "Description" ) && contentLang == "bilengual") && "@fr" }</div>
+            <div className="update-select-title">{t(item.title,{ lng: currentLang })} {((item.name == "name" || item.title == "Description" ) && contentLang == "bilengual") && "@fr" }
+            {((item.name == "nameEn" ) && contentLang == "bilengual") && "@en" }</div>
             <Form.Item
               name={item.name}
               className="status-comment-item"
