@@ -1,4 +1,4 @@
-import { FILTER, PLACES,CONTACTS, LANG, ORG, AUDIENCE, TYPES, EVENTLIST, EVENTBACK, CAL} from "./Types";
+import { FILTER, PLACES,CONTACTS, LANG, ORG, AUDIENCE, TYPES, EVENTLIST, EVENTBACK, CAL, LANGCONTENT} from "./Types";
 
 export const fetchFilter = (data) => {
   return {
@@ -56,6 +56,13 @@ export const getBackEvents = (data) => {
 export const changeLang = (data) => {
   return {
     type: LANG,
+    data,
+  };
+};
+
+export const changeLangContent = (data) => {
+  return {
+    type: LANGCONTENT,
     data,
   };
 };

@@ -12,7 +12,7 @@ import { getCookies } from "../../utils/Utility";
 
 const { confirm } = Modal;
 
-const Calendars = function ({ currentLang, contentLang }) {
+const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
   const [calList, setCalList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -36,7 +36,8 @@ const Calendars = function ({ currentLang, contentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </Col>
         </Row>
       ),
@@ -136,6 +137,7 @@ const Calendars = function ({ currentLang, contentLang }) {
           const events = response.data.data;
          
           setCalList(events);
+          updateContentLang(events)
          
             if(response.data.totalCount)
             setTotalPage(response.data.totalCount)
@@ -154,7 +156,9 @@ const Calendars = function ({ currentLang, contentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/calendars`)}>{t("Calendars")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{calendarDetails?calendarDetails.name[currentLang]:t("AddCalendar")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{calendarDetails?(calendarDetails.name[currentLang]?calendarDetails.name[currentLang]:
+          currentLang==="fr"?
+          calendarDetails.name["en"]:calendarDetails.name["fr"]):t("AddCalendar")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

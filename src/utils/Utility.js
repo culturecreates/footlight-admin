@@ -91,22 +91,8 @@ export const adminSideMenuLinks = [
   }
 
   export const adminContact=[
-    {
-      name: "name",
-      title:"Name",
-      required:true,
-      placeHolder: "Enter Contact Name",
-      type:"text",
-      isMulti:false,
-    },
-    {
-      name: "nameEn",
-      title:"Name @en",
-      required:false,
-      placeHolder: "Enter Contact Name",
-      type:"text",
-      isMulti:true
-    },
+    
+    
     {
       name: "description",
       title:"Description",
@@ -151,22 +137,7 @@ export const adminSideMenuLinks = [
   ]
   
   export const adminOrg=[
-    {
-      name: "name",
-      title:"Name",
-      required:true,
-      placeHolder: "Enter Orgnization Name",
-      type:"text",
-      isMulti:false
-    },
-    {
-      name: "nameEn",
-      title:"Name @en",
-      required: false,
-      placeHolder: "Enter Orgnization Name",
-      type:"text",
-      isMulti:true
-    },
+    
     {
       name: "description",
       title:"Description",
@@ -204,22 +175,8 @@ export const adminSideMenuLinks = [
   ]
 
   export const adminTaxonomy=[
-    {
-      name: "name",
-      title:"Name",
-      required:true,
-      placeHolder: "Enter Taxonomy Name",
-      type:"text",
-      isMulti:false
-    },
-    {
-      name: "nameEn",
-      title:"Name @en",
-      required: false,
-      placeHolder: "Enter Taxonomy Name",
-      type:"text",
-      isMulti:true
-    },
+   
+    
     {
       name: "url",
       title:"Identifier",
@@ -248,22 +205,8 @@ export const adminSideMenuLinks = [
     
   ]
   export const adminPlaces = [
-    {
-      name: "name",
-      title:"Name",
-      required:true,
-      placeHolder: "Enter Place Name",
-      type:"geo",
-      isMulti:false,
-    },
-    {
-      name: "nameEn",
-      title:"Name @en",
-      required:false,
-      placeHolder: "Enter Place Name",
-      type:"geo",
-      isMulti:true
-    },
+   
+    
     {
       name: "addressCountry",
       title:"Country",
@@ -540,15 +483,26 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter name",
       inputtype:"text",
-      type:"register"
+      type:"register",
+      isMulti:false
     },
     {
-      name: "interfaceLanguage",
+      name: "nameEn",
+      title:"Name @en",
+      required:true,
+      placeHolder: "Enter name",
+      inputtype:"text",
+      type:"register",
+      isMulti:true
+    },
+    {
+      name: "contentLanguage",
       title:"Content Language",
       required:false,
       placeHolder: "Enter language",
       inputtype:"select",
-      type:"select"
+      type:"select",
+      isMulti:false
     },
     {
       name: "contact",
@@ -556,7 +510,8 @@ export const adminSideMenuLinks = [
       required:true,
       placeHolder: "Enter contact",
       inputtype:"text",
-      type:"register"
+      type:"register",
+      isMulti:false
     },
   ]
 

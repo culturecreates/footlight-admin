@@ -25,8 +25,12 @@ import Profile from "./Profile/Profile";
 import AdminUsers from "./AdminUsers/AdminUsers";
 import Calendars from "./AdminCalendar/Calendars";
 import Spinner from "../components/Spinner";
-import { useDispatch } from "react-redux";
-import { fetchCal } from "../action";
+import { useDispatch,useSelector } from "react-redux";
+import { changeLang, changeLangContent, fetchCal } from "../action";
+import enUS from "antd/lib/locale/en_US";
+import frCA from "antd/lib/locale/fr_CA";
+import moment from "moment";
+
 
 const { Content, Sider } = Layout;
 
@@ -38,21 +42,56 @@ const AdminDashboard = function () {
     const [openKeys, setOpenKeys] = useState([])
     const [contentLang, setContentLang] = useState("fr")
     const [currentLang, setCurrentLang] = useState("en")
-    const { t } = useTranslation();
+    const [locale, setLocale] = useState(frCA);
+    const { t,i18n } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const sideMenuLinks= getCookies("user_token")?.user?.isSuperAdmin?adminSideMenuLinks: adminSideMenuLinks.filter(item=>item.isShow===true);
+   
+    const langStore = useSelector((state) => state.lang);
+   
     useEffect(() => {
         setRoutePath(location.pathname);
        
       }, [location]);
+
       useEffect(() => {
-        if(getCookies("user_token")?.user?.interfaceLanguage)
+        if(!langStore)
         {
-          const lang = getCookies("user_token")?.user?.interfaceLanguage;
-         setCurrentLang(lang=="FR"?"fr":"en")
+        
+          const lang = getCookies("user_lang");
+          dispatch(changeLang(lang)); 
+          setStoreLang(lang)
         }
+        else
+         setStoreLang(langStore)
+     
+         
+      }, [langStore]);
+
+      const setStoreLang=(lang)=>{
+        console.log("ayatt",lang)
+        if(lang == "fr"){
+            
+          i18n.changeLanguage("fr");
+         setCurrentLang("fr")
+         setLocale(frCA)
+         moment.locale("fr-ca");
+        }
+        
+       
+        else
+        {
+         
+          i18n.changeLanguage("en");
+         setCurrentLang("en")
+         setLocale(enUS)
+         moment.locale("en");
+        }
+      }
+      useEffect(() => {
+        
       getCalendars()
       }, []);
 
@@ -78,18 +117,21 @@ const AdminDashboard = function () {
               {
                 setCalTitle(userCalendar)
                 setContentLang(contentCal)
-                
+                dispatch(changeLangContent(contentCal)); 
               }
              else
               {
                 storeCookies("user_calendar", events[0].name.fr);
                 setCalTitle(events[0].name.fr) 
                 storeCookies("calendar-id", events[0].uuid);
-                setContentLang(events[0].contentLanguages==="FR"?"fr":
-                events[0].contentLanguages==="BILINGUAL"?"bilengual":"en")
-                storeCookies("content-lang",events[0].contentLanguages==="FR"?"fr":
-                events[0].contentLanguages==="BILINGUAL"?"bilengual":
+                setContentLang(events[0].contentLanguage==="FRENCH"?"fr":
+                events[0].contentLanguage==="BILINGUAL"?"bilengual":"en")
+                storeCookies("content-lang",events[0].contentLanguage==="FR"?"fr":
+                events[0].contentLanguage==="BILINGUAL"?"bilengual":
                 "en");
+                dispatch(changeLangContent(events[0].contentLanguage==="FRENCH"?"fr":
+                events[0].contentLanguage==="BILINGUAL"?"bilengual":
+                "en")); 
               }
 
             }
@@ -104,6 +146,16 @@ const AdminDashboard = function () {
         removeCookies("user_token");
         storeCookies("user_token", null);
         navigate(`/`)
+      }
+
+      const updateContentLang =(arrayCal)=>{
+          
+          const id = getCookies("calendar-id")
+          const selectedCal = arrayCal.find(item=>item.uuid==id)
+          setContentLang(selectedCal.contentLanguage==="FRENCH"?"fr":
+          selectedCal.contentLanguage==="BILINGUAL"?"bilengual":"en")
+          storeCookies("content-lang",selectedCal.contentLanguage==="FRENCH"?"fr":
+          selectedCal.contentLanguage==="BILINGUAL"?"bilengual":"en");
       }
 
       const menu = (
@@ -130,8 +182,8 @@ const AdminDashboard = function () {
     
       storeCookies("user_calendar", item.name.fr);
       storeCookies("calendar-id", item.uuid);
-      storeCookies("content-lang",item.contentLanguages==="FR"?"fr":
-      item.contentLanguages==="BILINGUAL"?"bilengual":
+      storeCookies("content-lang",item.contentLanguage==="FRENCH"?"fr":
+      item.contentLanguage==="BILINGUAL"?"bilengual":
                 "en");
       setOpenKeys([])
       window.location.reload()
@@ -216,8 +268,9 @@ const AdminDashboard = function () {
           <Route path="users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="add-users" element={<AdminUsers currentLang={currentLang} />} />
           <Route path="invite-users" element={<AdminUsers currentLang={currentLang} />} />
-          <Route path="profile" element={<Profile currentLang={currentLang} />} />
-          <Route path="calendars" element={<Calendars currentLang={currentLang} contentLang={contentLang} />} />
+          <Route path="profile" element={<Profile currentLang={currentLang} setStoreLang={setStoreLang}/>} />
+          <Route path="calendars" element={<Calendars currentLang={currentLang} contentLang={contentLang} 
+          updateContentLang={updateContentLang}/>} />
           <Route path="add-calendar" element={<Calendars currentLang={currentLang} contentLang={contentLang} />} />
          
         </Routes>

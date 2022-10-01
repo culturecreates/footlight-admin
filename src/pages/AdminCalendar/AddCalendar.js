@@ -42,11 +42,22 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
 
   const handleSubmit = (values) => {
     const postalObj = {
-        name: {[contentLang]:values.name},
-        contentLanguages: values.interfaceLanguage,
+        
+        contentLanguage: values.contentLanguage,
         contact: values.contact
         
     };
+    if(contentLang == "bilengual")
+    {
+      postalObj.name = {fr:values.name, en: values.nameEn};
+    }
+    else{
+      if(orgDetails)
+      postalObj.name = {[contentLang]:values.name,
+        [contentLang=="fr"?"en":"fr"]: orgDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+        else
+     postalObj.name = {[contentLang]:values.name};
+    }
     setLoading(true)
     if (orgDetails)
     ServiceApi.updateCalendar(postalObj,orgDetails.uuid)
@@ -88,12 +99,26 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
         
       setIsUpdate(true);
       form.setFieldsValue({
-        name: orgDetails.name[contentLang],
-        interfaceLanguage: orgDetails.contentLanguages,
+        contentLanguage: orgDetails.contentLanguage,
         contact:orgDetails.contact
   
         
       });
+      
+      if(contentLang == "bilengual")
+      {
+        form.setFieldsValue({
+          name: orgDetails.name?.fr,
+          nameEn: orgDetails.name?.en,
+        
+        })
+      }
+      else{
+
+        form.setFieldsValue({
+          name: orgDetails.name[contentLang],
+        })
+      }
       
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,15 +150,17 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
         data-testid="status-update-form"
         onFinish={handleSubmit}
       >
-        {adminCalendar.map((item) => (
+        {adminCalendar.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
-            <div className="update-select-title">{t(item.title,{ lng: currentLang })}</div>
+            <div className="update-select-title">{t(item.title,{ lng: currentLang })} {((item.title == "Name" || item.title == "Description" ) && contentLang == "bilengual") && "@fr" }</div>
             <Form.Item
               name={item.name}
               className="status-comment-item"
               rules={[
                 {
-                  required: item.required,
+                  required:contentLang == "bilengual"?(item.name=="name"?(form.getFieldsValue()?.nameEn?.length>0)?false:
+                  item.name=="nameEn"?(form.getFieldsValue()?.name?.length>0)?false: item.required :item.required:item.required):
+                  item.required,
                   whitespace: true,
                 },
                 
@@ -148,7 +175,7 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
               
               >
                 {conceptArray.map((item) => (
-                  <Option key={item.uri} value={item.uri} title={item.name}>
+                  <Option key={item.uri} value={item.uri}>
                      {  t(item.name, { lng: currentLang })}{}</Option>
                 ))}
               </Select>

@@ -5,6 +5,8 @@ import { Form,  Input, Button, Layout, Row, Col, message,Image } from "antd";
 import { adminLogin, getCookies, storeCookies } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLang } from "../../action";
 
 const Login = () => {
   const [loginType, setLoginType] = useState("login") 
@@ -13,6 +15,8 @@ const Login = () => {
   const [form] = Form.useForm();
   const params = useParams();
   const location = useLocation();
+  const dispatch = useDispatch();
+
   useEffect(()=>{
     const search = window.location.search;
     const params = new URLSearchParams(search);
@@ -78,7 +82,10 @@ const Login = () => {
           token:response.data.accessToken,
           user: response.data.user
         };
+        const lang = response.data?.user?.interfaceLanguage;
         storeCookies("user_token", token);
+        storeCookies("user_lang",lang=="FR"?"fr":"en" );
+        dispatch(changeLang(lang=="FR"?"fr":"en")); 
         
         setLoading(false) 
        navigate("/admin/events");}

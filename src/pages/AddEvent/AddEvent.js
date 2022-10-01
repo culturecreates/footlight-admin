@@ -326,8 +326,20 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       eventObj.description= {fr:values.desc ,en:values.descEn}
     }
     else{
-      eventObj.name = {[contentLang]:values.title};
-      eventObj.description= {[contentLang]:values.desc}
+      if(eventDetails)
+      {
+
+        eventObj.name = {[contentLang]:values.title,
+        [contentLang=="fr"?"en":"fr"]: eventDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+        eventObj.description= {[contentLang]:values.desc,
+          [contentLang=="fr"?"en":"fr"]: eventDetails?.description[contentLang=="fr"?"en":"fr"]}
+
+      }
+      else
+      {
+        eventObj.name = {[contentLang]:values.title};
+        eventObj.description= {[contentLang]:values.desc}
+      }
     }
     if (isEndDate && !isRecurring)
       eventObj.endDate = moment(values.endDate).format("YYYY-MM-DDTHH:mm:ss");
@@ -699,7 +711,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               className="status-comment-item"
               rules={[
                 {
-                  required: true,
+                  required:contentLang == "bilengual"? formValue?.titleEn?.length>0?false:true :true,
                   message: "Event name required",
                   whitespace: true,
                 },
@@ -716,7 +728,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               className="status-comment-item"
               rules={[
                 {
-                  required: false,
+                  required: formValue?.title?.length>0?false:true,
                   message: "Event name required",
                   whitespace: true,
                 },

@@ -69,11 +69,12 @@ const AdminEvents = function ({ currentLang,contentLang }) {
           </Col>
           <Col flex="1 1 150px">
             <div>
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </div>
           {record.eventStatus && record.eventStatus !=="SCHEDULED" &&
-          <div className={record.eventStatus==="POSTPONED"?"event-status-postponed"
-          :"event-status-cancelled"}>POSTPONED</div>}
+          <div className={record.eventStatus==="POSTPONED"?"event-status-cancelled"
+          :"event-status-postponed"}>{t(record.eventStatus, { lng: currentLang })}</div>}
 
           </Col>
         </Row>
@@ -270,7 +271,9 @@ const AdminEvents = function ({ currentLang,contentLang }) {
       {isAdd &&
        <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/events`)}>{t("Events")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{eventDetails?eventDetails.name[currentLang]:t("AddEvent")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{eventDetails?(eventDetails.name[currentLang]?eventDetails.name[currentLang]:
+          currentLang==="fr"?
+          eventDetails.name["en"]:eventDetails.name["fr"]):t("AddEvent")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

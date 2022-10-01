@@ -10,6 +10,8 @@ i18n
     resources: {
       en: {
         translations: {
+          CANCELLED:"CANCELLED",
+          POSTPONED:"POSTPONED",
           EventStatus:"Event Status",
           "Event Type":"Event Type",
           DeactivatedDate:"Deactivated Date",
@@ -88,6 +90,8 @@ i18n
       },
       fr: {
         translations: {
+          POSTPONED:"REPORTE",
+          CANCELLED:"ANNULÉ",
           EventStatus:"Événement Status",
           "Event Type":"Type d'événement",
           DeactivatedDate:"Date de désactivation",
