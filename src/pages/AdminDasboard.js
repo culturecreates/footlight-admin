@@ -71,7 +71,18 @@ const AdminDashboard = function () {
       }, [langStore]);
 
       const setStoreLang=(lang)=>{
-        console.log("ayatt",lang)
+        
+        setCalList(calList);
+        const id = getCookies("calendar-id")
+        if(id)
+        {
+          const selectedCal = calList.find(item=>item.uuid==id)
+          if(selectedCal)
+          setCalTitle(selectedCal.name[lang]?selectedCal.name[lang]:
+            lang==="fr"?
+            selectedCal.name["en"]:selectedCal.name["fr"]) 
+        }
+          
         if(lang == "fr"){
             
           i18n.changeLanguage("fr");
@@ -122,7 +133,9 @@ const AdminDashboard = function () {
              else
               {
                 storeCookies("user_calendar", events[0].name.fr);
-                setCalTitle(events[0].name.fr) 
+                setCalTitle(events[0].name[currentLang]?events[0].name[currentLang]:
+                  currentLang==="fr"?
+                  events[0].name["en"]:events[0].name["fr"]) 
                 storeCookies("calendar-id", events[0].uuid);
                 setContentLang(events[0].contentLanguage==="FRENCH"?"fr":
                 events[0].contentLanguage==="BILINGUAL"?"bilengual":"en")
@@ -178,9 +191,11 @@ const AdminDashboard = function () {
         setOpenKeys(_openKeys)
     }
     const selectCalendar =(item)=>{
-      setCalTitle(item.name.fr)
+      setCalTitle(item.name[currentLang]?item.name[currentLang]:currentLang==="fr"?
+      item.name["en"]:item.name["fr"])
     
-      storeCookies("user_calendar", item.name.fr);
+      storeCookies("user_calendar", item.name[currentLang]?item.name[currentLang]:currentLang==="fr"?
+      item.name["en"]:item.name["fr"]);
       storeCookies("calendar-id", item.uuid);
       storeCookies("content-lang",item.contentLanguage==="FRENCH"?"fr":
       item.contentLanguage==="BILINGUAL"?"bilengual":
@@ -204,7 +219,9 @@ const AdminDashboard = function () {
        {calTitle}</div>}>
     {calList.map(item=>
     <Menu.Item key={item.uuid} onClick={()=>selectCalendar(item)}>
-      <div className="cal-menu-div">{item.name.fr}
+      <div className="cal-menu-div">{item.name[currentLang]?item.name[currentLang]:
+      currentLang==="fr"?
+      item.name["en"]:item.name["fr"]}
       </div></Menu.Item>
     )}
   </Menu.SubMenu>
