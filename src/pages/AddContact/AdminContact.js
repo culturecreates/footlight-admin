@@ -40,7 +40,8 @@ const AdminContacts = function ({ currentLang,contentLang }) {
           
           <Col flex="1 1 150px">
               
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </Col>
         </Row>
       ),
@@ -177,7 +178,9 @@ const AdminContacts = function ({ currentLang,contentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/contacts`)}>{t("Contacts")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{contactDetails?contactDetails.name[currentLang]:t("AddContact")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{contactDetails?(contactDetails.name[currentLang]?contactDetails.name[currentLang]:
+          currentLang==="fr"?
+          contactDetails.name["en"]:contactDetails.name["fr"]):t("AddContact")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

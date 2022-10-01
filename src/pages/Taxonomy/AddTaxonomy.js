@@ -21,6 +21,7 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
   const [isUpdate, setIsUpdate] = useState(false);
   const [treeList, setTreeList] = useState([]);
   const [showAddContact,setShowAddContact]= useState(false)
+  const [formValue, setFormVaue] = useState();
 
 
   const { t } = useTranslation();
@@ -54,6 +55,10 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
     
     }
     else{
+      if(orgDetails)
+      postalObj.name = {[contentLang]:values.name,
+        [contentLang=="fr"?"en":"fr"]: orgDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+      else
      postalObj.name = {[contentLang]:values.name};
      
     }
@@ -163,7 +168,43 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
         className="update-status-form"
         data-testid="status-update-form"
         onFinish={handleSubmit}
+        onFieldsChange={() => {
+          setFormVaue(form.getFieldsValue());
+        }}
       >
+         <div className="update-select-title">{t("Name")} {contentLang == "bilengual" && "@fr"}</div>
+            <Form.Item
+              name="name"
+              className="status-comment-item"
+              rules={[
+                {
+                  required:contentLang == "bilengual"? formValue?.nameEn?.length>0?false:true :true,
+                  message: "Taxonomy name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Taxonomy Name" className="replace-input" />
+            </Form.Item>
+            {
+              contentLang == "bilengual" &&
+              <>
+              <div className="update-select-title">{t("Name")} @en</div>
+            <Form.Item
+              name="nameEn"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: formValue?.name?.length>0?false:true,
+                  message: "Taxonomy name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Taxonomy Name" className="replace-input" />
+            </Form.Item>
+            </>
+            }
         {adminTaxonomy.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })}

@@ -18,6 +18,7 @@ import { fetchContact } from "../../action";
 const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [formValue, setFormVaue] = useState();
 
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -40,8 +41,20 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
       postalObj.description= {fr:values.description ,en:values.descriptionEn}
     }
     else{
-     postalObj.name = {[contentLang]:values.name};
-     postalObj.description= {[contentLang]:values.description}
+      if(contactDetails)
+      {
+        
+        postalObj.name = {[contentLang]:values.name,
+          [contentLang=="fr"?"en":"fr"]: contactDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+        postalObj.description= {[contentLang]:values.description,
+          [contentLang=="fr"?"en":"fr"]: contactDetails?.description[[contentLang=="fr"?"en":"fr"]]}
+      }
+      else
+      {
+        postalObj.name = {[contentLang]:values.name};
+        postalObj.description= {[contentLang]:values.description}
+      }
+     
     }
     setLoading(true)
     if (contactDetails)
@@ -148,7 +161,43 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
         className="update-status-form"
         data-testid="status-update-form"
         onFinish={handleSubmit}
+        onFieldsChange={() => {
+          setFormVaue(form.getFieldsValue());
+        }}
       >
+          <div className="update-select-title">{t("Name")} {contentLang == "bilengual" && "@fr"}</div>
+            <Form.Item
+              name="name"
+              className="status-comment-item"
+              rules={[
+                {
+                  required:contentLang == "bilengual"? formValue?.nameEn?.length>0?false:true :true,
+                  message: "Contact name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Contact Name" className="replace-input" />
+            </Form.Item>
+            {
+              contentLang == "bilengual" &&
+              <>
+              <div className="update-select-title">{t("Name")} @en</div>
+            <Form.Item
+              name="nameEn"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: formValue?.name?.length>0?false:true,
+                  message: "Contact name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter conatct Name" className="replace-input" />
+            </Form.Item>
+            </>
+            }
         {adminContact.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })} {((item.title == "Name" || item.title == "Description" ) && contentLang == "bilengual") && "@fr" }

@@ -23,7 +23,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const [isUpdate, setIsUpdate] = useState(false);
   const [contactList, setContactList] = useState([]);
   const [showAddContact,setShowAddContact]= useState(false)
-
+  const [formValue, setFormVaue] = useState();
 
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -47,8 +47,19 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
       postalObj.description= {fr:values.description ,en:values.descriptionEn}
     }
     else{
-     postalObj.name = {[contentLang]:values.name};
-     postalObj.description= {[contentLang]:values.description}
+      if(orgDetails)
+      {
+        postalObj.name = {[contentLang]:values.name,
+          [contentLang=="fr"?"en":"fr"]: orgDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+        postalObj.description= {[contentLang]:values.description,
+          [contentLang=="fr"?"en":"fr"]: orgDetails?.description[[contentLang=="fr"?"en":"fr"]]}
+      }
+      else
+      {
+        postalObj.name = {[contentLang]:values.name};
+        postalObj.description= {[contentLang]:values.description}
+      }
+     
     }
     setLoading(true)
     if (orgDetails)
@@ -195,7 +206,43 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         className="update-status-form"
         data-testid="status-update-form"
         onFinish={handleSubmit}
+        onFieldsChange={() => {
+          setFormVaue(form.getFieldsValue());
+        }}
       >
+         <div className="update-select-title">{t("Name")} {contentLang == "bilengual" && "@fr"}</div>
+            <Form.Item
+              name="name"
+              className="status-comment-item"
+              rules={[
+                {
+                  required:contentLang == "bilengual"? formValue?.nameEn?.length>0?false:true :true,
+                  message: "Org name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Org Name" className="replace-input" />
+            </Form.Item>
+            {
+              contentLang == "bilengual" &&
+              <>
+              <div className="update-select-title">{t("Name")} @en</div>
+            <Form.Item
+              name="nameEn"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: formValue?.name?.length>0?false:true,
+                  message: "Org name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter org Name" className="replace-input" />
+            </Form.Item>
+            </>
+            }
         {adminOrg.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })}

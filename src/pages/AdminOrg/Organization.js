@@ -39,7 +39,8 @@ const Organization = function ({ currentLang,contentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </Col>
         </Row>
       ),
@@ -180,7 +181,9 @@ const Organization = function ({ currentLang,contentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/organization`)}>{t("Organization")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{placeDetails?placeDetails.name[currentLang]:t("AddOrganization")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{placeDetails?(placeDetails.name[currentLang]?placeDetails.name[currentLang]:
+          currentLang==="fr"?
+          placeDetails.name["en"]:placeDetails.name["fr"]):t("AddOrganization")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

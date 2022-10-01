@@ -40,7 +40,8 @@ const AdminPlaces = function ({ currentLang, contentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </Col>
         </Row>
       ),
@@ -196,7 +197,9 @@ const AdminPlaces = function ({ currentLang, contentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/places`)}>{t("Places")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{placeDetails?placeDetails.name[currentLang]:t("AddPlace")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{placeDetails?(placeDetails.name[currentLang]?placeDetails.name[currentLang]:
+          currentLang==="fr"?
+          placeDetails.name["en"]:placeDetails.name["fr"]):t("AddPlace")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

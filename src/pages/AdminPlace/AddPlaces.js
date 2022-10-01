@@ -25,6 +25,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [containsList, setContainsList] = useState([]);
+  const [formValue, setFormVaue] = useState();
   const { t,  } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -110,8 +111,18 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             placeObj.description= {fr:values.description ,en:values.descriptionEn}
           }
           else{
-            placeObj.name = {[contentLang]:values.name};
-            placeObj.description= {[contentLang]:values.description}
+            if(placeDetails)
+            {
+              placeObj.name = {[contentLang]:values.name,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+              placeObj.description= {[contentLang]:values.description,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.description[[contentLang=="fr"?"en":"fr"]]}
+            }
+            else{
+              placeObj.name = {[contentLang]:values.name};
+              placeObj.description= {[contentLang]:values.description}
+            }
+            
           }
           ServiceApi.updatePlace(placeObj,placeDetails.uuid)
             .then((response) => {
@@ -159,8 +170,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             placeObj.description= {fr:values.description ,en:values.descriptionEn}
           }
           else{
-            placeObj.name = {[contentLang]:values.name};
-            placeObj.description= {[contentLang]:values.description}
+            if(placeDetails)
+            {
+              placeObj.name = {[contentLang]:values.name,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+              placeObj.description= {[contentLang]:values.description,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.description[[contentLang=="fr"?"en":"fr"]]}
+            }
+            else{
+              placeObj.name = {[contentLang]:values.name};
+              placeObj.description= {[contentLang]:values.description}
+            }
           }
           ServiceApi.addPlace(placeObj)
             .then((response) => {
@@ -268,7 +288,43 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         className="update-status-form"
         data-testid="status-update-form"
         onFinish={handleSubmit}
+        onFieldsChange={() => {
+          setFormVaue(form.getFieldsValue());
+        }}
       >
+        <div className="update-select-title">{t("Name")} {contentLang == "bilengual" && "@fr"}</div>
+            <Form.Item
+              name="name"
+              className="status-comment-item"
+              rules={[
+                {
+                  required:contentLang == "bilengual"? formValue?.nameEn?.length>0?false:true :true,
+                  message: "Place name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Place Name" className="replace-input" />
+            </Form.Item>
+            {
+              contentLang == "bilengual" &&
+              <>
+              <div className="update-select-title">{t("Name")} @en</div>
+            <Form.Item
+              name="nameEn"
+              className="status-comment-item"
+              rules={[
+                {
+                  required: formValue?.name?.length>0?false:true,
+                  message: "Place name required",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input placeholder="Enter Place Name" className="replace-input" />
+            </Form.Item>
+            </>
+            }
         {adminPlaces.filter(item=>contentLang != "bilengual" ? item.isMulti==false :item.name !== "mmm").map((item) => (
           <>
             <div className="update-select-title">{t(item.title,{ lng: currentLang })}
@@ -278,10 +334,11 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               className="status-comment-item"
               rules={[
                 {
-                  required: item.required,
+                  required:item.required,
                   whitespace: true,
                 },
               ]}
+              validateTrigger="onBlur"
             >
               {item.type === "geo" ? (
                 <PlacesAutocomplete

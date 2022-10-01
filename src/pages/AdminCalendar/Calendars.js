@@ -36,7 +36,8 @@ const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-          {record.name[currentLang]}
+          {record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"]}
           </Col>
         </Row>
       ),
@@ -155,7 +156,9 @@ const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/calendars`)}>{t("Calendars")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{calendarDetails?calendarDetails.name[currentLang]:t("AddCalendar")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{calendarDetails?(calendarDetails.name[currentLang]?calendarDetails.name[currentLang]:
+          currentLang==="fr"?
+          calendarDetails.name["en"]:calendarDetails.name["fr"]):t("AddCalendar")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">

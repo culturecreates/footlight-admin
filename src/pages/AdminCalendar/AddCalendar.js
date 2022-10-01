@@ -52,6 +52,10 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
       postalObj.name = {fr:values.name, en: values.nameEn};
     }
     else{
+      if(orgDetails)
+      postalObj.name = {[contentLang]:values.name,
+        [contentLang=="fr"?"en":"fr"]: orgDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+        else
      postalObj.name = {[contentLang]:values.name};
     }
     setLoading(true)
@@ -100,7 +104,7 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
   
         
       });
-      console.log(contentLang)
+      
       if(contentLang == "bilengual")
       {
         form.setFieldsValue({
@@ -110,6 +114,7 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
         })
       }
       else{
+
         form.setFieldsValue({
           name: orgDetails.name[contentLang],
         })
@@ -153,7 +158,9 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
               className="status-comment-item"
               rules={[
                 {
-                  required: item.required,
+                  required:contentLang == "bilengual"?(item.name=="name"?(form.getFieldsValue()?.nameEn?.length>0)?false:
+                  item.name=="nameEn"?(form.getFieldsValue()?.name?.length>0)?false: item.required :item.required:item.required):
+                  item.required,
                   whitespace: true,
                 },
                 

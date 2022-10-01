@@ -154,6 +154,8 @@ const AdminDashboard = function () {
           const selectedCal = arrayCal.find(item=>item.uuid==id)
           setContentLang(selectedCal.contentLanguage==="FRENCH"?"fr":
           selectedCal.contentLanguage==="BILINGUAL"?"bilengual":"en")
+          storeCookies("content-lang",selectedCal.contentLanguage==="FRENCH"?"fr":
+          selectedCal.contentLanguage==="BILINGUAL"?"bilengual":"en");
       }
 
       const menu = (

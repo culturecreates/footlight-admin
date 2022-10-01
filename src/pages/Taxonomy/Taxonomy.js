@@ -36,7 +36,8 @@ const Taxonomy = function ({ currentLang, contentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-        {  t(record.name[currentLang], { lng: currentLang })}
+        {  t(record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"], { lng: currentLang })}
          
           </Col>
         </Row>
@@ -219,12 +220,12 @@ const Taxonomy = function ({ currentLang, contentLang }) {
               const data = [
                 {
                   key: 1,
-                  name: {fr:'audience'},
+                  name: {fr:'audience',en:'audience'},
                   header: true,
                   address: 'New York No. 1 Lake Park',
                   children:eventsPublic},
                   {key: 2,
-                  name: {fr:'Event Type'},
+                  name: {fr:'Event Type',en:'Event Type'},
                   header: true,
                   address: 'New York No. 1 Lake Park',
                   children:events},
@@ -253,7 +254,9 @@ const Taxonomy = function ({ currentLang, contentLang }) {
       {isAdd &&
       <Breadcrumb separator=">">
         <Breadcrumb.Item onClick={()=>navigate(`/admin/taxonomy`)}>{t("Taxonomy")}</Breadcrumb.Item>
-        <Breadcrumb.Item >{placeDetails?placeDetails.name[currentLang]:t("AddTaxonomy")}</Breadcrumb.Item>
+        <Breadcrumb.Item >{placeDetails?(placeDetails.name[currentLang]?placeDetails.name[currentLang]:
+           currentLang==="fr"?
+           placeDetails.name["en"]:placeDetails.name["fr"]):t("AddTaxonomy")}</Breadcrumb.Item>
       </Breadcrumb>
 }
       <Row className="admin-event-header">
