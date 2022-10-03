@@ -270,7 +270,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
             onClearSearch={getPlaces}
             currentLang={currentLang}
           /> */}
-                 { getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")) &&
+                 { (getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) &&
 
           <Button type="primary" icon={<PlusOutlined />} size={"large"}
           onClick={()=>navigate(`/admin/add-taxonomy`)}>
