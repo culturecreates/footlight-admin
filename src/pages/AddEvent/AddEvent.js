@@ -101,7 +101,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     return data.map((item) => {
       const obj = {
         value: item.identifier.uri,
-        title: item.name?.fr,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
       };
       return obj;
@@ -111,7 +112,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     return data.map((item) => {
       const obj = {
         value: item.identifier.uri,
-        title: item.name?.fr,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
       };
       return obj;
@@ -157,7 +159,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     } else {
       setContactList(
         contactStore.map((item) => {
-          const obj = { name: item.name["fr"], value: item.uuid };
+          const obj = { name: item.name[currentLang]?item.name[currentLang]:
+             currentLang==="fr"?item.name["en"]:item.name["fr"]
+            , value: item.uuid };
           return obj;
         })
       );
@@ -897,7 +901,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                             ? false
                             : checkselectedOnline
                         }
-                        key={item.name["fr"]}
+                        key={item.uuid}
                       >
                         {item.name["fr"]}
                       </Option>
@@ -914,9 +918,11 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                             ? false
                             : checkselectedOffline
                         }
-                        key={item.name["fr"]}
+                        key={item.uuid}
                       >
-                        {item.name["fr"]}
+                        {item.name[currentLang]?item.name[currentLang]:
+                        currentLang==="fr"?
+                        item.name["en"]:item.name["fr"]}
                       </Option>
                     ))}
                 </OptGroup>
@@ -1096,9 +1102,10 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       <Option
                         data-testid="update-two-select-option"
                         value={item.uuid}
-                        key={item.name["fr"]}
+                        key={item.uuid}
                       >
-                        {item.name["fr"]}
+                        {item.name[currentLang]?item.name[currentLang]:
+                        currentLang==="fr"?item.name["en"]:item.name["fr"]}
                       </Option>
                     ))}
                 </Select>

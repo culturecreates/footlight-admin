@@ -304,7 +304,50 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
                 },
               ]}
             >
-              <Input placeholder="Enter Place Name" className="replace-input" />
+                 <PlacesAutocomplete
+                  value={address}
+                  onChange={handleChange}
+                  onSelect={handleSelect}
+                  placeholder={"Place name"}
+                >
+                  {({
+                    getInputProps,
+                    suggestions,
+                    getSuggestionItemProps,
+                    loading,
+                  }) => (
+                    <div>
+                      <input
+                        {...getInputProps({
+                          placeholder: "Search Places ...",
+                          className: "location-search-input",
+                        })}
+                      />
+                      <div className="autocomplete-dropdown-container">
+                        {loading && <div>Loading...</div>}
+                        {suggestions.map((suggestion) => {
+                          const className = suggestion.active
+                            ? "suggestion-item--active"
+                            : "suggestion-item";
+                          // inline style for demonstration purpose
+                          const style = suggestion.active
+                            ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                            : { backgroundColor: "#ffffff", cursor: "pointer" };
+                          return (
+                            <div
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                                style,
+                              })}
+                            >
+                              <span>{suggestion.description}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
             </Form.Item>
             {
               contentLang == "bilengual" &&
@@ -321,7 +364,50 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
                 },
               ]}
             >
-              <Input placeholder="Enter Place Name" className="replace-input" />
+                  <PlacesAutocomplete
+                  value={address}
+                  onChange={handleChange}
+                  onSelect={handleSelect}
+                  placeholder={"Place name"}
+                >
+                  {({
+                    getInputProps,
+                    suggestions,
+                    getSuggestionItemProps,
+                    loading,
+                  }) => (
+                    <div>
+                      <input
+                        {...getInputProps({
+                          placeholder: "Search Places ...",
+                          className: "location-search-input",
+                        })}
+                      />
+                      <div className="autocomplete-dropdown-container">
+                        {loading && <div>Loading...</div>}
+                        {suggestions.map((suggestion) => {
+                          const className = suggestion.active
+                            ? "suggestion-item--active"
+                            : "suggestion-item";
+                          // inline style for demonstration purpose
+                          const style = suggestion.active
+                            ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                            : { backgroundColor: "#ffffff", cursor: "pointer" };
+                          return (
+                            <div
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                                style,
+                              })}
+                            >
+                              <span>{suggestion.description}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
             </Form.Item>
             </>
             }
@@ -400,7 +486,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               
               >
                 {containsList.map((item) => (
-                  <Option key={item.uuid} value={item.uuid}>{item.name?.fr}</Option>
+                  <Option key={item.uuid} value={item.uuid}>{item.name[currentLang]?item.name[currentLang]:
+                    currentLang==="fr"?item.name["en"]:item.name["fr"]}</Option>
                 ))}
               </Select>
                 :
