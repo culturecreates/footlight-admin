@@ -1326,6 +1326,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           isModalVisible={showAddContact}
           setIsModalVisible={setShowAddContact}
           type={showAddType}
+          currentLang={currentLang}
+          contentLang={contentLang}
           closeWithId={closeWithId}
         />
       )}
@@ -1334,6 +1336,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           isModalVisible={showPriceModal}
           setIsModalVisible={setShowPriceModal}
           currentLang={currentLang}
+          contentLang={contentLang}
           offerConfig={offerConfig}
           closePriceModal={closePriceModal}
         />

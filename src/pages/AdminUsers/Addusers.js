@@ -479,7 +479,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
                       }
                     </Select>
                     :
-                    item.inputtype === "auto" && getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")) ?
+                    item.inputtype === "auto" && (getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))) ?
                       <AutoComplete
                         dropdownMatchSelectWidth={252}
                         style={{
