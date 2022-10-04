@@ -7,6 +7,7 @@ const AddNewContactModal = ({
   isModalVisible,
   setIsModalVisible,
   currentLang,
+  contentLang,
   closeWithId,
   type
 }) => {
@@ -38,14 +39,14 @@ const AddNewContactModal = ({
       footer={false}
     >
       {type==="Contact"?
-      <AddContact currentLang={currentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
+      <AddContact currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
       onsuccessAddById={handleOkById}/>
       :
       type==="Location"?
-      <AddPlaces currentLang={currentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
+      <AddPlaces currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
       onsuccessAddById={handleOkById}/>
       :
-      <AddOrganization currentLang={currentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
+      <AddOrganization currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
       onsuccessAddById={handleOkById}/>
 
   }

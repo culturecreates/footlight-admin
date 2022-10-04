@@ -13,6 +13,7 @@ const PriceModal = ({
   isModalVisible,
   setIsModalVisible,
   currentLang,
+  contentLang,
   closePriceModal,
   offerConfig
 }) => {
