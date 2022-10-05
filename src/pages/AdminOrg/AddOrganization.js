@@ -24,6 +24,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const [contactList, setContactList] = useState([]);
   const [showAddContact,setShowAddContact]= useState(false)
   const [formValue, setFormVaue] = useState();
+  const [placeList, setPlaceList] = useState([]);
 
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -40,6 +41,9 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         contactPoint: values.contact ?{
             entityId: values.contact
           }:undefined,
+        place:values.place? {
+          entityId: values.place
+        }:undefined 
     };
     if(contentLang == "bilengual")
     {
@@ -124,7 +128,8 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         description: orgDetails.description && orgDetails.description[contentLang],
         
         url: orgDetails.url?.uri,
-        contact: orgDetails.contactPoint?.entityId
+        contact: orgDetails.contactPoint?.entityId,
+        place: orgDetails.place?.entityId
         
       });
 
@@ -195,6 +200,34 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
       })
       .catch((error) => {
         
+      });
+  };
+
+  useEffect(()=>{
+    getPlaces()
+  },[])
+
+  const getPlaces = (page = 1) => {
+    setLoading(true);
+    ServiceApi.getAllPlaces(page, currentLang === "en" ? "EN" : "FR")
+      .then((response) => {
+        if (response && response.data && response.data.data) {
+          const events = response.data.data.places;
+          const placeVirtual = response.data.data?.virtualLocations;
+         
+          
+          if(placeVirtual)
+          setPlaceList([...events,...placeVirtual.map(object => {
+            return {...object, isVirtual: true};
+          })]);
+          else
+            setPlaceList(events)
+           
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
       });
   };
 
@@ -278,6 +311,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
                 />
                 :
                 item.type === "select"?
+                item.name==="contact"?
                 <Select
                 style={{ width: 350 }}
                 dropdownClassName="contact-select"
@@ -298,7 +332,21 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
                 )}
               >
                 {contactList.map((item) => (
-                  <Option key={item.value} value={item.value}>{item.name}</Option>
+                   <Option key={item.value} value={item.value}>{item.name}</Option>
+                ))}
+              </Select>
+              :
+              <Select
+                style={{ width: 350 }}
+                dropdownClassName="contact-select"
+                placeholder="Select Place"
+              
+              >
+                {placeList.map((item) => (
+                  <Option key={item.uuid} value={item.uuid}>{item.name[currentLang]?item.name[currentLang]:
+                    currentLang==="fr"?
+                    item.name["en"]:item.name["fr"]}</Option>
+                
                 ))}
               </Select>
                 :
