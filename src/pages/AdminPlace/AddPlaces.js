@@ -22,6 +22,7 @@ import { fetchPlace } from "../../action";
 const { Option } = Select;
 const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [address, setAddress] = useState("");
+  const [addressEn, setAddressEn] = useState("");
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [containsList, setContainsList] = useState([]);
@@ -36,11 +37,16 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     setAddress(address);
   };
 
+  const handleChangeEn = (address) => {
+    setAddressEn(address);
+  };
+
   const handleSelect = (address) => {
     geocodeByAddress(address)
       .then((results) => {
         form.setFieldsValue({
           name: address.split(",").splice(0, 1).join(""),
+          nameEn: address.split(",").splice(0, 1).join(""),
           addressCountry: results[0].address_components.find((item) =>
             item.types.includes("country")
           )?.long_name,
@@ -365,8 +371,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               ]}
             >
                   <PlacesAutocomplete
-                  value={address}
-                  onChange={handleChange}
+                  value={addressEn}
+                  onChange={handleChangeEn}
                   onSelect={handleSelect}
                   placeholder={"Place name"}
                 >

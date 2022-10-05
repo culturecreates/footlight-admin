@@ -171,6 +171,14 @@ export const adminSideMenuLinks = [
       type:"select",
       isMulti:false
     },
+    {
+      name: "place",
+      title:"Place",
+      required:false,
+      placeHolder: "Select Place",
+      type:"select",
+      isMulti:false
+    },
     
   ]
 
