@@ -97,7 +97,7 @@ const AdminEvents = function ({ currentLang,contentLang }) {
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
       render: (e, record) => <div>{record?.locationName?.[currentLang]?record?.locationName?.[currentLang] :currentLang==="fr"?
-      record.locationName["en"]:record.locationName["fr"]}</div>,
+      record.locationName?.["en"]:record.locationName?.["fr"]}</div>,
     },  
     {
       title: t("Created", { lng: currentLang }),
