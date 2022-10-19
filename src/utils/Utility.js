@@ -521,6 +521,15 @@ export const adminSideMenuLinks = [
       type:"register",
       isMulti:false
     },
+    {
+      name: "namespace",
+      title:"Name Space",
+      required:true,
+      placeHolder: "Enter namespace",
+      inputtype:"text",
+      type:"register",
+      isMulti:false
+    },
   ]
 
   export const adminProfile=[

@@ -44,7 +44,8 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
     const postalObj = {
         
         contentLanguage: values.contentLanguage,
-        contact: values.contact
+        contact: values.contact,
+        namespace: values.namespace
         
     };
     if(contentLang == "bilengual")
@@ -100,8 +101,8 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
       setIsUpdate(true);
       form.setFieldsValue({
         contentLanguage: orgDetails.contentLanguage,
-        contact:orgDetails.contact
-  
+        contact:orgDetails.contact,
+        namespace: orgDetails.namespace
         
       });
       
@@ -164,7 +165,19 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
                   item.required,
                   whitespace: true,
                 },
-                
+                item.name==="namespace" &&
+                {
+                  
+                  message: 'Enter valid url.',
+                  validator: (_, value) => {
+
+                    if (urlValidate(value)) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject('Enter valid url.');
+                    }
+                  }
+                }
               ]}
             >
               { 

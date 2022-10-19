@@ -1,0 +1,15 @@
+.ant-btn-primary.add-concept{
+    background: #de711e;
+    border-color: #de711e;
+    margin: 0px 20px;
+}
+.ant-btn-primary.non-selected-btn{
+    background: #fff;
+    border-color: #fff;
+    margin: 0px 20px;
+    color: #000;
+}
+.concept-create .ant-tree .ant-tree-treenode{
+    font-size: 17px;
+    padding: 3px;
+}

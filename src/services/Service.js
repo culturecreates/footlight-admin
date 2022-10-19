@@ -251,7 +251,13 @@ export default class ServiceApi {
     
     });
   }
-
+  static deleteConcept(id) {
+    return Axios({
+      url: `concepts/${id}`,
+      method: "DELETE",
+    
+    });
+  }
   static deleteEvent(id) {
     return Axios({
       url: `events/${id}`,
@@ -416,6 +422,24 @@ export default class ServiceApi {
     });
   }
 
+  static getConcepts(id) {
+    return Axios({
+      url: `concepts`,
+      method: "GET",
+      params:{"taxonomyId":id}
+
+    });
+  }
+
+  static addConcepts(payload,isUpdate) {
+    return Axios({
+      url: `concepts`,
+      method: isUpdate?"PATCH":"POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
   static addEvent(payload) {
     return Axios({
       url: `event`,
@@ -492,9 +516,9 @@ export default class ServiceApi {
     });
   }
 
-  static updateTaxonomy(payload) {
+  static updateTaxonomy(payload,id) {
     return Axios({
-      url: `taxonomy`,
+      url: `taxonomy/${id}`,
       method: "PATCH",
       data: JSON.stringify(payload),
 
