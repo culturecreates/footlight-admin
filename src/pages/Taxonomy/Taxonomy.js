@@ -10,6 +10,7 @@ import ServiceApi from "../../services/Service";
 import AddTaxonomy from "./AddTaxonomy";
 import moment from "moment";
 import { getCookies } from "../../utils/Utility";
+import CreateConcept from "./CreateConcept";
 
 const { confirm } = Modal;
 
@@ -189,21 +190,21 @@ const Taxonomy = function ({ currentLang, contentLang }) {
   }
   const getPlaces = (page = 1) => {
     setLoading(true);
-    // ServiceApi.getAllTaxonomy()
-    //   .then((response) => {
-    //     if (response && response.data && response.data.data) {
-    //       const events = response.data.data;
+    ServiceApi.getAllTaxonomy()
+      .then((response) => {
+        if (response && response.data && response.data.data) {
+          const events = response.data.data;
          
-    //       setTaxonomyList(events);
-    //     //   dispatch(fetchOrg(response.data.data));
-    //         if(response.data.totalCount)
-    //         setTotalPage(response.data.totalCount)
-    //     }
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     setLoading(false);
-    //   });
+          setTaxonomyList(events);
+        //   dispatch(fetchOrg(response.data.data));
+            // if(response.data.totalCount)
+            // setTotalPage(response.data.totalCount)
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
     ServiceApi.getTaxonomy()
       .then((response) => {
         if (response && response.data && response.data.data) {
@@ -231,7 +232,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
                   children:events},
                 ]
 
-                setTaxonomyList(data);
+                // setTaxonomyList(data);
             }
             setLoading(false);
           })
@@ -316,7 +317,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
               }}
             /> 
             :
-        <AddTaxonomy currentLang={currentLang} contentLang={contentLang} orgDetails={placeDetails}
+        <CreateConcept currentLang={currentLang} contentLang={contentLang} orgDetails={placeDetails}
         audienceList={audienceList} typeList={typeList}/>
             }
       </Card>
