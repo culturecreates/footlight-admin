@@ -233,7 +233,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const params = new URLSearchParams(search);
       const conceptId = params.get("id");
        const conceptObj= {
-        "taxonomyId": conceptId,
+        "taxonomy": conceptId,
         "concepts": formatarrayUpdate(gData)
       }
       ServiceApi.addConcepts(conceptObj,isUpdateConcepts)
@@ -508,7 +508,7 @@ else
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </div>
-            {
+            {/* {
               contentLang == "bilengual" &&
               <>
               <div className="update-select-title">{t("Name")} @en</div>
@@ -526,7 +526,7 @@ else
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </>
-            }
+            } */}
             </div>
 
             <div>

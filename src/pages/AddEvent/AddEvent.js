@@ -71,6 +71,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
+  const [accessabilityList, setAccessabilityList] = useState([]);
   const [contactList, setContactList] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -938,6 +939,20 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={publicsList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Event Accessability", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"accessability"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={accessabilityList}
                 multiple
                 placeholder="Please select"
               />
