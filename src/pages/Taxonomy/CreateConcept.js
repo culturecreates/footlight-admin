@@ -213,7 +213,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     const obj = {
       taxonomyClass: values.taxonomyClass,
       isDynamicField: values.isDynamicField,
-      mappedToField: values.mappedToField
+      mappedToField: values.isDynamicField?undefined :values.mappedToField
     }
     if(contentLang == "bilengual")
     {
@@ -592,7 +592,7 @@ else
               className="status-comment-item"
               rules={[
                 {
-                  required:true,
+                  required: formValue?.isDynamicField?false: true,
                   message: "Taxonomy map required",
                   whitespace: true,
                 },
@@ -602,6 +602,7 @@ else
                 style={{ width: '100%' }}
                 dropdownClassName="contact-select"
                 placeholder="Select Mapped Field"
+                disabled={formValue?.isDynamicField}
               
               >
                 {mappedList.map((item) => (
