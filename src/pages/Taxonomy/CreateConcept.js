@@ -305,19 +305,26 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       },
     });
   };
+  function removeByKey(arr, removingKey){
+    return arr.filter( a => a.key !== removingKey).map( e => {
+      return { ...e, children: removeByKey(e.children || [], removingKey)}
+    });
+  }
   const handleDeleteContact=(id)=>{
-     
-    setLoading(true);
-    ServiceApi.deleteConcept(id)
-      .then((response) => {
-        const search = window.location.search;
-      const params = new URLSearchParams(search);
-      const eventId = params.get("id");
-       getConcepts(eventId)
-      })
-      .catch((error) => {
-        setLoading(false);
-      });
+  const newData=  removeByKey(gData,id)
+  setGData(newData)
+  setSelectedConcept()
+  //   setLoading(true);
+  //   ServiceApi.deleteConcept(id)
+  //     .then((response) => {
+  //       const search = window.location.search;
+  //     const params = new URLSearchParams(search);
+  //     const eventId = params.get("id");
+  //      getConcepts(eventId)
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false);
+  //     });
   }
 
   const addNewConcept=()=>{
@@ -361,7 +368,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     return data.map(item=>{
       const obj={
           key:item.uuid,
-          title: item.name,
+          title: item.name?.fr,
           
           children:item.children?formatarrayTreeResponse(item.children):undefined
       }
@@ -375,7 +382,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.uuid,
-        title: item.name,
+        title: item.name?.fr,
         children:item.children?formatarrayTreeResponse(item.children):undefined
       }
        return obj
@@ -387,7 +394,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     return data.map(item=>{
       const obj={
           key:item.key,
-          name: item.title,
+          name: {fr:item.title},
           
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
@@ -401,7 +408,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
-        name: item.title,
+        name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
        return obj
@@ -600,14 +607,14 @@ else
       treeData={gData}
     />
     </Card>
-            <div>
+            <div style={{marginBottom:"10px"}}>
       <Button type="primary" icon={<PlusOutlined />} size={"large"}
       className="add-concept"
       disabled={!isUpdate}
           onClick={()=>addNewConcept()}>
             {t("Concept")}
           </Button>
-          <Button type="primary"  size={"large"}
+          {/* <Button type="primary"  size={"large"}
           className={selectedLang=="fr"?"add-concept":"non-selected-btn"}
           disabled={!isUpdate}
           onClick={()=>setSelectedLang("fr")}>
@@ -618,7 +625,7 @@ else
           className={selectedLang=="en"?"add-concept":"non-selected-btn"}
           onClick={()=>setSelectedLang("en")}>
            @en
-          </Button>
+          </Button> */}
 {selectedConcept &&
           <Button type="primary"  size={"large"}
       className="add-concept"
