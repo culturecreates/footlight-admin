@@ -92,7 +92,7 @@ function ConceptScheme({ isModalVisible,
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </div>
-            {
+            {/* {
               contentLang == "bilengual" &&
               <>
               <div className="update-select-title">{t("Name")} @en</div>
@@ -110,7 +110,7 @@ function ConceptScheme({ isModalVisible,
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </>
-            }
+            } */}
             </div>
 
            

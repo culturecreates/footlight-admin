@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Layout, Form, Input, Button, message,Select } from "antd";
+import { Layout, Form, Input, Button, message,Select ,TreeSelect} from "antd";
 import React, { useState, useEffect } from "react";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -26,12 +26,59 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [containsList, setContainsList] = useState([]);
+  const [accessabilityList, setAccessabilityList] = useState([]);
+
   const [formValue, setFormVaue] = useState();
   const { t,  } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+  
+
+    getAccessability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getAccessability = (page = 1) => {
+    setLoading(true);
+    ServiceApi.getFieldConcepts("Place")
+      .then((response) => {
+        if (response && response.data && response.data) {
+          const events = response.data;
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Type")?.concepts));
+          // dispatch(fetchAudience(response.data.data));
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
+  const formatarray = (data) => {
+    return data.map((item) => {
+      const obj = {
+        value: item.uuid,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        children: item.children ? formatarrayTree(item.children) : undefined,
+      };
+      return obj;
+    });
+  };
+  const formatarrayTree = (data) => {
+    return data.map((item) => {
+      const obj = {
+        value: item.uuid,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        children: item.children ? formatarrayTree(item.children) : undefined,
+      };
+      return obj;
+    });
+  };
 
   const handleChange = (address) => {
     setAddress(address);
@@ -82,6 +129,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       addressRegion: values.addressRegion,
       postalCode: values.postalCode,
       streetAddress: values.streetAddress,
+      
     };
     setLoading(true)
     if (placeDetails)
@@ -109,6 +157,15 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               latitude: values.latitude,
               longitude: values.longitude,
             },
+            accessibilityNote: values.accessabilityNote,
+      accessibility: values.accessability
+      ? values.accessability.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+      : undefined,
             
           };
           if(contentLang == "bilengual")
@@ -168,6 +225,16 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               latitude: values.latitude,
               longitude: values.longitude,
             },
+            accessibilityNote: values.accessabilityNote,
+      accessibility: values.accessability
+      ? values.accessability.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+      : undefined,
+            
             
           };
           if(contentLang == "bilengual")
@@ -245,7 +312,11 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         streetAddress: placeDetails.postalAddress?.streetAddress,
         latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
-        description: placeDetails.description && placeDetails.description[contentLang]
+        description: placeDetails.description && placeDetails.description[contentLang],
+        accessability: placeDetails?.accessibility?.map(
+          (item) => item?.entityId
+        ),
+        accessabilityNote:placeDetails?.accessibilityNote
       });
 
       if(contentLang == "bilengual")
@@ -506,6 +577,29 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             </Form.Item>
           </>
         ))}
+
+
+<div className="update-select-title">
+              {t("Place Accessibility", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"accessability"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={accessabilityList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Event Accessibility Note", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
+            <Input placeholder="Enter Event Accessability Note" className="replace-input" />
+            </Form.Item>
 
 <div className="update-select-title">
                 {t("Opening Hours", { lng: currentLang })} 

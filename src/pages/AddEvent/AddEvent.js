@@ -71,6 +71,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
+  const [accessabilityList, setAccessabilityList] = useState([]);
   const [contactList, setContactList] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -100,7 +101,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const formatarray = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.identifier.uri,
+        value: item.uuid,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -111,7 +112,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const formatarrayTree = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.identifier.uri,
+        value: item.uuid,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -120,17 +121,19 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     });
   };
   useEffect(() => {
-    if (audienceStore == null) {
-      getPublics();
-    } else {
-      setPublicsList(formatarray(audienceStore));
-    }
+    // if (audienceStore == null) {
+    //   getPublics();
+    // } else {
+    //   setPublicsList(formatarray(audienceStore));
+    // }
 
-    if (typesStore == null) {
-      getTypes();
-    } else {
-      setTypeList(formatarray(typesStore));
-    }
+    // if (typesStore == null) {
+    //   getTypes();
+    // } else {
+    //   setTypeList(formatarray(typesStore));
+    // }
+
+    getPublics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -187,12 +190,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
   const getPublics = (page = 1) => {
     setLoading(true);
-    ServiceApi.getTaxonomy()
+    ServiceApi.getFieldConcepts("Event")
       .then((response) => {
-        if (response && response.data && response.data.data) {
-          const events = response.data.data;
-          setPublicsList(formatarray(events));
-          dispatch(fetchAudience(response.data.data));
+        if (response && response.data && response.data) {
+          const events = response.data;
+          setPublicsList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Audience")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Accessibility")?.concepts));
+          setTypeList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Type")?.concepts));
+          // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
       })
@@ -262,6 +267,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     const eventObj = {
       languages: values.languages,
       eventStatus: values.eventStatus,
+      accessibilityNote: values.accessabilityNote,
+     
       startDate: !isRecurring
         ? ServiceApi.parseDate(
             moment(values.startDate).format("YYYY-MM-DD"),
@@ -310,7 +317,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       audience: values.audience
         ? values.audience.map((item) => {
             const obj = {
-              uri: item,
+              entityId: item,
             };
             return obj;
           })
@@ -318,11 +325,19 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       additionalType: values.type
         ? values.type.map((item) => {
             const obj = {
-              uri: item,
+              entityId: item,
             };
             return obj;
           })
         : undefined,
+        accessibility: values.accessability
+        ? values.accessability.map((item) => {
+            const obj = {
+              entityId: item,
+            };
+            return obj;
+          })
+        : undefined,  
     };
     if(contentLang == "bilengual")
     {
@@ -492,10 +507,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         organization: eventDetails?.organizer?.organizations.map(
           (item) => item.uuid
         ),
-        audience: eventDetails?.audience?.map((item) => item?.identifier?.uri),
+        audience: eventDetails?.audience?.map((item) => item?.entityId),
         type: eventDetails?.additionalType?.map(
-          (item) => item?.identifier?.uri
+          (item) => item?.entityId
         ),
+        accessability: eventDetails?.accessibility?.map(
+          (item) => item?.entityId
+        ),
+        accessabilityNote:eventDetails?.accessibilityNote
       });
       if(contentLang == "bilengual")
       {
@@ -943,6 +962,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               />
             </Form.Item>
 
+           
+
             <div className="update-select-title">
               {t("Types", { lng: currentLang })}
             </div>
@@ -955,6 +976,28 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 multiple
                 placeholder="Please select"
               />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Event Accessibility", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"accessability"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={accessabilityList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Event Accessibility Note", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
+            <Input placeholder="Enter Event Accessability Note" className="replace-input" />
             </Form.Item>
           </Col>
           <Col className="upload-col">

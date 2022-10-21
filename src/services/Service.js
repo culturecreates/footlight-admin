@@ -431,6 +431,15 @@ export default class ServiceApi {
     });
   }
 
+  static getFieldConcepts(name) {
+    return Axios({
+      url: `calendar-metadata/field-taxonomy/concepts`,
+      method: "GET",
+      params:{"taxonomyClass":name}
+
+    });
+  }
+
   static addConcepts(payload,isUpdate) {
     return Axios({
       url: `concepts`,
