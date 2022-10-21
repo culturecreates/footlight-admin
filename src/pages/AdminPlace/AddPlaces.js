@@ -47,7 +47,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Type")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);

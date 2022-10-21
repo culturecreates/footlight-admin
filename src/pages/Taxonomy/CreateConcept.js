@@ -201,7 +201,11 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     setGData(data);
   };
   const onSelect=(selectedKeys, e)=>{
+    console.log(e)
+    if(e.selected)
      setSelectedConcept(e.node.key)
+    else
+     setSelectedConcept() 
   }
   
   const handleSubmit = (values) => {
@@ -287,7 +291,22 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   }
 
   const handleChange = (value,option) => {
-    
+    console.log(value,option)
+    if(value==="Event")
+    {
+    const map=["Event Accessibility","Audience", "Event Type"]
+    setMappedList(map)
+    }
+    else if(value==="Place")
+    {
+      const map=["Place Accessibility"]
+    setMappedList(map)
+    }
+    else
+    {
+      const map=["Organization Role","Performer Role", "Contributor Role"]
+      setMappedList(map)
+    }
   };
 
   const deleteCocept = () => {
