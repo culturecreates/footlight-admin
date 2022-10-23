@@ -534,7 +534,7 @@ else
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </div>
-            {/* {
+             {
               contentLang == "bilengual" &&
               <>
               <div className="update-select-title">{t("Name")} @en</div>
@@ -552,7 +552,7 @@ else
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </>
-            } */}
+            } 
             </div>
 
             <div>

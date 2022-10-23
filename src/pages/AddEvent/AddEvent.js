@@ -71,6 +71,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
+  const [dynamicList, setDynamicList] = useState([]);
   const [accessabilityList, setAccessabilityList] = useState([]);
   const [contactList, setContactList] = useState([]);
   const [isUpload, setIsUpload] = useState(false);
@@ -194,9 +195,13 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setPublicsList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Audience")?.concepts));
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Accessibility")?.concepts));
-          setTypeList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Event Type")?.concepts));
+          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
+          setPublicsList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Audience")?.concepts));
+          setAccessabilityList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Accessibility")?.concepts));
+          setTypeList(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Type")?.concepts));
+          console.log("ayatt",events.filter(item=>(item.taxonomy?.isDynamicField)))
+          
+          
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
@@ -252,6 +257,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   };
 
   const handleSubmit = (values) => {
+    
+   const dynamicField =  dynamicList.map(item=>{
+      const obj ={
+        [item.taxonomy?.entityId]:values[item.taxonomy?.entityId]
+      }
+      return obj;
+    })
+    
     setLoading(true);
     if (!isRecurring) {
       values.startDate.set({
@@ -268,7 +281,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
-     
+      dynamicFields:dynamicField,
       startDate: !isRecurring
         ? ServiceApi.parseDate(
             moment(values.startDate).format("YYYY-MM-DD"),
@@ -460,6 +473,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
       setYoutubeLink(eventDetails?.videoUrl);
       form.setFieldsValue({
+        "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
         languages: eventDetails.languages,
         eventStatus: eventDetails.eventStatus,
         contact: eventDetails.contactPoint?.uuid,
@@ -619,6 +633,23 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDetails]);
+
+  useEffect(()=>{
+
+    if(eventDetails && eventDetails.dynamicFields && dynamicList.length>0)
+    {
+      const eventDynamic = eventDetails.dynamicFields;
+      if(Array.isArray(eventDynamic))
+      for (let i = 0; i <= eventDynamic.length; i++) {
+       
+        form.setFieldsValue({
+          [i]:eventDynamic[i]
+        })
+    }
+      
+      
+    }
+  },[eventDetails,dynamicList])
 
   const closeWithId = (id) => {
     setShowAddContact(false);
@@ -999,6 +1030,25 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
             <Input placeholder="Enter Event Accessability Note" className="replace-input" />
             </Form.Item>
+
+{dynamicList.length>0 &&
+  dynamicList.map(item=>
+    <div key={item.taxonomy.entityId}>
+            <div className="update-select-title">
+              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+            </div>
+
+            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+            <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={formatarray(item.concepts)}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+            </div>
+)}
           </Col>
           <Col className="upload-col">
             <Dragger

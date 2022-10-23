@@ -580,7 +580,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
 
 <div className="update-select-title">
-              {t("Place Accessibility", { lng: currentLang })}
+              {t("Accessibility", { lng: currentLang })}
             </div>
 
             <Form.Item name={"accessability"} rules={[{ required: false }]}>
@@ -594,11 +594,11 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             </Form.Item>
 
             <div className="update-select-title">
-              {t("Event Accessibility Note", { lng: currentLang })}
+              {t("Accessibility Note", { lng: currentLang })}
             </div>
 
             <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
-            <Input placeholder="Enter Event Accessability Note" className="replace-input" />
+            <Input placeholder="Enter Accessability Note" className="replace-input" />
             </Form.Item>
 
 <div className="update-select-title">
