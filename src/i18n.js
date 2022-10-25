@@ -10,6 +10,14 @@ i18n
     resources: {
       en: {
         translations: {
+          "Class":"Class",
+          "dynamicDisplay":"Dynamic Display",
+          "mapField":"Mapped to standared field",
+          "Event Accessibility":"Event Accessibility",
+          "Place Accessibility":"Place Accessibility",
+          "Organization Role":"Organization Role",
+          "Performer Role":"Performer Role",
+          "Contributor Role":"Contributor Role",
           CANCELLED:"CANCELLED",
           POSTPONED:"POSTPONED",
           EventStatus:"Event Status",
@@ -45,6 +53,7 @@ i18n
           "additionalType":"Additional Type",
           "Results":"Search Results",
           "audience":"Audience",
+          "Audience":"Audience",
           "Different": "diiferent",
           "Contact":"Contact",
           "Contacts":"Contacts",
@@ -90,6 +99,14 @@ i18n
       },
       fr: {
         translations: {
+          "Class":"Classer",
+          "dynamicDisplay":"Affichage dynamique",
+          "mapField":"Mappé sur un champ standard",
+          "Event Accessibility":"Accessibilité de l'événement",
+          "Place Accessibility":"Accessibilité du lieu",
+          "Organization Role":"Rôle de l'organisation",
+          "Performer Role":"Rôle d'interprète",
+          "Contributor Role":"Rôle de contributeur",
           POSTPONED:"REPORTE",
           CANCELLED:"ANNULÉ",
           EventStatus:"Événement Status",
@@ -125,6 +142,7 @@ i18n
           "AllEvents": "Tous les événements",
           "audiences":"Publics",
           "audience":"Public",
+          "Audience":"Public",
           "additionalType":"Additional Type",
           "Search": "Recherchez un événement, un thème ou un lieu",
           "Results":"Résultats de recherche",

@@ -19,87 +19,7 @@ const y = 2;
 const z = 1;
 
 
-  const objDefault=[
-    {
-        "title": "0-0",
-        "key": "0-0",
-        "children": [
-            {
-                "title": "0-0-0",
-                "key": "0-0-0",
-                "children": [
-                    {
-                        "title": "0-0-0-0",
-                        "key": "0-0-0-0"
-                    },
-                    {
-                        "title": "0-0-0-1",
-                        "key": "0-0-0-1"
-                    },
-                   
-                ]
-            },
-            {
-                "title": "0-0-1",
-                "key": "0-0-1",
-                "children": [
-                    {
-                        "title": "0-0-1-0",
-                        "key": "0-0-1-0"
-                    },
-                    
-                ]
-            },
-            {
-                "title": "0-0-2",
-                "key": "0-0-2"
-            }
-        ]
-    },
-    {
-        "title": "0-1",
-        "key": "0-1",
-        "children": [
-            {
-                "title": "0-1-0",
-                "key": "0-1-0",
-                "children": [
-                    {
-                        "title": "0-1-0-0",
-                        "key": "0-1-0-0"
-                    },
-                    
-                ]
-            },
-            {
-                "title": "0-1-1",
-                "key": "0-1-1",
-                "children": [
-                    {
-                        "title": "0-1-1-0",
-                        "key": "0-1-1-0"
-                    },
-                    {
-                        "title": "0-1-1-1",
-                        "key": "0-1-1-1"
-                    },
-                    {
-                        "title": "0-1-1-2",
-                        "key": "0-1-1-2"
-                    }
-                ]
-            },
-            {
-                "title": "0-1-2",
-                "key": "0-1-2"
-            }
-        ]
-    },
-    {
-        "title": "0-2",
-        "key": "0-2"
-    }
-]
+ 
 const { confirm } = Modal;
 
 function CreateConcept({ currentLang,contentLang,orgDetails}) {
@@ -130,6 +50,20 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const [expandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0']);
 
   useEffect(()=>{
+    const obj =[
+      {
+      name:"Event Accessibility",
+      value:"Event Accessibility"
+    },
+    {
+      name:"audience",
+      value:"Audience"
+    },
+    {
+      name:"Event Type",
+      value:"Event Type"
+    }
+  ]
     const map=["Event Accessibility","Audience", "Event Type"]
     setMappedList(map)
 
@@ -634,7 +568,7 @@ else
 
             <div>
                 <div>
-                <div className="update-select-title">{t("Class")}</div>
+                <div className="update-select-title">{t("Class", { lng: currentLang })}</div>
             <Form.Item
               name="taxonomyClass"
               className="status-comment-item"
@@ -660,10 +594,10 @@ else
             </Form.Item>
                 </div>
                 <Form.Item  name="isDynamicField" valuePropName="checked">
-          <Checkbox>Dynamic display</Checkbox>
+          <Checkbox>{t("dynamicDisplay", { lng: currentLang })}</Checkbox>
         </Form.Item>
                 <div>
-                <div className="update-select-title">{t("Mapped to standared field")}</div>
+                <div className="update-select-title">{t("mapField", { lng: currentLang })}</div>
             <Form.Item
               name="mappedToField"
               className="status-comment-item"
