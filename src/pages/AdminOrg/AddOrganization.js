@@ -1,4 +1,4 @@
-import { Layout, Form, Input, Button, message, Select, Divider, Space, Typography } from "antd";
+import { Layout, Form, Input, Button, message, Select, Divider, Space, Typography, TreeSelect } from "antd";
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const [showAddContact,setShowAddContact]= useState(false)
   const [formValue, setFormVaue] = useState();
   const [placeList, setPlaceList] = useState([]);
+  const [dynamicList, setDynamicList] = useState([]);
 
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -34,7 +35,38 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
 
   const contactStore = useSelector((state) => state.org);
 
+  const formatarray = (data) => {
+    return data.map((item) => {
+      const obj = {
+        value: item.uuid,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        children: item.children ? formatarrayTree(item.children) : undefined,
+      };
+      return obj;
+    });
+  };
+  const formatarrayTree = (data) => {
+    return data.map((item) => {
+      const obj = {
+        value: item.uuid,
+        title: item.name[currentLang]?item.name[currentLang]:
+        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        children: item.children ? formatarrayTree(item.children) : undefined,
+      };
+      return obj;
+    });
+  };
+
   const handleSubmit = (values) => {
+    const dynamicField =  dynamicList.map(item=>{
+      const obj ={
+        conceptIds: values[item.taxonomy?.entityId],
+        taxonomyId: item.taxonomy?.entityId,
+       
+      }
+      return obj;
+    })
     const postalObj = {
         
         url: {uri:values.url},
@@ -43,7 +75,8 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
           }:undefined,
         place:values.place? {
           entityId: values.place
-        }:undefined 
+        }:undefined ,
+        dynamicFields:dynamicField,
     };
     if(contentLang == "bilengual")
     {
@@ -153,6 +186,24 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgDetails]);
 
+  useEffect(()=>{
+
+    if(orgDetails && orgDetails.dynamicFields && dynamicList.length>0)
+    {
+      const eventDynamic = orgDetails.dynamicFields;
+      if(Array.isArray(eventDynamic))
+      for (let i = 0; i <= eventDynamic.length; i++) {
+       
+        if(eventDynamic[i]?.taxonomyId)
+        form.setFieldsValue({
+          [eventDynamic[i].taxonomyId]:eventDynamic[i].conceptIds
+        })
+    }
+      
+      
+    }
+  },[orgDetails,dynamicList])
+
   function handleEnter(event) {
     if (event.keyCode === 13) {
       event.preventDefault()
@@ -204,11 +255,31 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   };
 
   useEffect(()=>{
-    getPlaces()
+    getPlaces();
+    getPublics();
   },[])
 
+  const getPublics = () => {
+    
+    ServiceApi.getFieldConcepts("Event")
+      .then((response) => {
+        if (response && response.data && response.data) {
+          const events = response.data;
+          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
+         
+          
+          
+          // dispatch(fetchAudience(response.data.data));
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
   const getPlaces = (page = 1) => {
-    setLoading(true);
+    // setLoading(true);
     ServiceApi.getAllPlaces(page, currentLang === "en" ? "EN" : "FR")
       .then((response) => {
         if (response && response.data && response.data.data) {
@@ -360,6 +431,24 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
           </>
         ))}
 
+{    dynamicList.length>0 &&
+  dynamicList.map(item=>
+    <div key={item.taxonomy.entityId}>
+            <div className="update-select-title">
+              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+            </div>
+
+            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+            <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={formatarray(item.concepts)}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+            </div>
+)}
         <Form.Item className="submit-items">
           <Button
             size="large"

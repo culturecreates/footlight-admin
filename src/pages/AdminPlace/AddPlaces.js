@@ -27,6 +27,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const [isUpdate, setIsUpdate] = useState(false);
   const [containsList, setContainsList] = useState([]);
   const [accessabilityList, setAccessabilityList] = useState([]);
+  const [dynamicList, setDynamicList] = useState([]);
 
   const [formValue, setFormVaue] = useState();
   const { t,  } = useTranslation();
@@ -38,11 +39,31 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   
 
     getAccessability();
+    getPublics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getPublics = () => {
+    
+    ServiceApi.getFieldConcepts("Event")
+      .then((response) => {
+        if (response && response.data && response.data) {
+          const events = response.data;
+          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
+         
+          
+          
+          // dispatch(fetchAudience(response.data.data));
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
   const getAccessability = (page = 1) => {
-    setLoading(true);
+    // setLoading(true);
     ServiceApi.getFieldConcepts("Place")
       .then((response) => {
         if (response && response.data && response.data) {
@@ -123,6 +144,15 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       .catch((error) => console.error("Error", error));
   };
   const handleSubmit = (values) => {
+    const dynamicField =  dynamicList.map(item=>{
+      const obj ={
+        conceptIds: values[item.taxonomy?.entityId],
+        taxonomyId: item.taxonomy?.entityId,
+       
+      }
+      return obj;
+    })
+
     const postalObj = {
       addressCountry: values.addressCountry,
       addressLocality: values.addressLocality,
@@ -166,6 +196,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           return obj;
         })
       : undefined,
+      dynamicFields:dynamicField,
             
           };
           if(contentLang == "bilengual")
@@ -234,7 +265,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           return obj;
         })
       : undefined,
-            
+      dynamicFields:dynamicField,  
             
           };
           if(contentLang == "bilengual")
@@ -340,6 +371,24 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         desc: "",
       });
   }, [placeDetails]);
+
+  useEffect(()=>{
+
+    if(placeDetails && placeDetails.dynamicFields && dynamicList.length>0)
+    {
+      const eventDynamic = placeDetails.dynamicFields;
+      if(Array.isArray(eventDynamic))
+      for (let i = 0; i <= eventDynamic.length; i++) {
+       
+        if(eventDynamic[i]?.taxonomyId)
+        form.setFieldsValue({
+          [eventDynamic[i].taxonomyId]:eventDynamic[i].conceptIds
+        })
+    }
+      
+      
+    }
+  },[placeDetails,dynamicList])
 
   useEffect(()=>{
     ServiceApi.placeAdminArea()
@@ -600,6 +649,25 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
             <Input placeholder="Enter Accessability Note" className="replace-input" />
             </Form.Item>
+
+        {    dynamicList.length>0 &&
+  dynamicList.map(item=>
+    <div key={item.taxonomy.entityId}>
+            <div className="update-select-title">
+              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+            </div>
+
+            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+            <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={formatarray(item.concepts)}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+            </div>
+)}
 
 <div className="update-select-title">
                 {t("Opening Hours", { lng: currentLang })} 

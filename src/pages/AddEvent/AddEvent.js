@@ -189,8 +189,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       });
   };
 
-  const getPublics = (page = 1) => {
-    setLoading(true);
+  const getPublics = () => {
+    
     ServiceApi.getFieldConcepts("Event")
       .then((response) => {
         if (response && response.data && response.data) {
@@ -260,7 +260,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     
    const dynamicField =  dynamicList.map(item=>{
       const obj ={
-        [item.taxonomy?.entityId]:values[item.taxonomy?.entityId]
+        conceptIds: values[item.taxonomy?.entityId],
+        taxonomyId: item.taxonomy?.entityId,
+       
       }
       return obj;
     })
@@ -473,7 +475,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
       setYoutubeLink(eventDetails?.videoUrl);
       form.setFieldsValue({
-        "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
+        // "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
         languages: eventDetails.languages,
         eventStatus: eventDetails.eventStatus,
         contact: eventDetails.contactPoint?.uuid,
@@ -642,8 +644,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       if(Array.isArray(eventDynamic))
       for (let i = 0; i <= eventDynamic.length; i++) {
        
+        if(eventDynamic[i]?.taxonomyId)
         form.setFieldsValue({
-          [i]:eventDynamic[i]
+          [eventDynamic[i].taxonomyId]:eventDynamic[i].conceptIds
         })
     }
       

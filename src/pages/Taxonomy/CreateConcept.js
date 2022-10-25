@@ -424,10 +424,10 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const obj={
           key:item.key,
           // name: {fr:item.title},
-          
+          uuid: isUpdateConcepts? item.key:undefined,
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
-      if(contentLang == "bilengual")
+      if(contentLang === "bilengual")
       {
         obj.name = {fr:item.title, en: item.titleBL};
         
@@ -447,10 +447,11 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
+        uuid: isUpdateConcepts? item.key:undefined,
         // name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
-      if(contentLang == "bilengual")
+      if(contentLang === "bilengual")
       {
         obj.name = {fr:item.title, en: item.titleBL};
         
@@ -512,6 +513,7 @@ else
         })
       }
       
+      setFormVaue(form.getFieldsValue());
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgDetails]);
