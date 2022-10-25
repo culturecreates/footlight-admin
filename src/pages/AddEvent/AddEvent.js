@@ -520,7 +520,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         eventPage: eventDetails.url?.uri,
         facebookLink: eventDetails.facebookUrl,
         videoUrl: eventDetails?.videoUrl,
-        organization: eventDetails?.organizer?.organizations.map(
+        organization: eventDetails?.organizer?.organizations?.map(
           (item) => item.uuid
         ),
         audience: eventDetails?.audience?.map((item) => item?.entityId),
