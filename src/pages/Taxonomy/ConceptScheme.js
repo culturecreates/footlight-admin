@@ -37,7 +37,18 @@ function ConceptScheme({ isModalVisible,
   
   const handleSubmit = (values) => {
     console.log(values)
-    closeWithName(values.name)
+    const conceptObj={};
+    if(contentLang == "bilengual")
+    {
+      conceptObj.name = {fr:values.name, en: values.nameEn};
+      
+    }
+    else{
+      
+      conceptObj.name = {[contentLang]:values.name};
+      
+      }
+    closeWithName(conceptObj)
     setIsModalVisible(false);
   }
 
@@ -92,7 +103,7 @@ function ConceptScheme({ isModalVisible,
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </div>
-            {/* {
+            {
               contentLang == "bilengual" &&
               <>
               <div className="update-select-title">{t("Name")} @en</div>
@@ -110,7 +121,7 @@ function ConceptScheme({ isModalVisible,
               <Input placeholder="Enter Taxonomy Name" className="replace-input" />
             </Form.Item>
             </>
-            } */}
+            }
             </div>
 
            

@@ -126,6 +126,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const [form] = Form.useForm();
   const navigate = useNavigate();
     const [gData, setGData] = useState([]);
+    const [treeData, setTreeData] = useState([]);
   const [expandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0']);
 
   useEffect(()=>{
@@ -199,6 +200,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     }
 
     setGData(data);
+    setTreeData(data)
   };
   const onSelect=(selectedKeys, e)=>{
     console.log(e)
@@ -332,6 +334,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const handleDeleteContact=(id)=>{
   const newData=  removeByKey(gData,id)
   setGData(newData)
+  setTreeData(newData)
   setSelectedConcept()
   //   setLoading(true);
   //   ServiceApi.deleteConcept(id)
@@ -360,10 +363,12 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const obj={
           key:item.key,
           title: item.title,
-          
+          titleBL: item.titleBL,
           children:item.key === selectedConcept?item.children?[...formatarrayTree(item.children,newData),newData]:[newData]:
           item.children?formatarrayTree(item.children,newData):undefined
       }
+      
+        
       return obj
     })
  
@@ -375,9 +380,11 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
        const obj={
         key:item.key,
         title: item.title,
+        titleBL: item.titleBL,
         children:item.key === selectedConcept?item.children?[...formatarrayTree(item.children,newData),newData]:[newData]:
         item.children?formatarrayTree(item.children,newData):undefined
       }
+     
        return obj
      })
    }
@@ -387,10 +394,12 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     return data.map(item=>{
       const obj={
           key:item.uuid,
-          title: item.name?.fr,
+          title: contentLang == "bilengual"?item.name?.fr:item.name[contentLang],
+          titleBL:contentLang == "bilengual"?item.name?.en:item.name[contentLang],
           
           children:item.children?formatarrayTreeResponse(item.children):undefined
       }
+      
       return obj
     })
  
@@ -401,7 +410,8 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.uuid,
-        title: item.name?.fr,
+        title: contentLang == "bilengual"?item.name?.fr:item.name[contentLang],
+        titleBL:contentLang == "bilengual"?item.name?.en:item.name[contentLang],
         children:item.children?formatarrayTreeResponse(item.children):undefined
       }
        return obj
@@ -413,10 +423,20 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     return data.map(item=>{
       const obj={
           key:item.key,
-          name: {fr:item.title},
+          // name: {fr:item.title},
           
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
+      if(contentLang == "bilengual")
+      {
+        obj.name = {fr:item.title, en: item.titleBL};
+        
+      }
+      else{
+        
+        obj.name = {[contentLang]:item.title};
+          
+        }
       return obj
     })
  
@@ -427,25 +447,38 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
-        name: {fr:item.title},
+        // name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
+      if(contentLang == "bilengual")
+      {
+        obj.name = {fr:item.title, en: item.titleBL};
+        
+      }
+      else{
+        
+        obj.name = {[contentLang]:item.title};
+          
+        }
        return obj
      })
    }
-   const closeWithId = (name) => {
+   const closeWithId = (conceptObj) => {
     const obj= {
-      "title": name,
-      "key": name
+      "title": contentLang == "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
+      "key": contentLang == "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
+      "titleBL":contentLang == "bilengual"?conceptObj.name.en:conceptObj.name[contentLang],
   }
     if(selectedConcept)
     {
     const findobj = formatarray(gData,obj);
     setGData(findobj)
+    setTreeData(findobj)
     
 }
 else
   setGData([...gData,obj])
+  setTreeData([...gData,obj])
     
   };
 
@@ -493,6 +526,7 @@ else
            setIsUpdateConcepts(true);
          const formatResponse = formatarrayResponse(events)
           setGData(formatResponse)
+          setTreeData(formatResponse)
           if (response.data.StatusCode !== 400) {
              
           }
@@ -503,6 +537,47 @@ else
         setLoading(false);
       });
   };
+
+  const changeLanguageConcept=(lng)=>{
+    setSelectedLang(lng)
+    const obj = formatarrayLng(gData,lng)
+    console.log(obj,gData)
+    // setGData(obj)
+    setTreeData(obj)
+  }
+
+  const formatarrayLng=(data,lng)=>{
+
+    return data.map(item=>{
+      const obj={
+          key:item.key,
+          title: contentLang == "bilengual" ? lng==="fr"?item.title?item.title:item.titleBL
+          : item.titleBL?item.titleBL:item.title
+          :item.title?item.title:item.titleBL,
+          titleBL:contentLang == "bilengual"?item.title:item.title,
+          
+          children:item.children?formatarrayTreeLng(item.children,lng):undefined
+      }
+      
+      return obj
+    })
+ 
+ 
+   }
+   const formatarrayTreeLng=(data,lng)=>{
+     
+     return data.map(item=>{
+       const obj={
+        key:item.key,
+        title: contentLang == "bilengual" ? lng==="fr"?item.title?item.title:item.titleBL
+          : item.titleBL?item.titleBL:item.title
+          :item.title?item.title:item.titleBL,
+        titleBL:contentLang == "bilengual"?item.title:item.title,
+        children:item.children?formatarrayTreeResponse(item.children):undefined
+      }
+       return obj
+     })
+   }
     return(
         
         <div className="concept-create">
@@ -624,7 +699,7 @@ else
       onDragEnter={onDragEnter}
       onDrop={onDrop}
       onSelect={onSelect}
-      treeData={gData}
+      treeData={treeData}
     />
     </Card>
             <div style={{marginBottom:"10px"}}>
@@ -634,18 +709,18 @@ else
           onClick={()=>addNewConcept()}>
             {t("Concept")}
           </Button>
-          {/* <Button type="primary"  size={"large"}
+          <Button type="primary"  size={"large"}
           className={selectedLang=="fr"?"add-concept":"non-selected-btn"}
           disabled={!isUpdate}
-          onClick={()=>setSelectedLang("fr")}>
+          onClick={()=>changeLanguageConcept("fr")}>
             @fr
           </Button>
           <Button type="primary"  size={"large"}
            disabled={!isUpdate}
           className={selectedLang=="en"?"add-concept":"non-selected-btn"}
-          onClick={()=>setSelectedLang("en")}>
+          onClick={()=>changeLanguageConcept("en")}>
            @en
-          </Button> */}
+          </Button>
 {selectedConcept &&
           <Button type="primary"  size={"large"}
       className="add-concept"
