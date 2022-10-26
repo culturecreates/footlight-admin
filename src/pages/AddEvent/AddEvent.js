@@ -82,6 +82,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [compressedFile, setCompressedFile] = useState(null);
   const [offerConfig, setOfferConfig] = useState();
   const [offerIds, setOfferIds] = useState([]);
+  const [orgRoleList,setOrgRole] = useState([])
+  const [contibutorRoleList,setContributorRole] = useState([])
+  const [performerRoleList,setPerformerRole] = useState([])
   const [youtubeLink, setYoutubeLink] = useState();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -199,6 +202,10 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           setPublicsList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Audience")?.concepts));
           setAccessabilityList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Accessibility")?.concepts));
           setTypeList(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Type")?.concepts));
+
+          setOrgRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Organization Role")?.concepts));
+          setPerformerRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Performer Role")?.concepts));
+          setContributorRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Contributor Role")?.concepts));
           console.log("ayatt",events.filter(item=>(item.taxonomy?.isDynamicField)))
           
           
@@ -330,6 +337,30 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           }
         : undefined,
       audience: values.audience
+        ? values.audience.map((item) => {
+            const obj = {
+              entityId: item,
+            };
+            return obj;
+          })
+        : undefined,
+        organizationRole:   values.organizationRole
+        ? values.audience.map((item) => {
+            const obj = {
+              entityId: item,
+            };
+            return obj;
+          })
+        : undefined,
+        performerRole:   values.performerRole
+        ? values.audience.map((item) => {
+            const obj = {
+              entityId: item,
+            };
+            return obj;
+          })
+        : undefined,
+        contributorRole:   values.contributorRole
         ? values.audience.map((item) => {
             const obj = {
               entityId: item,
@@ -520,14 +551,23 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         eventPage: eventDetails.url?.uri,
         facebookLink: eventDetails.facebookUrl,
         videoUrl: eventDetails?.videoUrl,
-        organization: eventDetails?.organizer?.organizations?.map(
-          (item) => item.uuid
-        ),
+        // organization: eventDetails?.organizer?.organizations?.map(
+        //   (item) => item.uuid
+        // ),
         audience: eventDetails?.audience?.map((item) => item?.entityId),
         type: eventDetails?.additionalType?.map(
           (item) => item?.entityId
         ),
         accessability: eventDetails?.accessibility?.map(
+          (item) => item?.entityId
+        ),
+        contributorRole: eventDetails?.contributorRole?.map(
+          (item) => item?.entityId
+        ),
+        organizationRole: eventDetails?.organizationRole?.map(
+          (item) => item?.entityId
+        ),
+        performerRole: eventDetails?.performerRole?.map(
           (item) => item?.entityId
         ),
         accessabilityNote:eventDetails?.accessibilityNote
@@ -1158,7 +1198,51 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 </Card>
               )}
 
-              <div className="update-select-title">
+<div className="update-select-title">
+              {t("Organization Role", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"organizationRole"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={orgRoleList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+           
+
+            <div className="update-select-title">
+              {t("Performer Role", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"performerRole"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={performerRoleList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Contributor Role", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"contributorRole"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={contibutorRoleList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+              {/* <div className="update-select-title">
                 {t("Organization", { lng: currentLang })}
               </div>
 
@@ -1205,7 +1289,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       </Option>
                     ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
 
               <div className="update-select-title">
                 {t("FacebookLink", { lng: currentLang })}
