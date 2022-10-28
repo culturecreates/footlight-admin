@@ -235,6 +235,12 @@
     font-weight: 600;
 }
 
+.org-role-select{
+    width: 250px !important
+}
+.org-role-select-tree{
+    width: 150px !important
+}
 .event-status-cancelled{
     background: yellow;
     display: inline-block;
