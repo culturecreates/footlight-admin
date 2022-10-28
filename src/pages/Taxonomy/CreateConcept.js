@@ -226,8 +226,8 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       });
   }
 
-  const handleChange = (value,option) => {
-    console.log(value,option)
+  const handleChange = (value) => {
+    console.log(value)
     if(value==="Event")
     {
     const map=["Event Accessibility","Audience", "Event Type"]
@@ -425,6 +425,7 @@ else
       const params = new URLSearchParams(search);
       const eventId = params.get("id");
       getConcepts(eventId)
+      handleChange(orgDetails.taxonomyClass)
       form.setFieldsValue({
         name: orgDetails.name[contentLang],
         

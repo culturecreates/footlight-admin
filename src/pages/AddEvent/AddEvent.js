@@ -46,6 +46,7 @@ import { fbUrlValidate, getCookies, timeZone, urlValidate, videoUrlValidate } fr
 import AddNewContactModal from "../../components/AddNewContactModal";
 import PriceModal from "../../components/PriceModal/PriceModal";
 import Spinner from "../../components/Spinner";
+import RoleOrganizer from "./RoleOrganizer";
 
 const { Option, OptGroup } = Select;
 const { Dragger } = Upload;
@@ -82,6 +83,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [compressedFile, setCompressedFile] = useState(null);
   const [offerConfig, setOfferConfig] = useState();
   const [offerIds, setOfferIds] = useState([]);
+  const [orgRoleList, setOrgRole] = useState([])
+  const [contibutorRoleList, setContributorRole] = useState([])
+  const [performerRoleList, setPerformerRole] = useState([])
+
+  const [orgSelectedRoleList, setOrgSelectedRole] = useState([])
+  const [contibutorSelectedRoleList, setContributorSelectedRole] = useState([])
+  const [performerSelectedRoleList, setPerformerSelectedRole] = useState([])
+
   const [youtubeLink, setYoutubeLink] = useState();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -97,14 +106,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const audienceStore = useSelector((state) => state.audience);
   const typesStore = useSelector((state) => state.types);
 
-  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
+  const checkAdmin = getCookies("user_token")?.user?.roles?.find(item => item.calendarId === getCookies("calendar-id"))
 
   const formatarray = (data) => {
     return data.map((item) => {
       const obj = {
         value: item.uuid,
-        title: item.name[currentLang]?item.name[currentLang]:
-        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        title: item.name[currentLang] ? item.name[currentLang] :
+          currentLang === "fr" ? item.name["en"] : item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
       };
       return obj;
@@ -114,8 +123,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     return data.map((item) => {
       const obj = {
         value: item.uuid,
-        title: item.name[currentLang]?item.name[currentLang]:
-        currentLang==="fr"?item.name["en"]:item.name["fr"],
+        title: item.name[currentLang] ? item.name[currentLang] :
+          currentLang === "fr" ? item.name["en"] : item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
       };
       return obj;
@@ -135,6 +144,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     // }
 
     getPublics();
+    getOrgPublics()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -163,9 +173,11 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     } else {
       setContactList(
         contactStore.map((item) => {
-          const obj = { name: item.name[currentLang]?item.name[currentLang]:
-             currentLang==="fr"?item.name["en"]:item.name["fr"]
-            , value: item.uuid };
+          const obj = {
+            name: item.name[currentLang] ? item.name[currentLang] :
+              currentLang === "fr" ? item.name["en"] : item.name["fr"]
+            , value: item.uuid
+          };
           return obj;
         })
       );
@@ -190,18 +202,44 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   };
 
   const getPublics = () => {
-    
+
     ServiceApi.getFieldConcepts("Event")
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
-          setPublicsList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Audience")?.concepts));
-          setAccessabilityList(formatarray(events.filter(item=>!(item.taxonomy.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Accessibility")?.concepts));
-          setTypeList(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Event Type")?.concepts));
-          console.log("ayatt",events.filter(item=>(item.taxonomy?.isDynamicField)))
-          
-          
+          setDynamicList(events.filter(item => (item.taxonomy?.isDynamicField)))
+          setPublicsList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Audience")?.concepts));
+          setAccessabilityList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Accessibility")?.concepts));
+          setTypeList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Type")?.concepts));
+
+          // setOrgRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Organization Role")?.concepts));
+          // setPerformerRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Performer Role")?.concepts));
+          // setContributorRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Contributor Role")?.concepts));
+          // console.log("ayatt",events.filter(item=>(item.taxonomy?.isDynamicField)))
+
+
+          // dispatch(fetchAudience(response.data.data));
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  };
+
+  const getOrgPublics = () => {
+
+    ServiceApi.getFieldConcepts("Organization")
+      .then((response) => {
+        if (response && response.data && response.data) {
+          const events = response.data;
+
+          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Organization Role")?.concepts));
+          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Performer Role")?.concepts));
+          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Contributor Role")?.concepts));
+          console.log("ayatt", events.filter(item => (item.taxonomy?.isDynamicField)))
+
+
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
@@ -241,7 +279,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           );
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
   const getAllPlaces = () => {
     ServiceApi.getAllPlaces()
@@ -253,20 +291,20 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           dispatch(fetchPlace(events));
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   const handleSubmit = (values) => {
-    
-   const dynamicField =  dynamicList.map(item=>{
-      const obj ={
+
+    const dynamicField = dynamicList.map(item => {
+      const obj = {
         conceptIds: values[item.taxonomy?.entityId],
         taxonomyId: item.taxonomy?.entityId,
-       
+
       }
       return obj;
     })
-    
+   
     setLoading(true);
     if (!isRecurring) {
       values.startDate.set({
@@ -283,13 +321,13 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
-      dynamicFields:dynamicField,
+      dynamicFields: dynamicField,
       startDate: !isRecurring
         ? ServiceApi.parseDate(
-            moment(values.startDate).format("YYYY-MM-DD"),
-            moment(values.startTime).format("HH:mm"),
-            values.timeZone
-          )
+          moment(values.startDate).format("YYYY-MM-DD"),
+          moment(values.startTime).format("HH:mm"),
+          values.timeZone
+        )
         : undefined,
       scheduleTimezone: values.timeZone,
       locationId: {
@@ -306,8 +344,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       },
       contactPoint: values.contact
         ? {
-            entityId: values.contact,
-          }
+          entityId: values.contact,
+        }
         : null,
       url: values.eventPage && { uri: values.eventPage },
       facebookUrl: values.facebookLink,
@@ -319,60 +357,66 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           const obj = { entityId: item };
           return obj;
         }),
-      organizer: values.organization
-        ? {
-            organization: values.organization.map((item) => {
-              const obj = {
-                entityId: item,
-              };
-              return obj;
-            }),
-          }
-        : undefined,
+      // organizer: values.organization
+      //   ? {
+      //       organization: values.organization.map((item) => {
+      //         const obj = {
+      //           entityId: item,
+      //         };
+      //         return obj;
+      //       }),
+      //     }
+      //   : undefined,
+
       audience: values.audience
         ? values.audience.map((item) => {
-            const obj = {
-              entityId: item,
-            };
-            return obj;
-          })
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
         : undefined,
+        organizers: orgSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
+        performers: performerSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
+        collaborators: contibutorSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
+
       additionalType: values.type
         ? values.type.map((item) => {
-            const obj = {
-              entityId: item,
-            };
-            return obj;
-          })
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
         : undefined,
-        accessibility: values.accessability
+      accessibility: values.accessability
         ? values.accessability.map((item) => {
-            const obj = {
-              entityId: item,
-            };
-            return obj;
-          })
-        : undefined,  
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
     };
-    if(contentLang == "bilengual")
-    {
-      eventObj.name = {fr:values.title, en: values.titleEn};
-      eventObj.description= {fr:values.desc ,en:values.descEn}
+    if (contentLang == "bilengual") {
+      eventObj.name = { fr: values.title, en: values.titleEn };
+      eventObj.description = { fr: values.desc, en: values.descEn }
     }
-    else{
-      if(eventDetails)
-      {
+    else {
+      if (eventDetails) {
 
-        eventObj.name = {[contentLang]:values.title,
-        [contentLang=="fr"?"en":"fr"]: eventDetails?.name[[contentLang=="fr"?"en":"fr"]]};
-        eventObj.description= {[contentLang]:values.desc,
-          [contentLang=="fr"?"en":"fr"]: eventDetails?.description[contentLang=="fr"?"en":"fr"]}
+        eventObj.name = {
+          [contentLang]: values.title,
+          [contentLang == "fr" ? "en" : "fr"]: eventDetails?.name[[contentLang == "fr" ? "en" : "fr"]]
+        };
+        eventObj.description = {
+          [contentLang]: values.desc,
+          [contentLang == "fr" ? "en" : "fr"]: eventDetails?.description[contentLang == "fr" ? "en" : "fr"]
+        }
 
       }
-      else
-      {
-        eventObj.name = {[contentLang]:values.title};
-        eventObj.description= {[contentLang]:values.desc}
+      else {
+        eventObj.name = { [contentLang]: values.title };
+        eventObj.description = { [contentLang]: values.desc }
       }
     }
     if (isEndDate && !isRecurring)
@@ -458,7 +502,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             }
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
   };
 
   useEffect(() => {
@@ -474,6 +518,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOfferConfig(eventDetails?.offerConfiguration);
       setOfferIds(eventDetails?.offers?.map((item) => item.uuid));
       setYoutubeLink(eventDetails?.videoUrl);
+      setOrgSelectedRole(eventDetails.organizer?eventDetails.organizer:[])
+      setContributorSelectedRole(eventDetails.collaborators?eventDetails.collaborators:[])
+      setPerformerSelectedRole(eventDetails.performer?eventDetails.performer:[])
       form.setFieldsValue({
         // "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
         languages: eventDetails.languages,
@@ -496,18 +543,18 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         ),
         endDate: eventDetails.endDate
           ? moment(new Date(eventDetails.endDate), "DD-MM-YYYY").tz(
-              eventDetails.scheduleTimezone
-                ? eventDetails.scheduleTimezone
-                : "Canada/Eastern"
-            )
+            eventDetails.scheduleTimezone
+              ? eventDetails.scheduleTimezone
+              : "Canada/Eastern"
+          )
           : undefined,
         title: eventDetails.name[contentLang],
         endTime: eventDetails.endDate
           ? moment(new Date(eventDetails.endDate), "HH-mm").tz(
-              eventDetails.scheduleTimezone
-                ? eventDetails.scheduleTimezone
-                : "Canada/Eastern"
-            )
+            eventDetails.scheduleTimezone
+              ? eventDetails.scheduleTimezone
+              : "Canada/Eastern"
+          )
           : undefined,
         startTime: moment(new Date(eventDetails.startDate), "HH-mm").tz(
           eventDetails.scheduleTimezone
@@ -520,9 +567,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         eventPage: eventDetails.url?.uri,
         facebookLink: eventDetails.facebookUrl,
         videoUrl: eventDetails?.videoUrl,
-        organization: eventDetails?.organizer?.organizations?.map(
-          (item) => item.uuid
-        ),
+        // organization: eventDetails?.organizer?.organizations?.map(
+        //   (item) => item.uuid
+        // ),
         audience: eventDetails?.audience?.map((item) => item?.entityId),
         type: eventDetails?.additionalType?.map(
           (item) => item?.entityId
@@ -530,31 +577,31 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         accessability: eventDetails?.accessibility?.map(
           (item) => item?.entityId
         ),
-        accessabilityNote:eventDetails?.accessibilityNote
+       
+        accessabilityNote: eventDetails?.accessibilityNote
       });
-      if(contentLang == "bilengual")
-      {
+      if (contentLang == "bilengual") {
         form.setFieldsValue({
           title: eventDetails.name?.fr,
           titleEn: eventDetails.name?.en,
-          desc: eventDetails.description && eventDetails.description.fr? (eventDetails.description.fr == "<p><br></p>"
-          ? "<p>&nbsp;</p>"
-          : eventDetails.description.fr):"<p>&nbsp;</p>",
-          descEn: eventDetails.description && eventDetails.description.en? (eventDetails.description.en == "<p><br></p>"
-          ? "<p>&nbsp;</p>"
-          : eventDetails.description.en):"<p>&nbsp;</p>",
+          desc: eventDetails.description && eventDetails.description.fr ? (eventDetails.description.fr == "<p><br></p>"
+            ? "<p>&nbsp;</p>"
+            : eventDetails.description.fr) : "<p>&nbsp;</p>",
+          descEn: eventDetails.description && eventDetails.description.en ? (eventDetails.description.en == "<p><br></p>"
+            ? "<p>&nbsp;</p>"
+            : eventDetails.description.en) : "<p>&nbsp;</p>",
         })
       }
-      else{
+      else {
         form.setFieldsValue({
           title: eventDetails.name[contentLang],
           desc: eventDetails.description
-          ? eventDetails.description[contentLang]
-            ? eventDetails.description[contentLang] === "<p><br></p>"
-              ? "<p>&nbsp;</p>"
-              : eventDetails.description[contentLang]
-            : "<p>&nbsp;</p> "
-          : "<p>&nbsp;</p>",
+            ? eventDetails.description[contentLang]
+              ? eventDetails.description[contentLang] === "<p><br></p>"
+                ? "<p>&nbsp;</p>"
+                : eventDetails.description[contentLang]
+              : "<p>&nbsp;</p> "
+            : "<p>&nbsp;</p>",
         })
       }
       if (eventDetails.locations) {
@@ -629,30 +676,29 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         frequency: "DAILY",
         timeZone: "Canada/Eastern",
         desc: "",
-        descEn:""
+        descEn: ""
       });
     setFormVaue(form.getFieldsValue());
-   
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDetails]);
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(eventDetails && eventDetails.dynamicFields && dynamicList.length>0)
-    {
+    if (eventDetails && eventDetails.dynamicFields && dynamicList.length > 0) {
       const eventDynamic = eventDetails.dynamicFields;
-      if(Array.isArray(eventDynamic))
-      for (let i = 0; i <= eventDynamic.length; i++) {
-       
-        if(eventDynamic[i]?.taxonomyId)
-        form.setFieldsValue({
-          [eventDynamic[i].taxonomyId]:eventDynamic[i].conceptIds
-        })
+      if (Array.isArray(eventDynamic))
+        for (let i = 0; i <= eventDynamic.length; i++) {
+
+          if (eventDynamic[i]?.taxonomyId)
+            form.setFieldsValue({
+              [eventDynamic[i].taxonomyId]: eventDynamic[i].conceptIds
+            })
+        }
+
+
     }
-      
-      
-    }
-  },[eventDetails,dynamicList])
+  }, [eventDetails, dynamicList])
 
   const closeWithId = (id) => {
     setShowAddContact(false);
@@ -733,11 +779,11 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   };
 
   const handlePublish = (id) => {
-    
+
     setLoading(true);
     ServiceApi.publishEvents(id)
       .then((response) => {
-        
+
         if (response && response.data && response.data) {
           message.success("Event published successfully")
           navigate(`/admin/events`);
@@ -768,7 +814,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               className="status-comment-item"
               rules={[
                 {
-                  required:contentLang == "bilengual"? formValue?.titleEn?.length>0?false:true :true,
+                  required: contentLang == "bilengual" ? formValue?.titleEn?.length > 0 ? false : true : true,
                   message: "Event name required",
                   whitespace: true,
                 },
@@ -779,20 +825,20 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             {
               contentLang == "bilengual" &&
               <>
-              <div className="update-select-title">{t("Title")} @en</div>
-            <Form.Item
-              name="titleEn"
-              className="status-comment-item"
-              rules={[
-                {
-                  required: formValue?.title?.length>0?false:true,
-                  message: "Event name required",
-                  whitespace: true,
-                },
-              ]}
-            >
-              <Input placeholder="Enter Event Name" className="replace-input" />
-            </Form.Item>
+                <div className="update-select-title">{t("Title")} @en</div>
+                <Form.Item
+                  name="titleEn"
+                  className="status-comment-item"
+                  rules={[
+                    {
+                      required: formValue?.title?.length > 0 ? false : true,
+                      message: "Event name required",
+                      whitespace: true,
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter Event Name" className="replace-input" />
+                </Form.Item>
               </>
             }
             {!isRecurring && (
@@ -925,7 +971,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 filterOption={(input, option) =>
                   option.children &&
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
+                  0
                 }
                 onChange={handleChangeLoc}
                 dropdownRender={(menu) => (
@@ -973,9 +1019,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                         }
                         key={item.uuid}
                       >
-                        {item.name[currentLang]?item.name[currentLang]:
-                        currentLang==="fr"?
-                        item.name["en"]:item.name["fr"]}
+                        {item.name[currentLang] ? item.name[currentLang] :
+                          currentLang === "fr" ?
+                            item.name["en"] : item.name["fr"]}
                       </Option>
                     ))}
                 </OptGroup>
@@ -996,7 +1042,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               />
             </Form.Item>
 
-           
+
 
             <div className="update-select-title">
               {t("Types", { lng: currentLang })}
@@ -1031,27 +1077,27 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             </div>
 
             <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
-            <Input placeholder="Enter Event Accessability Note" className="replace-input" />
+              <Input placeholder="Enter Event Accessability Note" className="replace-input" />
             </Form.Item>
 
-{dynamicList.length>0 &&
-  dynamicList.map(item=>
-    <div key={item.taxonomy.entityId}>
-            <div className="update-select-title">
-              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
-            </div>
+            {dynamicList.length > 0 &&
+              dynamicList.map(item =>
+                <div key={item.taxonomy.entityId}>
+                  <div className="update-select-title">
+                    {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+                  </div>
 
-            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
-            <TreeSelect
-                style={{ width: "100%" }}
-                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                treeData={formatarray(item.concepts)}
-                multiple
-                placeholder="Please select"
-              />
-            </Form.Item>
-            </div>
-)}
+                  <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+                    <TreeSelect
+                      style={{ width: "100%" }}
+                      dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                      treeData={formatarray(item.concepts)}
+                      multiple
+                      placeholder="Please select"
+                    />
+                  </Form.Item>
+                </div>
+              )}
           </Col>
           <Col className="upload-col">
             <Dragger
@@ -1158,7 +1204,76 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 </Card>
               )}
 
+              {/* <div className="update-select-title">
+                {t("Organization Role", { lng: currentLang })}
+              </div>
+
+              <Form.Item name={"organizationRole"} rules={[{ required: false }]}>
+                <TreeSelect
+                  style={{ width: "100%" }}
+                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                  treeData={orgRoleList}
+                  multiple
+                  placeholder="Please select"
+                />
+              </Form.Item>
+
+
+
               <div className="update-select-title">
+                {t("Performer Role", { lng: currentLang })}
+              </div>
+
+              <Form.Item name={"performerRole"} rules={[{ required: false }]}>
+                <TreeSelect
+                  style={{ width: "100%" }}
+                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                  treeData={performerRoleList}
+                  multiple
+                  placeholder="Please select"
+                />
+              </Form.Item>
+
+              <div className="update-select-title">
+                {t("Contributor Role", { lng: currentLang })}
+              </div>
+
+              <Form.Item name={"contributorRole"} rules={[{ required: false }]}>
+                <TreeSelect
+                  style={{ width: "100%" }}
+                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                  treeData={contibutorRoleList}
+                  multiple
+                  placeholder="Please select"
+                />
+              </Form.Item> */}
+              <RoleOrganizer orgList={orgList}
+                contibutorRoleList={orgRoleList}
+                currentLang={currentLang}
+                contentLang={contentLang}
+                selectedRoleList={orgSelectedRoleList}
+                setSelectedRoleList={setOrgSelectedRole}
+                eventDetails={eventDetails}
+                nameTitle="Organization Role" />
+
+              <RoleOrganizer orgList={orgList}
+                contibutorRoleList={performerRoleList}
+                currentLang={currentLang}
+                contentLang={contentLang}
+                selectedRoleList={performerSelectedRoleList}
+                setSelectedRoleList={setPerformerSelectedRole}
+                eventDetails={eventDetails}
+                nameTitle="Performer Role" />
+
+              <RoleOrganizer orgList={orgList}
+                contibutorRoleList={contibutorRoleList}
+                currentLang={currentLang}
+                contentLang={contentLang}
+                selectedRoleList={contibutorSelectedRoleList}
+                setSelectedRoleList={setContributorSelectedRole}
+                eventDetails={eventDetails}
+                nameTitle="Contributor Role" />
+              {/* <div className="update-select-title">
                 {t("Organization", { lng: currentLang })}
               </div>
 
@@ -1205,7 +1320,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       </Option>
                     ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
 
               <div className="update-select-title">
                 {t("FacebookLink", { lng: currentLang })}
@@ -1300,80 +1415,80 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 />
               </Form.Item>
               {youtubeLink && videoUrlValidate(youtubeLink) && (
-                youtubeLink.includes("vimeo.com")?
-                <>
-                <iframe title={youtubeLink} src={`${youtubeLink.replace("vimeo.com","player.vimeo.com/video")}?h=eda036ee8b&color=ffffff&portrait=0&badge=0`} width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                <p><a  href="https://www.youtube.com/watch?v=ysz5S6PUM-U"><div style={{display:"none"}}>Vemio</div></a></p>
-                </>:<ReactPlayer url={youtubeLink} width="400px" height="300px" />
-                
+                youtubeLink.includes("vimeo.com") ?
+                  <>
+                    <iframe title={youtubeLink} src={`${youtubeLink.replace("vimeo.com", "player.vimeo.com/video")}?h=eda036ee8b&color=ffffff&portrait=0&badge=0`} width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                    <p><a href="https://www.youtube.com/watch?v=ysz5S6PUM-U"><div style={{ display: "none" }}>Vemio</div></a></p>
+                  </> : <ReactPlayer url={youtubeLink} width="400px" height="300px" />
+
               )}
-             
+
             </div>
           </Col>
         </Row>
-        <div style={{display:contentLang == "bilengual" && "flex"}}>
-          <div style={{minWidth:"50%", marginRight:"5px"}}>
-        <div className="update-select-title">{t("Description", { lng: currentLang })} {contentLang == "bilengual" && "@fr"}</div>
+        <div style={{ display: contentLang == "bilengual" && "flex" }}>
+          <div style={{ minWidth: "50%", marginRight: "5px" }}>
+            <div className="update-select-title">{t("Description", { lng: currentLang })} {contentLang == "bilengual" && "@fr"}</div>
 
-        <EventEditor formName="desc"/>
-        </div>
-        {
-              contentLang == "bilengual" &&
-              <div style={{minWidth:"50%"}}>
+            <EventEditor formName="desc" />
+          </div>
+          {
+            contentLang == "bilengual" &&
+            <div style={{ minWidth: "50%" }}>
               <div className="update-select-title">{t("Description", { lng: currentLang })} @en</div>
 
-<EventEditor formName="descEn" />
-</div>
-        }
+              <EventEditor formName="descEn" />
+            </div>
+          }
         </div>
 
         <Row>
           <Col flex="0 1 450px">
-          <div className="update-select-title">{t("EventStatus", { lng: currentLang })}</div>
-        <Form.Item
-        name="eventStatus"
-        className="status-comment-item"
-        rules={[{ required: false, message: "Status required" }]}
-      >
-        <Select
-          style={{ width: 337 }}
-          placeholder={`Select Event Status`}
-          key="updateDropdownKey"
-          className="search-select"
-          optionFilterProp="children"
-          defaultValue="SCHEDULED"
-          // onChange={handleChange}
-        >
-          <Option value="SCHEDULED">SCHEDULED</Option>
-          <Option value="POSTPONED">POSTPONED</Option>
-          <Option value="CANCELLED">CANCELLED</Option>
-        </Select>
-      </Form.Item>
-      </Col>
-      <Col>
-      <div className="update-select-title">{t("Language", { lng: currentLang })}</div>
-        <Form.Item
-        name="languages"
-        className="status-comment-item"
-        rules={[{ required: false, message: "Language required" }]}
-      >
-        <Select
-          style={{ width: 337 }}
-          placeholder={`Select Language`}
-          key="updateDropdownKey"
-          className="search-select"
-          optionFilterProp="children"
-          mode="multiple"
-          // defaultValue="French"
-          // onChange={handleChange}
-        >
-          <Option value="English">English</Option>
-          <Option value="French">French</Option>
-          
-        </Select>
-      </Form.Item>
-      </Col>
-      </Row>
+            <div className="update-select-title">{t("EventStatus", { lng: currentLang })}</div>
+            <Form.Item
+              name="eventStatus"
+              className="status-comment-item"
+              rules={[{ required: false, message: "Status required" }]}
+            >
+              <Select
+                style={{ width: 337 }}
+                placeholder={`Select Event Status`}
+                key="updateDropdownKey"
+                className="search-select"
+                optionFilterProp="children"
+                defaultValue="SCHEDULED"
+              // onChange={handleChange}
+              >
+                <Option value="SCHEDULED">SCHEDULED</Option>
+                <Option value="POSTPONED">POSTPONED</Option>
+                <Option value="CANCELLED">CANCELLED</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col>
+            <div className="update-select-title">{t("Language", { lng: currentLang })}</div>
+            <Form.Item
+              name="languages"
+              className="status-comment-item"
+              rules={[{ required: false, message: "Language required" }]}
+            >
+              <Select
+                style={{ width: 337 }}
+                placeholder={`Select Language`}
+                key="updateDropdownKey"
+                className="search-select"
+                optionFilterProp="children"
+                mode="multiple"
+              // defaultValue="French"
+              // onChange={handleChange}
+              >
+                <Option value="English">English</Option>
+                <Option value="French">French</Option>
+
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item className="submit-items">
           <Button
@@ -1400,21 +1515,21 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             {isUpdate ? "Update" : "Save"}
           </Button>
           {eventDetails && ((getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN" || checkAdmin.role === "EDITOR")))
-          ||(checkAdmin && (checkAdmin.role === "GUEST" || checkAdmin.role === "CONTRIBUTOR") && getCookies("user_token")?.user?.id===eventDetails?.creator?.userId )
-          )&& eventDetails.publishState=="Draft" &&
-          <div className="flex-centre">
-            <div style={{width:"125px"}}>This event is in draft mode</div>
-            <Button
-            size="large"
-            
-            onClick={() => {
-              handlePublish(eventDetails.uuid)
-            }}
-          >
-            Publish
-          </Button>
-          </div>
-}
+            || (checkAdmin && (checkAdmin.role === "GUEST" || checkAdmin.role === "CONTRIBUTOR") && getCookies("user_token")?.user?.id === eventDetails?.creator?.userId)
+          ) && eventDetails.publishState == "Draft" &&
+            <div className="flex-centre">
+              <div style={{ width: "125px" }}>This event is in draft mode</div>
+              <Button
+                size="large"
+
+                onClick={() => {
+                  handlePublish(eventDetails.uuid)
+                }}
+              >
+                Publish
+              </Button>
+            </div>
+          }
         </Form.Item>
       </Form>
       {showAddContact && (
