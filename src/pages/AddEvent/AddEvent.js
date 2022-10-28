@@ -1254,7 +1254,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 selectedRoleList={orgSelectedRoleList}
                 setSelectedRoleList={setOrgSelectedRole}
                 eventDetails={eventDetails}
-                nameTitle="Organizer" />
+                nameTitle={t("Organizer")} />
 
               <RoleOrganizer orgList={orgList}
                 contibutorRoleList={performerRoleList}
@@ -1263,7 +1263,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 selectedRoleList={performerSelectedRoleList}
                 setSelectedRoleList={setPerformerSelectedRole}
                 eventDetails={eventDetails}
-                nameTitle="Performer" />
+                nameTitle={t("Performer")} />
 
               <RoleOrganizer orgList={orgList}
                 contibutorRoleList={contibutorRoleList}
@@ -1272,7 +1272,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 selectedRoleList={contibutorSelectedRoleList}
                 setSelectedRoleList={setContributorSelectedRole}
                 eventDetails={eventDetails}
-                nameTitle="Contributor" />
+                nameTitle={t("Contributor")} />
               {/* <div className="update-select-title">
                 {t("Organization", { lng: currentLang })}
               </div>
