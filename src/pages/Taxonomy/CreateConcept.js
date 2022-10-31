@@ -38,7 +38,6 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const conceptArray=["Event","Place", "Organization"]
 
 
-
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -169,6 +168,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const search = window.location.search;
       const params = new URLSearchParams(search);
       const conceptId = params.get("id");
+      console.log(gData)
        const conceptObj= {
         "taxonomy": conceptId,
         "concepts": formatarrayUpdate(gData)
@@ -357,7 +357,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const obj={
           key:item.key,
           // name: {fr:item.title},
-          uuid: isUpdateConcepts?item.new?undefined: item.key:undefined,
+          uuid: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
       if(contentLang === "bilengual")
@@ -380,7 +380,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
-        uuid: isUpdateConcepts?item.new?undefined: item.key:undefined,
+        uuid: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
         // name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
@@ -585,6 +585,7 @@ else
                 style={{ width: '100%' }}
                 dropdownClassName="contact-select"
                 placeholder="Select Concept"
+                disabled={orgDetails?true:false}
                 onChange={handleChange}
               >
                 {conceptArray.map((item) => (
