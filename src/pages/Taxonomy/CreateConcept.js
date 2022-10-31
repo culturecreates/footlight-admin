@@ -35,7 +35,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const [selectedLang, setSelectedLang] = useState("fr");
   const [selectedConcept, setSelectedConcept] = useState();
 
-  const conceptArray=["Event","Place", "Organization","Event - Organization role"]
+  const conceptArray=["Event","Place", "Organization"]
 
  const raseem= {
     "title": "raseem",
@@ -298,6 +298,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
           key:item.key,
           title: item.title,
           titleBL: item.titleBL,
+          isNew: item.isNew,
           children:item.key === selectedConcept?item.children?[...formatarrayTree(item.children,newData),newData]:[newData]:
           item.children?formatarrayTree(item.children,newData):undefined
       }
@@ -315,6 +316,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
         key:item.key,
         title: item.title,
         titleBL: item.titleBL,
+        isNew: item.isNew,
         children:item.key === selectedConcept?item.children?[...formatarrayTree(item.children,newData),newData]:[newData]:
         item.children?formatarrayTree(item.children,newData):undefined
       }
@@ -358,7 +360,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const obj={
           key:item.key,
           // name: {fr:item.title},
-          uuid: isUpdateConcepts? item.key:undefined,
+          uuid: isUpdateConcepts?item.new?undefined: item.key:undefined,
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
       if(contentLang === "bilengual")
@@ -381,7 +383,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
-        uuid: isUpdateConcepts? item.key:undefined,
+        uuid: isUpdateConcepts?item.new?undefined: item.key:undefined,
         // name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
@@ -400,9 +402,10 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
    }
    const closeWithId = (conceptObj) => {
     const obj= {
-      "title": contentLang == "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
-      "key": contentLang == "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
-      "titleBL":contentLang == "bilengual"?conceptObj.name.en:conceptObj.name[contentLang],
+      "title": contentLang === "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
+      "key": contentLang === "bilengual"?conceptObj.name.fr:conceptObj.name[contentLang],
+      "titleBL":contentLang === "bilengual"?conceptObj.name.en:conceptObj.name[contentLang],
+      isNew: true
   }
     if(selectedConcept)
     {
