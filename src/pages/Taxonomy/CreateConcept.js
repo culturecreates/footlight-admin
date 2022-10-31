@@ -37,10 +37,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
 
   const conceptArray=["Event","Place", "Organization"]
 
- const raseem= {
-    "title": "raseem",
-    "key": "ayatt"
-}
+
 
   const { t } = useTranslation();
   const [form] = Form.useForm();

@@ -45,7 +45,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
   const getPublics = () => {
     
-    ServiceApi.getFieldConcepts("Event")
+    ServiceApi.getFieldConcepts("Place")
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;

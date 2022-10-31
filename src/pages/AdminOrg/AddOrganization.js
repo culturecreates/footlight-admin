@@ -261,7 +261,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
 
   const getPublics = () => {
     
-    ServiceApi.getFieldConcepts("Event")
+    ServiceApi.getFieldConcepts("Organization")
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
