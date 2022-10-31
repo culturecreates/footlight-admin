@@ -38,7 +38,6 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const conceptArray=["Event","Place", "Organization"]
 
 
-
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
