@@ -37,8 +37,8 @@ const Taxonomy = function ({ currentLang, contentLang }) {
         <Row className="image-name">
           
           <Col flex="1 1 150px">
-        {  record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
-          record.name["en"]:record.name["fr"]}
+        {  record.name &&(record.name[currentLang]?record.name[currentLang]:currentLang==="fr"?
+          record.name["en"]:record.name["fr"])}
          
           </Col>
         </Row>

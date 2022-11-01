@@ -28,6 +28,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const [containsList, setContainsList] = useState([]);
   const [accessabilityList, setAccessabilityList] = useState([]);
   const [dynamicList, setDynamicList] = useState([]);
+  const [regionList, setRegionList] = useState([]);
+  const [typesList, setTypesList] = useState([]);
 
   const [formValue, setFormVaue] = useState();
   const { t,  } = useTranslation();
@@ -38,7 +40,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   useEffect(() => {
   
 
-    getAccessability();
+    // getAccessability();
     getPublics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,8 +53,10 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           const events = response.data;
           setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
          
-          
-          
+          setRegionList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Region")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
+          setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Types")?.concepts));
+
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
@@ -197,6 +201,22 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         })
       : undefined,
       dynamicFields:dynamicField,
+      regions: values.region
+        ? values.region.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
+        type:values.type
+        ? values.type.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
             
           };
           if(contentLang == "bilengual")
@@ -266,6 +286,22 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         })
       : undefined,
       dynamicFields:dynamicField,  
+      regions: values.region
+        ? values.region.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
+        type:values.type
+        ? values.type.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
             
           };
           if(contentLang == "bilengual")
@@ -347,7 +383,13 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         accessability: placeDetails?.accessibility?.map(
           (item) => item?.entityId
         ),
-        accessabilityNote:placeDetails?.accessibilityNote
+        accessabilityNote:placeDetails?.accessibilityNote,
+        region: placeDetails?.regions?.map(
+          (item) => item?.entityId
+        ),
+        type: placeDetails?.type?.map(
+          (item) => item?.entityId
+        ),
       });
 
       if(contentLang == "bilengual")
@@ -648,6 +690,34 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
             <Form.Item name={"accessabilityNote"} rules={[{ required: false }]}>
             <Input placeholder="Enter Accessability Note" className="replace-input" />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Region", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"region"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={regionList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("Types", { lng: currentLang })}
+            </div>
+
+            <Form.Item name={"type"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={typesList}
+                multiple
+                placeholder="Please select"
+              />
             </Form.Item>
 
         {    dynamicList.length>0 &&
