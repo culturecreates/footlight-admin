@@ -72,6 +72,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
+  const [inLangList, setInLangList] = useState([]);
   const [dynamicList, setDynamicList] = useState([]);
   const [accessabilityList, setAccessabilityList] = useState([]);
   const [contactList, setContactList] = useState([]);
@@ -211,7 +212,13 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           setPublicsList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Audience")?.concepts));
           setAccessabilityList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Accessibility")?.concepts));
           setTypeList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Type")?.concepts));
+          setInLangList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "inLanguage")?.concepts));
 
+
+          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Organization Role")?.concepts));
+          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Performer Role")?.concepts));
+          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Contributor Role")?.concepts));
+          
           // setOrgRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Organization Role")?.concepts));
           // setPerformerRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Performer Role")?.concepts));
           // setContributorRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Contributor Role")?.concepts));
@@ -234,9 +241,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         if (response && response.data && response.data) {
           const events = response.data;
 
-          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Organization Role")?.concepts));
-          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Performer Role")?.concepts));
-          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Contributor Role")?.concepts));
+          
           console.log("ayatt", events.filter(item => (item.taxonomy?.isDynamicField)))
 
 
@@ -376,9 +381,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           return obj;
         })
         : undefined,
-        organizers: orgSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
-        performers: performerSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
-        collaborators: contibutorSelectedRoleList.filter(item=>item.entityId && item.role).map(({ id, ...item }) => item),
+        organizers: orgSelectedRoleList.filter(item=>item.entityId).map(({ id, ...item }) => item),
+        performers: performerSelectedRoleList.filter(item=>item.entityId).map(({ id, ...item }) => item),
+        collaborators: contibutorSelectedRoleList.filter(item=>item.entityId).map(({ id, ...item }) => item),
 
       additionalType: values.type
         ? values.type.map((item) => {
@@ -390,6 +395,14 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         : undefined,
       accessibility: values.accessability
         ? values.accessability.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
+        inLanguage: values.inLanguage
+        ? values.inLanguage.map((item) => {
           const obj = {
             entityId: item,
           };
@@ -575,6 +588,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           (item) => item?.entityId
         ),
         accessability: eventDetails?.accessibility?.map(
+          (item) => item?.entityId
+        ),
+        inLanguage: eventDetails?.inLanguage?.map(
           (item) => item?.entityId
         ),
        
@@ -1067,6 +1083,19 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={accessabilityList}
+                multiple
+                placeholder="Please select"
+              />
+            </Form.Item>
+
+            <div className="update-select-title">
+              {t("inLanguage", { lng: currentLang })}
+            </div>
+            <Form.Item name={"inLanguage"} rules={[{ required: false }]}>
+              <TreeSelect
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                treeData={inLangList}
                 multiple
                 placeholder="Please select"
               />
