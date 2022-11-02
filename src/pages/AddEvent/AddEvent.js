@@ -208,16 +208,28 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
+
+      
           setDynamicList(events.filter(item => (item.taxonomy?.isDynamicField)))
-          setPublicsList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Audience")?.concepts));
-          setAccessabilityList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Accessibility")?.concepts));
-          setTypeList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Event Type")?.concepts));
-          setInLangList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "inLanguage")?.concepts));
+          setPublicsList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Audience")?.concepts?
+          events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Audience")?.concepts:[]));
+          setAccessabilityList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Event Accessibility")?.concepts?
+          events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Event Accessibility")?.concepts:[]));
+          setTypeList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Event Type")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Event Type")?.concepts:[]));
 
 
-          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Organization Role")?.concepts));
-          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Performer Role")?.concepts));
-          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Contributor Role")?.concepts));
+          setInLangList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "inLanguage")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "inLanguage")?.concepts:[]));
+
+
+          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Organization Role")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Organization Role")?.concepts:[]));
+          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Performer Role")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Performer Role")?.concepts:[]));
+          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Contributor Role")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Contributor Role")?.concepts:[]));
+
           
           // setOrgRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Organization Role")?.concepts));
           // setPerformerRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Performer Role")?.concepts));
