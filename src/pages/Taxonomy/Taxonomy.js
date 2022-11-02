@@ -45,6 +45,21 @@ const Taxonomy = function ({ currentLang, contentLang }) {
       ),
     },
     {
+      title: t("Concept Scheme Url", { lng: currentLang }),
+      dataIndex: "conceptSchemeUrl",
+      key: "conceptSchemeUrl",
+      render: (e, record) => (
+        <Row className="image-name">
+          
+          <Col flex="1 1 150px">
+        {  record.conceptSchemeUrl }
+         
+          </Col>
+        </Row>
+      ),
+    },
+    
+    {
       title: t("Created", { lng: currentLang }),
       dataIndex: "hasLegacyCapability",
       key: "hasLegacyCapability",
@@ -287,7 +302,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
               dataSource={taxonomyList}
               columns={eventTableHeader}
               className={"event-table"}
-              scroll={{x: 800, y: "calc(100% - 60px)" }}
+              scroll={{x: 1000, y: "calc(100% - 60px)" }}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)
