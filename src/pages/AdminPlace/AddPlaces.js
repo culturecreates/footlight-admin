@@ -55,7 +55,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
          
           setRegionList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Region")?.concepts));
           setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
-          setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Types")?.concepts));
+          setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Type")?.concepts));
 
           // dispatch(fetchAudience(response.data.data));
         }
@@ -209,7 +209,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           return obj;
         })
         : undefined,
-        type:values.type
+        additionalType:values.type
         ? values.type.map((item) => {
           const obj = {
             entityId: item,
@@ -294,7 +294,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           return obj;
         })
         : undefined,
-        type:values.type
+        additionalType:values.type
         ? values.type.map((item) => {
           const obj = {
             entityId: item,
@@ -387,7 +387,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         region: placeDetails?.regions?.map(
           (item) => item?.entityId
         ),
-        type: placeDetails?.type?.map(
+        type: placeDetails?.additionalType?.map(
           (item) => item?.entityId
         ),
       });
@@ -707,7 +707,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             </Form.Item>
 
             <div className="update-select-title">
-              {t("Types", { lng: currentLang })}
+              {t("Type", { lng: currentLang })}
             </div>
 
             <Form.Item name={"type"} rules={[{ required: false }]}>

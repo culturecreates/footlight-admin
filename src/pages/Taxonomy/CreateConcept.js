@@ -232,7 +232,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     }
     else if(value==="Place")
     {
-      const map=["Place Accessibility","Region","Types"]
+      const map=["Place Accessibility","Region","Type"]
     setMappedList(map)
     }
     else
