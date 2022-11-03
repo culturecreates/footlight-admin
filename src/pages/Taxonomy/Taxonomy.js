@@ -309,7 +309,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
                   getPlaces(
                     page
                   )
-                },
+                }, 
                 current: defaultPage,
                 pageSize: 20,
                 total: 1,
