@@ -1506,7 +1506,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               </Select>
             </Form.Item>
           </Col>
-          <Col>
+          {/* <Col>
             <div className="update-select-title">{t("Language", { lng: currentLang })}</div>
             <Form.Item
               name="languages"
@@ -1528,7 +1528,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
 
         <Form.Item className="submit-items">
