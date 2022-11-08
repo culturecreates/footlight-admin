@@ -122,10 +122,21 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           addressCountry: results[0].address_components.find((item) =>
             item.types.includes("country")
           )?.long_name,
+          addressCountryEn: results[0].address_components.find((item) =>
+            item.types.includes("country")
+          )?.long_name,
           addressLocality: results[0].address_components.find((item) =>
             item.types.includes("locality")
           )?.long_name,
+          addressLocalityEn: results[0].address_components.find((item) =>
+          item.types.includes("locality")
+        )?.long_name,
           addressRegion: results[0].address_components.find(
+            (item) =>
+              item.types.includes("administrative_area_level_2") ||
+              item.types.includes("administrative_area_level_3")
+          )?.long_name,
+          addressRegionEn: results[0].address_components.find(
             (item) =>
               item.types.includes("administrative_area_level_2") ||
               item.types.includes("administrative_area_level_3")
@@ -138,6 +149,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           // )?.long_name,
 
           streetAddress: results[0].formatted_address,
+          streetAddressEn: results[0].formatted_address,
         });
 
         return getLatLng(results[0]);
@@ -158,13 +170,42 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     })
 
     const postalObj = {
-      addressCountry: values.addressCountry,
-      addressLocality: values.addressLocality,
-      addressRegion: values.addressRegion,
+      addressCountry: {[contentLang]:values.addressCountry},
+      addressLocality: {[contentLang]:values.addressLocality},
+      addressRegion: {[contentLang]:values.addressRegion},
       postalCode: values.postalCode,
-      streetAddress: values.streetAddress,
+      streetAddress: {[contentLang]:values.streetAddress},
       
     };
+
+    if(contentLang == "bilengual")
+    {
+      postalObj.addressCountry = {fr:values.addressCountry, en: values.addressCountryEn};
+      postalObj.addressLocality= {fr:values.addressLocality ,en:values.addressLocalityEn};
+      postalObj.addressRegion = {fr:values.addressRegion, en: values.addressRegionEn};
+      postalObj.streetAddress= {fr:values.streetAddress ,en:values.streetAddressEn};
+    }
+    else{
+      if(placeDetails)
+      {
+        postalObj.addressCountry = {[contentLang]:values.addressCountry,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressCountry[[contentLang=="fr"?"en":"fr"]]};
+          postalObj.addressLocality= {[contentLang]:values.addressLocality,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressLocality[[contentLang=="fr"?"en":"fr"]]};
+
+        postalObj.addressRegion = {[contentLang]:values.addressRegion,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressRegion[[contentLang=="fr"?"en":"fr"]]};
+          postalObj.streetAddress= {[contentLang]:values.streetAddress,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.streetAddress[[contentLang=="fr"?"en":"fr"]]};
+      }
+      else{
+        postalObj.addressCountry = {[contentLang]:values.addressCountry};
+        postalObj.description= {[contentLang]:values.description}
+        postalObj.addressRegion = {[contentLang]:values.addressRegion};
+        postalObj.streetAddress= {[contentLang]:values.streetAddress}
+      }
+      
+    }
     setLoading(true)
     if (placeDetails)
      ServiceApi.updatePostalAddress(postalObj,placeDetails.postalAddress.uuid)
@@ -370,13 +411,13 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       form.setFieldsValue({
         name: placeDetails.name[contentLang],
         openingHours: placeDetails.openingHours,
-        addressCountry:placeDetails.postalAddress?.addressCountry,
-        addressLocality: placeDetails.postalAddress?.addressLocality,
-        addressRegion:placeDetails.postalAddress?.addressRegion,
+        addressCountry:placeDetails.postalAddress?.addressCountry[contentLang],
+        addressLocality: placeDetails.postalAddress?.addressLocality[contentLang],
+        addressRegion:placeDetails.postalAddress?.addressRegion[contentLang],
         postalCode: placeDetails.postalAddress?.postalCode,
         containedInPlace: placeDetails.containedInPlace && placeDetails.containedInPlace?.entityId,
 
-        streetAddress: placeDetails.postalAddress?.streetAddress,
+        streetAddress: placeDetails.postalAddress?.streetAddress[contentLang],
         latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
         description: placeDetails.description && placeDetails.description[contentLang],
@@ -399,12 +440,30 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           nameEn: placeDetails.name?.en,
           description: placeDetails.description && placeDetails.description?.fr,
           descriptionEn: placeDetails.description && placeDetails.description?.en,
+
+          addressCountryEn:placeDetails.postalAddress?.addressCountry.en,
+          addressCountry:placeDetails.postalAddress?.addressCountry.fr,
+
+        addressLocalityEn: placeDetails.postalAddress?.addressLocality.en,
+        addressLocality: placeDetails.postalAddress?.addressLocality.fr,
+
+
+        addressRegionEn:placeDetails.postalAddress?.addressRegion.en,
+        addressRegion:placeDetails.postalAddress?.addressRegion.fr,
+
+        streetAddressEn: placeDetails.postalAddress?.streetAddress.en,
+        streetAddress: placeDetails.postalAddress?.streetAddress.fr,
         })
       }
       else{
         form.setFieldsValue({
           name: placeDetails.name[contentLang],
           description: placeDetails.description && placeDetails.description[contentLang],
+          addressCountry:placeDetails.postalAddress?.addressCountry[contentLang],
+        addressLocality: placeDetails.postalAddress?.addressLocality[contentLang],
+        addressRegion:placeDetails.postalAddress?.addressRegion[contentLang],
+        streetAddress: placeDetails.postalAddress?.streetAddress[contentLang],
+
         })
       }
       
