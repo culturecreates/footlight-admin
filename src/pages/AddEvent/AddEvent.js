@@ -223,8 +223,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "inLanguage")?.concepts:[]));
 
 
-          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizationRole")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizationRole")?.concepts:[]));
+          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizerRole")?.concepts?
+          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizerRole")?.concepts:[]));
           setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "PerformerRole")?.concepts?
           events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "PerformerRole")?.concepts:[]));
           setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "SupporterRole")?.concepts?
@@ -1295,7 +1295,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 selectedRoleList={orgSelectedRoleList}
                 setSelectedRoleList={setOrgSelectedRole}
                 eventDetails={eventDetails}
-                nameTitle="OrganizationRole" />
+                nameTitle="OrganizerRole" />
 
               <RoleOrganizer orgList={orgList}
                 contibutorRoleList={performerRoleList}

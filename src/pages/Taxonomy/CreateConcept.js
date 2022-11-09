@@ -60,7 +60,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       value:"Event Type"
     }
   ]
-    const map=["EventAccessibility","Audience", "EventType","OrganizationRole","PerformerRole", "SupporterRole","inLanguage"]
+    const map=["EventAccessibility","Audience", "EventType","OrganizerRole","PerformerRole", "SupporterRole","inLanguage"]
     setMappedList(map)
 
   },[])
@@ -227,7 +227,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     console.log(value)
     if(value==="Event")
     {
-    const map=["EventAccessibility","Audience", "EventType","OrganizationRole","PerformerRole", "SupporterRole","inLanguage"]
+    const map=["EventAccessibility","Audience", "EventType","OrganizerRole","PerformerRole", "SupporterRole","inLanguage"]
     setMappedList(map)
     }
     else if(value==="Place")
