@@ -239,7 +239,7 @@ const AdminUsers = function ({ currentLang }) {
         getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))?
         <div className="admin-event-header">
         <Button type="primary"  size={"medium"} className="reactivate-btn"
-        onClick={(event)=>handleDeleteContact(record.uuid,"reactivate",event)}>
+        onClick={(event)=>handleDeleteContact(record.id,"reactivate",event)}>
           {t("Reactivate")}
         </Button>
         <DeleteOutlined
@@ -261,7 +261,7 @@ const AdminUsers = function ({ currentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteContact(type==="withdraw"?record.invitationId: record.uuid,type,event)
+        handleDeleteContact(type==="withdraw"?record.invitationId: record.id,type,event)
       },
   
       onCancel() {
@@ -422,7 +422,7 @@ const AdminUsers = function ({ currentLang }) {
                     event.stopPropagation()
                     const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
-                   navigate(`/admin/add-users/?id=${record.uuid}`);
+                   navigate(`/admin/add-users/?id=${record.id}`);
                     
                   }, 
                 };
@@ -456,8 +456,8 @@ const AdminUsers = function ({ currentLang }) {
                  const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
-                   navigate(`/admin/add-users/?id=${record.uuid}`);
-                 // navigate(`/admin/add-users/?id=${record.uuid}`);
+                   navigate(`/admin/add-users/?id=${record.id}`);
+                 // navigate(`/admin/add-users/?id=${record.id}`);
                  
                }, 
              };
@@ -495,7 +495,7 @@ const AdminUsers = function ({ currentLang }) {
                  const roleValue = getCookies("user_token")?.user?.roles?.find(item=>item.calendarId===getCookies("calendar-id"))
 
                  if(getCookies("user_token")?.user?.isSuperAdmin || (roleValue && (roleValue.role === "ADMIN" || roleValue.role === "SUPER_ADMIN")))
-                   navigate(`/admin/add-users/?id=${record.uuid}`);
+                   navigate(`/admin/add-users/?id=${record.id}`);
                  
                }, 
              };

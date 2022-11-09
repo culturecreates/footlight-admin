@@ -80,11 +80,11 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
         if(!isProfile)
         {
         const obj = {
-          userId: contactDetails.uuid,
+          userId: contactDetails.id,
           role: values.role,
           calendarId: getCookies("calendar-id")
         }
-        ServiceApi.modifyRole(obj, contactDetails.uuid)
+        ServiceApi.modifyRole(obj, contactDetails.id)
           .then((response) => {
           })
           .catch((error) => {
@@ -94,7 +94,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
         }
             // if (response && response.data) {
               values.role = undefined;
-              ServiceApi.updateSingleUser(values, contactDetails.uuid)
+              ServiceApi.updateSingleUser(values, contactDetails.id)
                 .then((response) => {
                   if (response && response.data) {
                     setLoading(false)
@@ -133,6 +133,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
           }
         })
         .catch((error) => {
+          message.error(error.response?.data?.message)
           setLoading(false)
         });
     }
@@ -140,11 +141,11 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
 
   const onSelectRole = (value,id)=>{
     const obj = {
-      userId: contactDetails.uuid,
+      userId: contactDetails.id,
       role: value,
       calendarId: id
      }
-    ServiceApi.modifyRole(obj, contactDetails.uuid).then((response) => {
+    ServiceApi.modifyRole(obj, contactDetails.id).then((response) => {
 
       })
       .catch((error) => {
@@ -340,14 +341,14 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
             {
               label: "Active Users",
               options: events.active.map(item => {
-                const obj = renderItem(item.firstName, item, item.uuid)
+                const obj = renderItem(item.firstName, item, item.id)
                 return obj
               })
             },
             {
               label: "Invited Users",
               options: events.invited.map(item => {
-                const obj = renderItem(item.firstName, item, item.uuid)
+                const obj = renderItem(item.firstName, item, item.id)
                 return obj
               })
             },
@@ -358,12 +359,12 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
       .catch((error) => {
       });
   }
-  const renderItem = (title, types, uuid = "") => ({
+  const renderItem = (title, types, id = "") => ({
     value: title,
     options: types,
-    key: uuid,
+    key: id,
 
-    // key: types === "places"?uuid:title,
+    // key: types === "places"?id:title,
     label: (
       <div
         style={{
@@ -402,7 +403,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
   };
   const getName = (calId) => {
     if (calStore) {
-      const namecal = calStore.find(item => item.uuid == calId)
+      const namecal = calStore.find(item => item.id == calId)
       return namecal?.name.fr
     }
     else
@@ -411,7 +412,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
 
   const getCalRole = (calId) => {
     if (calStore) {
-      const namecal = calStore.find(item => item.uuid == calId)
+      const namecal = calStore.find(item => item.id == calId)
       return namecal?.name.fr
     }
     else

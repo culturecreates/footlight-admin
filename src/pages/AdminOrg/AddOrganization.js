@@ -38,7 +38,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const formatarray = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -49,7 +49,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const formatarrayTree = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -100,7 +100,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
     }
     setLoading(true)
     if (orgDetails)
-    ServiceApi.updateOrg(postalObj,orgDetails.uuid)
+    ServiceApi.updateOrg(postalObj,orgDetails.id)
       .then((response) => {
         if (response && response.data) {
          
@@ -224,7 +224,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
     } else {
       setContactList(contactStore.map(item=>{
         const obj={name:item.name["fr"],
-      value:item.uuid}
+      value:item.id}
       return obj;
       }));
 
@@ -242,7 +242,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
           
           setContactList(events.map(item=>{
             const obj={name:item.name["fr"],
-          value:item.uuid}
+          value:item.id}
           return obj;
           }));
         
@@ -414,7 +414,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
               
               >
                 {placeList.map((item) => (
-                  <Option key={item.uuid} value={item.uuid}>{item.name[currentLang]?item.name[currentLang]:
+                  <Option key={item.id} value={item.id}>{item.name[currentLang]?item.name[currentLang]:
                     currentLang==="fr"?
                     item.name["en"]:item.name["fr"]}</Option>
                 

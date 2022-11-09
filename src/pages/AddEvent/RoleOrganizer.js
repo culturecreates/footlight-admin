@@ -113,8 +113,8 @@ const RoleOrganizer = ({
                     orgList.map((item) => (
                       <Option
                         data-testid="update-two-select-option"
-                        value={item.uuid}
-                        key={item.uuid}
+                        value={item.id}
+                        key={item.id}
                       >
                         {item.name[currentLang]?item.name[currentLang]:
                         currentLang==="fr"?item.name["en"]:item.name["fr"]}

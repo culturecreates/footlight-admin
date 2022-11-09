@@ -76,7 +76,7 @@ const AdminDashboard = function () {
         const id = getCookies("calendar-id")
         if(id)
         {
-          const selectedCal = calList.find(item=>item.uuid==id)
+          const selectedCal = calList.find(item=>item.id==id)
           if(selectedCal)
           setCalTitle(selectedCal.name[lang]?selectedCal.name[lang]:
             lang==="fr"?
@@ -115,7 +115,7 @@ const AdminDashboard = function () {
              
               setCalList(events);
               dispatch(fetchCal(events));
-              ServiceApi.getCalDetail(events[0].uuid)
+              ServiceApi.getCalDetail(events[0].id)
               .then((response) => {
                 storeCookies("concept_scheme", response.data.conceptSchemes);
               })
@@ -136,7 +136,7 @@ const AdminDashboard = function () {
                 setCalTitle(events[0].name[currentLang]?events[0].name[currentLang]:
                   currentLang==="fr"?
                   events[0].name["en"]:events[0].name["fr"]) 
-                storeCookies("calendar-id", events[0].uuid);
+                storeCookies("calendar-id", events[0].id);
                 setContentLang(events[0].contentLanguage==="FRENCH"?"fr":
                 events[0].contentLanguage==="BILINGUAL"?"bilengual":"en")
                 storeCookies("content-lang",events[0].contentLanguage==="FR"?"fr":
@@ -164,7 +164,7 @@ const AdminDashboard = function () {
       const updateContentLang =(arrayCal)=>{
           
           const id = getCookies("calendar-id")
-          const selectedCal = arrayCal.find(item=>item.uuid==id)
+          const selectedCal = arrayCal.find(item=>item.id==id)
           setContentLang(selectedCal.contentLanguage==="FRENCH"?"fr":
           selectedCal.contentLanguage==="BILINGUAL"?"bilengual":"en")
           storeCookies("content-lang",selectedCal.contentLanguage==="FRENCH"?"fr":
@@ -196,7 +196,7 @@ const AdminDashboard = function () {
     
       storeCookies("user_calendar", item.name[currentLang]?item.name[currentLang]:currentLang==="fr"?
       item.name["en"]:item.name["fr"]);
-      storeCookies("calendar-id", item.uuid);
+      storeCookies("calendar-id", item.id);
       storeCookies("content-lang",item.contentLanguage==="FRENCH"?"fr":
       item.contentLanguage==="BILINGUAL"?"bilengual":
                 "en");
@@ -218,7 +218,7 @@ const AdminDashboard = function () {
      <div style={{margin:0}} className="app-text">
        {calTitle}</div>}>
     {calList.map(item=>
-    <Menu.Item key={item.uuid} onClick={()=>selectCalendar(item)}>
+    <Menu.Item key={item.id} onClick={()=>selectCalendar(item)}>
       <div className="cal-menu-div">{item.name[currentLang]?item.name[currentLang]:
       currentLang==="fr"?
       item.name["en"]:item.name["fr"]}

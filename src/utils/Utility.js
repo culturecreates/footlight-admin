@@ -224,6 +224,14 @@ export const adminSideMenuLinks = [
       isMulti:false,
     },
     {
+      name: "addressCountryEn",
+      title:"Country @en",
+      required:true,
+      placeHolder: "Enter Country",
+      type:"text",
+      isMulti:true,
+    },
+    {
       name: "addressLocality",
       title:"Locality",
       required:true,
@@ -232,12 +240,28 @@ export const adminSideMenuLinks = [
       isMulti:false,
     },
     {
+      name: "addressLocalityEn",
+      title:"Locality @en",
+      required:true,
+      placeHolder: "Enter Locality",
+      type:"text",
+      isMulti:true,
+    },
+    {
       name: "addressRegion",
       title:"Region",
       required:true,
       placeHolder: "Enter Region",
       type:"text",
       isMulti:false,
+    },
+    {
+      name: "addressRegionEn",
+      title:"Region @en",
+      required:true,
+      placeHolder: "Enter Region",
+      type:"text",
+      isMulti:true,
     },
     {
       name: "postalCode",
@@ -254,6 +278,14 @@ export const adminSideMenuLinks = [
       placeHolder: "Enter Street Address",
       type:"text",
       isMulti:false,
+    },
+    {
+      name: "streetAddressEn",
+      title:"StreetAddress @en",
+      required:true,
+      placeHolder: "Enter Street Address",
+      type:"text",
+      isMulti:true,
     },
     {
       name: "latitude",

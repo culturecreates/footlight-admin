@@ -22,12 +22,12 @@ const SemanticSearch = function ({ onSelection, onClearSearch,currentLang,search
         </span>
       );
       
-      const renderItem = (title,types,uuid="") => ({
+      const renderItem = (title,types,id="") => ({
         value: title,
         options:types,
-        key: (types==="audiences" || types === "types")?uuid:title,
+        key: (types==="audiences" || types === "types")?id:title,
 
-        // key: types === "places"?uuid:title,
+        // key: types === "places"?id:title,
         label: (
           <div
             style={{
@@ -64,7 +64,7 @@ const SemanticSearch = function ({ onSelection, onClearSearch,currentLang,search
                   {
                     label: renderTitle('places',lng),
                     options: events.places.map(item=>{
-                        const obj=renderItem(item.name[lng],"places",item.uuid)
+                        const obj=renderItem(item.name[lng],"places",item.id)
                         return obj
                       })
                   },

@@ -54,7 +54,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
          
           setRegionList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Region")?.concepts));
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="PlaceAccessibility")?.concepts));
           setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Type")?.concepts));
 
           // dispatch(fetchAudience(response.data.data));
@@ -72,7 +72,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="PlaceAccessibility")?.concepts));
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
@@ -85,7 +85,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const formatarray = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -96,7 +96,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const formatarrayTree = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -122,10 +122,21 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           addressCountry: results[0].address_components.find((item) =>
             item.types.includes("country")
           )?.long_name,
+          addressCountryEn: results[0].address_components.find((item) =>
+            item.types.includes("country")
+          )?.long_name,
           addressLocality: results[0].address_components.find((item) =>
             item.types.includes("locality")
           )?.long_name,
+          addressLocalityEn: results[0].address_components.find((item) =>
+          item.types.includes("locality")
+        )?.long_name,
           addressRegion: results[0].address_components.find(
+            (item) =>
+              item.types.includes("administrative_area_level_2") ||
+              item.types.includes("administrative_area_level_3")
+          )?.long_name,
+          addressRegionEn: results[0].address_components.find(
             (item) =>
               item.types.includes("administrative_area_level_2") ||
               item.types.includes("administrative_area_level_3")
@@ -138,6 +149,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           // )?.long_name,
 
           streetAddress: results[0].formatted_address,
+          streetAddressEn: results[0].formatted_address,
         });
 
         return getLatLng(results[0]);
@@ -158,16 +170,45 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     })
 
     const postalObj = {
-      addressCountry: values.addressCountry,
-      addressLocality: values.addressLocality,
-      addressRegion: values.addressRegion,
+      addressCountry: {[contentLang]:values.addressCountry},
+      addressLocality: {[contentLang]:values.addressLocality},
+      addressRegion: {[contentLang]:values.addressRegion},
       postalCode: values.postalCode,
-      streetAddress: values.streetAddress,
+      streetAddress: {[contentLang]:values.streetAddress},
       
     };
+
+    if(contentLang == "bilengual")
+    {
+      postalObj.addressCountry = {fr:values.addressCountry, en: values.addressCountryEn};
+      postalObj.addressLocality= {fr:values.addressLocality ,en:values.addressLocalityEn};
+      postalObj.addressRegion = {fr:values.addressRegion, en: values.addressRegionEn};
+      postalObj.streetAddress= {fr:values.streetAddress ,en:values.streetAddressEn};
+    }
+    else{
+      if(placeDetails)
+      {
+        postalObj.addressCountry = {[contentLang]:values.addressCountry,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressCountry[[contentLang=="fr"?"en":"fr"]]};
+          postalObj.addressLocality= {[contentLang]:values.addressLocality,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressLocality[[contentLang=="fr"?"en":"fr"]]};
+
+        postalObj.addressRegion = {[contentLang]:values.addressRegion,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressRegion[[contentLang=="fr"?"en":"fr"]]};
+          postalObj.streetAddress= {[contentLang]:values.streetAddress,
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.streetAddress[[contentLang=="fr"?"en":"fr"]]};
+      }
+      else{
+        postalObj.addressCountry = {[contentLang]:values.addressCountry};
+        postalObj.description= {[contentLang]:values.description}
+        postalObj.addressRegion = {[contentLang]:values.addressRegion};
+        postalObj.streetAddress= {[contentLang]:values.streetAddress}
+      }
+      
+    }
     setLoading(true)
     if (placeDetails)
-     ServiceApi.updatePostalAddress(postalObj,placeDetails.postalAddress.uuid)
+     ServiceApi.updatePostalAddress(postalObj,placeDetails.address.id)
       .then((response) => {
         if (response && response.data) {
           const placeObj = {
@@ -183,7 +224,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
            openingHours: values.openingHours,
 
             postalAddressId: {
-              entityId: placeDetails.postalAddress.uuid,
+              entityId: placeDetails.address.id,
             },
             containedInPlace: values.containedInPlace?{entityId:values.containedInPlace}:undefined,
            
@@ -238,7 +279,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             }
             
           }
-          ServiceApi.updatePlace(placeObj,placeDetails.uuid)
+          ServiceApi.updatePlace(placeObj,placeDetails.id)
             .then((response) => {
                 setLoading(false)
               message.success("Place Updated Successfully");
@@ -370,13 +411,13 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       form.setFieldsValue({
         name: placeDetails.name[contentLang],
         openingHours: placeDetails.openingHours,
-        addressCountry:placeDetails.postalAddress?.addressCountry,
-        addressLocality: placeDetails.postalAddress?.addressLocality,
-        addressRegion:placeDetails.postalAddress?.addressRegion,
-        postalCode: placeDetails.postalAddress?.postalCode,
+        addressCountry:placeDetails.address?.addressCountry[contentLang],
+        addressLocality: placeDetails.address?.addressLocality[contentLang],
+        addressRegion:placeDetails.address?.addressRegion[contentLang],
+        postalCode: placeDetails.address?.postalCode,
         containedInPlace: placeDetails.containedInPlace && placeDetails.containedInPlace?.entityId,
 
-        streetAddress: placeDetails.postalAddress?.streetAddress,
+        streetAddress: placeDetails.address?.streetAddress[contentLang],
         latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
         description: placeDetails.description && placeDetails.description[contentLang],
@@ -399,12 +440,30 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           nameEn: placeDetails.name?.en,
           description: placeDetails.description && placeDetails.description?.fr,
           descriptionEn: placeDetails.description && placeDetails.description?.en,
+
+          addressCountryEn:placeDetails.address?.addressCountry.en,
+          addressCountry:placeDetails.address?.addressCountry.fr,
+
+        addressLocalityEn: placeDetails.address?.addressLocality.en,
+        addressLocality: placeDetails.address?.addressLocality.fr,
+
+
+        addressRegionEn:placeDetails.address?.addressRegion.en,
+        addressRegion:placeDetails.address?.addressRegion.fr,
+
+        streetAddressEn: placeDetails.address?.streetAddress.en,
+        streetAddress: placeDetails.address?.streetAddress.fr,
         })
       }
       else{
         form.setFieldsValue({
           name: placeDetails.name[contentLang],
           description: placeDetails.description && placeDetails.description[contentLang],
+          addressCountry:placeDetails.address?.addressCountry[contentLang],
+        addressLocality: placeDetails.address?.addressLocality[contentLang],
+        addressRegion:placeDetails.address?.addressRegion[contentLang],
+        streetAddress: placeDetails.address?.streetAddress[contentLang],
+
         })
       }
       
@@ -654,7 +713,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               
               >
                 {containsList.map((item) => (
-                  <Option key={item.uuid} value={item.uuid}>{item.name[currentLang]?item.name[currentLang]:
+                  <Option key={item.id} value={item.id}>{item.name[currentLang]?item.name[currentLang]:
                     currentLang==="fr"?item.name["en"]:item.name["fr"]}</Option>
                 ))}
               </Select>

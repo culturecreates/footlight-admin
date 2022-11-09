@@ -64,7 +64,7 @@ const AddTaxonomy = function ({ currentLang,contentLang,orgDetails,isModal=false
     }
     setLoading(true)
     if (orgDetails)
-    ServiceApi.updateTaxonomy(postalObj,orgDetails.uuid)
+    ServiceApi.updateTaxonomy(postalObj,orgDetails.id)
       .then((response) => {
         if (response && response.data) {
          

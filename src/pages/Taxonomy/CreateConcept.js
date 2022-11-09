@@ -60,7 +60,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       value:"Event Type"
     }
   ]
-    const map=["Event Accessibility","Audience", "Event Type","Organization Role","Performer Role", "Contributor Role","inLanguage"]
+    const map=["EventAccessibility","Audience", "EventType","OrganizationRole","PerformerRole", "SupporterRole","inLanguage"]
     setMappedList(map)
 
   },[])
@@ -227,12 +227,12 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     console.log(value)
     if(value==="Event")
     {
-    const map=["Event Accessibility","Audience", "Event Type","Organization Role","Performer Role", "Contributor Role","inLanguage"]
+    const map=["EventAccessibility","Audience", "EventType","OrganizationRole","PerformerRole", "SupporterRole","inLanguage"]
     setMappedList(map)
     }
     else if(value==="Place")
     {
-      const map=["Place Accessibility","Region","Type"]
+      const map=["PlaceAccessibility","Region","Type"]
     setMappedList(map)
     }
     else
@@ -326,7 +326,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
 
     return data.map(item=>{
       const obj={
-          key:item.uuid,
+          key:item.id,
           title: contentLang == "bilengual"?item.name?.fr:item.name[contentLang],
           titleBL:contentLang == "bilengual"?item.name?.en:item.name[contentLang],
           
@@ -342,7 +342,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      
      return data.map(item=>{
        const obj={
-        key:item.uuid,
+        key:item.id,
         title: contentLang == "bilengual"?item.name?.fr:item.name[contentLang],
         titleBL:contentLang == "bilengual"?item.name?.en:item.name[contentLang],
         children:item.children?formatarrayTreeResponse(item.children):undefined
@@ -357,7 +357,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
       const obj={
           key:item.key,
           // name: {fr:item.title},
-          uuid: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
+          id: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
           children:item.children?formatarrayTreeUpdate(item.children):undefined
       }
       if(contentLang === "bilengual")
@@ -380,7 +380,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
      return data.map(item=>{
        const obj={
         key:item.key,
-        uuid: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
+        id: isUpdateConcepts?item.isNew?undefined: item.key:undefined,
         // name: {fr:item.title},
         children:item.children?formatarrayTreeUpdate(item.children):undefined
       }

@@ -61,7 +61,7 @@ const AddCalendar = function ({ currentLang,contentLang, orgDetails,isModal=fals
     }
     setLoading(true)
     if (orgDetails)
-    ServiceApi.updateCalendar(postalObj,orgDetails.uuid)
+    ServiceApi.updateCalendar(postalObj,orgDetails.id)
       .then((response) => {
         if (response && response.data) {
          
