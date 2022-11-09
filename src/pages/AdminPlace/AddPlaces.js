@@ -54,7 +54,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
          
           setRegionList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Region")?.concepts));
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="PlaceAccessibility")?.concepts));
           setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Type")?.concepts));
 
           // dispatch(fetchAudience(response.data.data));
@@ -72,7 +72,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="Place Accessibility")?.concepts));
+          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="PlaceAccessibility")?.concepts));
           // dispatch(fetchAudience(response.data.data));
         }
         setLoading(false);
