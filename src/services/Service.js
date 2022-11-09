@@ -267,7 +267,7 @@ export default class ServiceApi {
   }
   static calendarInfo() {
     return Axios({
-      url: `calendar-metadata/info`,
+      url: `calendar-info`,
       method: "GET",
     
     });

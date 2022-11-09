@@ -137,7 +137,7 @@ const RoleOrganizer = ({
                 <Button danger type="text"
                 onClick={()=>addPayant()}
                 icon={ <PlusOutlined />}>
-                Ajouter  {t(nameTitle, { lng: currentLang })}
+                {t(nameTitle, { lng: currentLang })}
     </Button>
 
                </div>
