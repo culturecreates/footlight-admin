@@ -85,7 +85,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const formatarray = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -96,7 +96,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const formatarrayTree = (data) => {
     return data.map((item) => {
       const obj = {
-        value: item.uuid,
+        value: item.id,
         title: item.name[currentLang]?item.name[currentLang]:
         currentLang==="fr"?item.name["en"]:item.name["fr"],
         children: item.children ? formatarrayTree(item.children) : undefined,
@@ -189,14 +189,14 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       if(placeDetails)
       {
         postalObj.addressCountry = {[contentLang]:values.addressCountry,
-          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressCountry[[contentLang=="fr"?"en":"fr"]]};
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressCountry[[contentLang=="fr"?"en":"fr"]]};
           postalObj.addressLocality= {[contentLang]:values.addressLocality,
-          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressLocality[[contentLang=="fr"?"en":"fr"]]};
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressLocality[[contentLang=="fr"?"en":"fr"]]};
 
         postalObj.addressRegion = {[contentLang]:values.addressRegion,
-          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.addressRegion[[contentLang=="fr"?"en":"fr"]]};
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.addressRegion[[contentLang=="fr"?"en":"fr"]]};
           postalObj.streetAddress= {[contentLang]:values.streetAddress,
-          [contentLang=="fr"?"en":"fr"]: placeDetails?.postalAddress?.streetAddress[[contentLang=="fr"?"en":"fr"]]};
+          [contentLang=="fr"?"en":"fr"]: placeDetails?.address?.streetAddress[[contentLang=="fr"?"en":"fr"]]};
       }
       else{
         postalObj.addressCountry = {[contentLang]:values.addressCountry};
@@ -208,7 +208,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     }
     setLoading(true)
     if (placeDetails)
-     ServiceApi.updatePostalAddress(postalObj,placeDetails.postalAddress.uuid)
+     ServiceApi.updatePostalAddress(postalObj,placeDetails.address.id)
       .then((response) => {
         if (response && response.data) {
           const placeObj = {
@@ -224,7 +224,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
            openingHours: values.openingHours,
 
             postalAddressId: {
-              entityId: placeDetails.postalAddress.uuid,
+              entityId: placeDetails.address.id,
             },
             containedInPlace: values.containedInPlace?{entityId:values.containedInPlace}:undefined,
            
@@ -279,7 +279,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             }
             
           }
-          ServiceApi.updatePlace(placeObj,placeDetails.uuid)
+          ServiceApi.updatePlace(placeObj,placeDetails.id)
             .then((response) => {
                 setLoading(false)
               message.success("Place Updated Successfully");
@@ -411,13 +411,13 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       form.setFieldsValue({
         name: placeDetails.name[contentLang],
         openingHours: placeDetails.openingHours,
-        addressCountry:placeDetails.postalAddress?.addressCountry[contentLang],
-        addressLocality: placeDetails.postalAddress?.addressLocality[contentLang],
-        addressRegion:placeDetails.postalAddress?.addressRegion[contentLang],
-        postalCode: placeDetails.postalAddress?.postalCode,
+        addressCountry:placeDetails.address?.addressCountry[contentLang],
+        addressLocality: placeDetails.address?.addressLocality[contentLang],
+        addressRegion:placeDetails.address?.addressRegion[contentLang],
+        postalCode: placeDetails.address?.postalCode,
         containedInPlace: placeDetails.containedInPlace && placeDetails.containedInPlace?.entityId,
 
-        streetAddress: placeDetails.postalAddress?.streetAddress[contentLang],
+        streetAddress: placeDetails.address?.streetAddress[contentLang],
         latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
         longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
         description: placeDetails.description && placeDetails.description[contentLang],
@@ -441,28 +441,28 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
           description: placeDetails.description && placeDetails.description?.fr,
           descriptionEn: placeDetails.description && placeDetails.description?.en,
 
-          addressCountryEn:placeDetails.postalAddress?.addressCountry.en,
-          addressCountry:placeDetails.postalAddress?.addressCountry.fr,
+          addressCountryEn:placeDetails.address?.addressCountry.en,
+          addressCountry:placeDetails.address?.addressCountry.fr,
 
-        addressLocalityEn: placeDetails.postalAddress?.addressLocality.en,
-        addressLocality: placeDetails.postalAddress?.addressLocality.fr,
+        addressLocalityEn: placeDetails.address?.addressLocality.en,
+        addressLocality: placeDetails.address?.addressLocality.fr,
 
 
-        addressRegionEn:placeDetails.postalAddress?.addressRegion.en,
-        addressRegion:placeDetails.postalAddress?.addressRegion.fr,
+        addressRegionEn:placeDetails.address?.addressRegion.en,
+        addressRegion:placeDetails.address?.addressRegion.fr,
 
-        streetAddressEn: placeDetails.postalAddress?.streetAddress.en,
-        streetAddress: placeDetails.postalAddress?.streetAddress.fr,
+        streetAddressEn: placeDetails.address?.streetAddress.en,
+        streetAddress: placeDetails.address?.streetAddress.fr,
         })
       }
       else{
         form.setFieldsValue({
           name: placeDetails.name[contentLang],
           description: placeDetails.description && placeDetails.description[contentLang],
-          addressCountry:placeDetails.postalAddress?.addressCountry[contentLang],
-        addressLocality: placeDetails.postalAddress?.addressLocality[contentLang],
-        addressRegion:placeDetails.postalAddress?.addressRegion[contentLang],
-        streetAddress: placeDetails.postalAddress?.streetAddress[contentLang],
+          addressCountry:placeDetails.address?.addressCountry[contentLang],
+        addressLocality: placeDetails.address?.addressLocality[contentLang],
+        addressRegion:placeDetails.address?.addressRegion[contentLang],
+        streetAddress: placeDetails.address?.streetAddress[contentLang],
 
         })
       }
@@ -713,7 +713,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
               
               >
                 {containsList.map((item) => (
-                  <Option key={item.uuid} value={item.uuid}>{item.name[currentLang]?item.name[currentLang]:
+                  <Option key={item.id} value={item.id}>{item.name[currentLang]?item.name[currentLang]:
                     currentLang==="fr"?item.name["en"]:item.name["fr"]}</Option>
                 ))}
               </Select>
