@@ -142,7 +142,7 @@ export default class ServiceApi {
 
   static getUser() {
     return Axios({
-      url: `users`,
+      url: `users/current`,
       method: "GET",
   
 
@@ -237,7 +237,7 @@ export default class ServiceApi {
 
   static deleteCal(id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "DELETE",
       params:{id}
     
@@ -297,7 +297,7 @@ export default class ServiceApi {
 
   static getAllCalendar() {
     return Axios({
-      url: `calendar-metadata`,
+      url: `calendars`,
       method: "GET",
     });
   }
@@ -379,7 +379,7 @@ export default class ServiceApi {
 
   static getCalDetail(id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "GET",
       params:{'id':id}
       
@@ -510,7 +510,7 @@ export default class ServiceApi {
 
   static addCalendar(payload) {
     return Axios({
-      url: `calendar-metadata`,
+      url: `calendars`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -579,7 +579,7 @@ export default class ServiceApi {
 
   static updateCalendar(payload,id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "PATCH",
       params:{id:id},
       data: JSON.stringify(payload),
