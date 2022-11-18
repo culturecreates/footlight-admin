@@ -166,7 +166,7 @@ const AdminEvents = function ({ currentLang,contentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteEvents(record.uuid)
+        handleDeleteEvents(record.id)
       },
   
       onCancel() {
@@ -188,11 +188,11 @@ const AdminEvents = function ({ currentLang,contentLang }) {
   const handleSwitch = (checked,record,event) => {
     event.stopPropagation()
     setLoading(true);
-    ServiceApi.publishEvents(record.uuid)
+    ServiceApi.publishEvents(record.id)
       .then((response) => {
         console.log(checked)
         if (response && response.data && response.data) {
-          const newList= eventList.map(item=>item.uuid===record.uuid?
+          const newList= eventList.map(item=>item.id===record.id?
             {...item,publishState:checked?
               checkAdmin && (checkAdmin.role === "GUEST")?"Pending Review":"Published":"Draft"}:item)
             setEventList(newList)
@@ -302,7 +302,7 @@ const AdminEvents = function ({ currentLang,contentLang }) {
               columns={eventTableHeader}
               className={"event-table"}
               scroll={{x: 1400, y: "calc(100% - 60px)" }}
-              rowKey={record => record.uuid}
+              rowKey={record => record.id}
               pagination={{
                 onChange: page =>{
                   setDefaultPage(page)
@@ -324,7 +324,7 @@ const AdminEvents = function ({ currentLang,contentLang }) {
                   onClick: (event) => {
                     event.stopPropagation()
                     if(getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))))
-                     navigate(`/admin/add-event/?id=${record.uuid}`);
+                     navigate(`/admin/add-event/?id=${record.id}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };

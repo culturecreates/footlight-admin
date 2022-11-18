@@ -110,7 +110,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteContact(record.uuid)
+        handleDeleteContact(record.id)
       },
   
       onCancel() {
@@ -181,7 +181,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
      const obj={
          value:item.identifier.uri,
          title: item.name?.fr,
-         uuid:item.uuid,
+         id:item.id,
          conceptScheme:item.conceptScheme.uri,
          children:item.children?formatarrayTree(item.children):undefined
      }
@@ -195,7 +195,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
     return data.map(item=>{
       const obj={
         value:item.identifier.uri,
-        uuid:item.uuid,
+        id:item.id,
         conceptScheme:item.conceptScheme.uri,
         title: item.name?.fr,
           children:item.children?formatarrayTree(item.children):undefined
@@ -325,7 +325,7 @@ const Taxonomy = function ({ currentLang, contentLang }) {
                     event.stopPropagation()
                     if(!record.header && (getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN")))
                     )
-                    navigate(`/admin/add-taxonomy/?id=${record.uuid}`);
+                    navigate(`/admin/add-taxonomy/?id=${record.id}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };

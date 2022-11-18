@@ -94,7 +94,7 @@ const AdminContacts = function ({ currentLang,contentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteContact(record.uuid)
+        handleDeleteContact(record.id)
       },
   
       onCancel() {
@@ -232,7 +232,7 @@ const AdminContacts = function ({ currentLang,contentLang }) {
                     
                     if(getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))))
 
-                    navigate(`/admin/add-contact/?id=${record.uuid}`);
+                    navigate(`/admin/add-contact/?id=${record.id}`);
                     
                   }, 
                 };

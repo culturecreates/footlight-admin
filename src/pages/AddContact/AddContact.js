@@ -58,7 +58,7 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
     }
     setLoading(true)
     if (contactDetails)
-    ServiceApi.updateContact(postalObj,contactDetails.uuid)
+    ServiceApi.updateContact(postalObj,contactDetails.id)
       .then((response) => {
         if (response && response.data) {
          

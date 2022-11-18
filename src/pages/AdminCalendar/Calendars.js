@@ -67,7 +67,7 @@ const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
       content: ' This action cannot be undone.',
   
       onOk() {
-        handleDeleteContact(record.uuid)
+        handleDeleteContact(record.id)
       },
   
       onCancel() {
@@ -204,7 +204,7 @@ const Calendars = function ({ currentLang, contentLang,updateContentLang }) {
                   onClick: (event) => {
                     event.stopPropagation()
                     if(getCookies("user_token")?.user?.id===record.creator?.userId ||(getCookies("user_token")?.user?.isSuperAdmin || (checkAdmin && (checkAdmin.role === "EDITOR" || checkAdmin.role === "ADMIN" || checkAdmin.role === "SUPER_ADMIN"))))
-                     navigate(`/admin/add-calendar/?id=${record.uuid}`);
+                     navigate(`/admin/add-calendar/?id=${record.id}`);
                     // setSelectedProduct(record);
                   }, // click row
                 };
