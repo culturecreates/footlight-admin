@@ -45,6 +45,10 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
   const [roleList, setRoleList] = useState([]);
   const [searchKey, setSearchKey] = useState("")
   const [options, setOptions] = useState([]);
+  const [modifyPassword, setModifyPassword] = useState();
+  const [modifyRole, setModifyRole] = useState();
+
+  
   // const [isUpload, setIsUpload] = useState(false);
   // const [compressedFile, setCompressedFile] = useState(null);
 
@@ -62,7 +66,9 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
     if (contactDetails) {
       if (isProfile) {
         values.role = undefined;
-        ServiceApi.updateUser(values)
+        if(modifyPassword)
+         values.modifyPassword = modifyPassword
+        ServiceApi.updateSingleUser(values,contactDetails.id)
           .then((response) => {
             if (response && response.data) {
               setLoading(false)
@@ -84,14 +90,18 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
           role: values.role,
           calendarId: getCookies("calendar-id")
         }
-        ServiceApi.modifyRole(obj, contactDetails.id)
-          .then((response) => {
-          })
-          .catch((error) => {
-            setLoading(false)
-            message.error(error.response?.data?.message)
-          });
+        values.modifyRole = obj
+        // ServiceApi.modifyRole(obj, contactDetails.id)
+        //   .then((response) => {
+        //   })
+        //   .catch((error) => {
+        //     setLoading(false)
+        //     message.error(error.response?.data?.message)
+        //   });
         }
+        
+        if(modifyPassword)
+         values.modifyPassword = modifyPassword
             // if (response && response.data) {
               values.role = undefined;
               ServiceApi.updateSingleUser(values, contactDetails.id)
@@ -633,6 +643,7 @@ const Addusers = function ({ currentLang, contactDetails, isProfile }) {
       </Form>
       {loading && <Spinner />}
       {isPassword && <PasswordUpdateModal isModalVisible={isPassword} setIsModalVisible={setIsPassword}
+        setModifyPassword={setModifyPassword}
         currentLang={currentLang}
       />}
     </Layout>
