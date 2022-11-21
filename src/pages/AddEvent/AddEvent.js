@@ -93,6 +93,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [performerSelectedRoleList, setPerformerSelectedRole] = useState([])
 
   const [youtubeLink, setYoutubeLink] = useState();
+  const [imageFile, setImageFile] = useState();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [startDisable, setStartDisable] = useState(
@@ -329,6 +330,7 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
         });
     }
     const eventObj = {
+      image: imageFile,
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
@@ -472,25 +474,28 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
       ServiceApi.updateEvent(eventObj, eventDetails.id)
         .then((response) => {
           if (response && response.data) {
-            if (isUpload && fileList.length > 0)
-              ServiceApi.imageUpload(
-                eventDetails.id,
-                fileList[0].originFileObj,
-                compressedFile
-              )
-                .then((response) => {
-                  setLoading(false);
+            setLoading(false);
                   message.success("Event Updated Successfully");
                   navigate(`/admin/events`);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                });
-            else {
-              setLoading(false);
-              message.success("Event Updated Successfully");
-              navigate(`/admin/events`);
-            }
+            // if (isUpload && fileList.length > 0)
+            //   ServiceApi.imageUpload(
+            //     eventDetails.id,
+            //     fileList[0].originFileObj,
+            //     compressedFile
+            //   )
+            //     .then((response) => {
+            //       setLoading(false);
+            //       message.success("Event Updated Successfully");
+            //       navigate(`/admin/events`);
+            //     })
+            //     .catch((error) => {
+            //       setLoading(false);
+            //     });
+            // else {
+            //   setLoading(false);
+            //   message.success("Event Updated Successfully");
+            //   navigate(`/admin/events`);
+            // }
           }
         })
         .catch((error) => {
@@ -500,25 +505,28 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
       ServiceApi.addEvent(eventObj)
         .then((response) => {
           if (response && response.data) {
-            if (isUpload && fileList.length > 0)
-              ServiceApi.imageUpload(
-                response.data.id,
-                fileList[0].originFileObj,
-                compressedFile
-              )
-                .then((response) => {
-                  setLoading(false);
+            setLoading(false);
                   message.success("Event Created Successfully");
                   navigate(`/admin/events`);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                });
-            else {
-              setLoading(false);
-              message.success("Event Created Successfully");
-              navigate(`/admin/events`);
-            }
+            // if (isUpload && fileList.length > 0)
+            //   ServiceApi.imageUpload(
+            //     response.data.id,
+            //     fileList[0].originFileObj,
+            //     compressedFile
+            //   )
+            //     .then((response) => {
+            //       setLoading(false);
+            //       message.success("Event Created Successfully");
+            //       navigate(`/admin/events`);
+            //     })
+            //     .catch((error) => {
+            //       setLoading(false);
+            //     });
+            // else {
+            //   setLoading(false);
+            //   message.success("Event Created Successfully");
+            //   navigate(`/admin/events`);
+            // }
           }
         })
         .catch((error) => { });
@@ -648,9 +656,21 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
           uid: "-1",
           name: "image.png",
           status: "done",
-          url: eventDetails.image?.thumbnail?.uri,
+          url: eventDetails.image?.thumbnail,
         };
         setFileList([obj]);
+         const imageData = {
+          "original": {
+            "uri": eventDetails.image?.original,
+          },
+          "large": {
+            "uri": eventDetails.image?.large,
+          },
+          "thumbnail": {
+            "uri": eventDetails.image?.thumbnail,
+          }
+        }
+         setImageFile(imageData)
       } else setFileList([]);
       if (eventDetails.recurringEvent) {
         setNumberOfDays(eventDetails.subEvents?.length);
@@ -782,6 +802,19 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
       convertSize: 200000,
       success: (compressedResult) => {
         setCompressedFile(compressedResult);
+        setLoading(true)
+        ServiceApi.imageUpload(
+          "id",
+          fileList[0].originFileObj,
+          compressedResult
+        )
+          .then((response) => {
+            setLoading(false);
+            setImageFile(response.data.data)
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
       },
     });
   };

@@ -475,8 +475,8 @@ export default class ServiceApi {
     formdata.append("files",payload)
     formdata.append("files",new File([compressedFile], "compressed"+compressedFile.name))
     return Axios({
-      url: `event/${id}/image-upload`,
-      method: "PATCH",
+      url: `images`,
+      method: "POST",
       headers: {
         'Content-Type': 'multipart/form-data'
       },
