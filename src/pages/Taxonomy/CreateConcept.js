@@ -173,17 +173,18 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
         "taxonomy": conceptId,
         "concepts": formatarrayUpdate(gData)
       }
-      ServiceApi.addConcepts(conceptObj,isUpdateConcepts)
-      .then((response) => {
-        if (response && response.data) {
+      // ServiceApi.addConcepts(conceptObj,isUpdateConcepts)
+      // .then((response) => {
+      //   if (response && response.data) {
             
            
             
             
-        }
-      })
-      .catch((error) => {
-      });
+      //   }
+      // })
+      // .catch((error) => {
+      // });
+      obj.concepts ={ concepts: formatarrayUpdate(gData)}
     ServiceApi.updateTaxonomy(obj,conceptId)
       .then((response) => {
         if (response && response.data) {
@@ -424,7 +425,15 @@ else
       const search = window.location.search;
       const params = new URLSearchParams(search);
       const eventId = params.get("id");
-      getConcepts(eventId)
+      // getConcepts(eventId)
+      const concept = orgDetails.concepts;
+      if(concept && concept.length>0)
+       setIsUpdateConcepts(true);
+     const formatResponse = formatarrayResponse(concept)
+      setGData(formatResponse)
+      setTreeData(formatResponse)
+
+
       handleChange(orgDetails.taxonomyClass)
       form.setFieldsValue({
         name: orgDetails.name[contentLang],

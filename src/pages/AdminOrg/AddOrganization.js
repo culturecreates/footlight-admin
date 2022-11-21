@@ -261,11 +261,11 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
 
   const getPublics = () => {
     
-    ServiceApi.getFieldConcepts("Organization")
+    ServiceApi.getFieldConcepts("ORGANIZATION")
       .then((response) => {
-        if (response && response.data && response.data) {
-          const events = response.data;
-          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
+        if (response && response.data && response.data.data) {
+          const events = response.data.data;
+          setDynamicList(events.filter(item=>(item?.isDynamicField)))
          
           
           
@@ -283,7 +283,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
     ServiceApi.getAllPlaces(page, currentLang === "en" ? "EN" : "FR")
       .then((response) => {
         if (response && response.data && response.data.data) {
-          const events = response.data.data.places;
+          const events = response.data.data;
           const placeVirtual = response.data.data?.virtualLocations;
          
           

@@ -13,6 +13,7 @@ import Spinner from "./Spinner";
 const PasswordUpdateModal = ({
   isModalVisible,
   setIsModalVisible,
+  setModifyPassword,
   currentLang,
   
 }) => {
@@ -35,22 +36,24 @@ const PasswordUpdateModal = ({
     
     setLoading(true)
     values.confirmPassword = undefined;
-    ServiceApi.updatePassword(values)
-    .then((response) => {
-      if (response && response.data) {
+    setModifyPassword(values)
+    setIsModalVisible(false);
+    // ServiceApi.updatePassword(values)
+    // .then((response) => {
+    //   if (response && response.data) {
        
         
-        setLoading(false) 
+    //     setLoading(false) 
        
-         message.success(response.data.message)
-         setIsModalVisible(false);
+    //      message.success(response.data.message)
+    //      setIsModalVisible(false);
        
-      }
-    })
-    .catch((error) => {
-      setLoading(false)
-      message.error(error.response?.data?.message)
-    });
+    //   }
+    // })
+    // .catch((error) => {
+    //   setLoading(false)
+    //   message.error(error.response?.data?.message)
+    // });
   }
   
   return (

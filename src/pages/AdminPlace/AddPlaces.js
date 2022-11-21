@@ -47,15 +47,15 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
   const getPublics = () => {
     
-    ServiceApi.getFieldConcepts("Place")
+    ServiceApi.getFieldConcepts("PLACE")
       .then((response) => {
-        if (response && response.data && response.data) {
-          const events = response.data;
-          setDynamicList(events.filter(item=>(item.taxonomy?.isDynamicField)))
+        if (response && response.data && response.data?.data) {
+          const events = response.data.data;
+          setDynamicList(events.filter(item=>(item.isDynamicField)))
          
-          setRegionList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField == "Region")?.concepts));
-          setAccessabilityList(formatarray(events.find(item=>item.taxonomy.mappedToField=="PlaceAccessibility")?.concepts));
-          setTypesList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy.mappedToField=="Type")?.concepts));
+          setRegionList(formatarray(events.filter(item => !(item.isDynamicField)).find(item => item.mappedToField == "Region")?.concept));
+          setAccessabilityList(formatarray(events.find(item=>item.mappedToField=="PlaceAccessibility")?.concept));
+          setTypesList(formatarray(events.filter(item => !(item.isDynamicField)).find(item=>item.mappedToField=="Type")?.concept));
 
           // dispatch(fetchAudience(response.data.data));
         }
@@ -68,7 +68,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
   const getAccessability = (page = 1) => {
     // setLoading(true);
-    ServiceApi.getFieldConcepts("Place")
+    ServiceApi.getFieldConcepts("PLACE")
       .then((response) => {
         if (response && response.data && response.data) {
           const events = response.data;
@@ -162,8 +162,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
   const handleSubmit = (values) => {
     const dynamicField =  dynamicList.map(item=>{
       const obj ={
-        conceptIds: values[item.taxonomy?.entityId],
-        taxonomyId: item.taxonomy?.entityId,
+        conceptIds: values[item?.id],
+        taxonomyId: item.taxonomy?.id,
        
       }
       return obj;
@@ -781,12 +781,12 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
         {    dynamicList.length>0 &&
   dynamicList.map(item=>
-    <div key={item.taxonomy.entityId}>
+    <div key={item.id}>
             <div className="update-select-title">
-              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+              {t(item?.name?.fr, { lng: currentLang })}
             </div>
 
-            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+            <Form.Item name={item?.id} rules={[{ required: false }]}>
             <TreeSelect
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}

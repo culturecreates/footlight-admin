@@ -93,6 +93,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [performerSelectedRoleList, setPerformerSelectedRole] = useState([])
 
   const [youtubeLink, setYoutubeLink] = useState();
+  const [imageFile, setImageFile] = useState();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [startDisable, setStartDisable] = useState(
@@ -204,40 +205,34 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
   const getPublics = () => {
 
-    ServiceApi.getFieldConcepts("Event")
+    ServiceApi.getFieldConcepts("EVENT")
       .then((response) => {
-        if (response && response.data && response.data) {
-          const events = response.data;
-
+        if (response && response.data && response.data.data) {
+          const events = response.data.data;
+console.log("ayatt",events.filter(item => (item?.isDynamicField)))
       
-          setDynamicList(events.filter(item => (item.taxonomy?.isDynamicField)))
-          setPublicsList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Audience")?.concepts?
-          events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "Audience")?.concepts:[]));
-          setAccessabilityList(formatarray(events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "EventAccessibility")?.concepts?
-          events.filter(item => !(item.taxonomy.isDynamicField)).find(item => item.taxonomy?.mappedToField === "EventAccessibility")?.concepts:[]));
-          setTypeList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "EventType")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "EventType")?.concepts:[]));
+          setDynamicList(events.filter(item => (item?.isDynamicField)))
+          setPublicsList(formatarray(events.filter(item => !(item.isDynamicField)).find(item => item.mappedToField === "Audience")?.concept?
+          events.filter(item => !(item.isDynamicField)).find(item => item.mappedToField === "Audience")?.concept:[]));
+          setAccessabilityList(formatarray(events.filter(item => !(item.isDynamicField)).find(item => item?.mappedToField === "EventAccessibility")?.concept?
+          events.filter(item => !(item.isDynamicField)).find(item => item?.mappedToField === "EventAccessibility")?.concept:[]));
+          setTypeList(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "EventType")?.concept?
+          events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "EventType")?.concept:[]));
 
 
-          setInLangList(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "inLanguage")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "inLanguage")?.concepts:[]));
+          // setInLangList(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept?
+          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept:[]));
 
 
-          setOrgRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizerRole")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "OrganizerRole")?.concepts:[]));
-          setPerformerRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "PerformerRole")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "PerformerRole")?.concepts:[]));
-          setContributorRole(formatarray(events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "SupporterRole")?.concepts?
-          events.filter(item => !(item.taxonomy?.isDynamicField)).find(item => item.taxonomy?.mappedToField === "SupporterRole")?.concepts:[]));
+          // setOrgRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept?
+          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept:[]));
+          // setPerformerRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept?
+          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept:[]));
+          // setContributorRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept?
+          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept:[]));
 
           
-          // setOrgRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Organization Role")?.concepts));
-          // setPerformerRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Performer Role")?.concepts));
-          // setContributorRole(formatarray(events.filter(item=>!(item.taxonomy?.isDynamicField)).find(item=>item.taxonomy?.mappedToField=="Contributor Role")?.concepts));
-          // console.log("ayatt",events.filter(item=>(item.taxonomy?.isDynamicField)))
-
-
-          // dispatch(fetchAudience(response.data.data));
+         
         }
         setLoading(false);
       })
@@ -248,13 +243,13 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
   const getOrgPublics = () => {
 
-    ServiceApi.getFieldConcepts("Organization")
+    ServiceApi.getFieldConcepts("ORGANIZATION")
       .then((response) => {
-        if (response && response.data && response.data) {
-          const events = response.data;
+        if (response && response.data && response.data.data) {
+          const events = response.data.data;
 
           
-          console.log("ayatt", events.filter(item => (item.taxonomy?.isDynamicField)))
+          console.log("ayatt", events.filter(item => (item?.isDynamicField)))
 
 
           // dispatch(fetchAudience(response.data.data));
@@ -303,7 +298,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       .then((response) => {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
-          setPlaceList(events.places);
+          setPlaceList(events);
           setAllLocations(events);
           dispatch(fetchPlace(events));
         }
@@ -315,8 +310,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
     const dynamicField = dynamicList.map(item => {
       const obj = {
-        conceptIds: values[item.taxonomy?.entityId],
-        taxonomyId: item.taxonomy?.entityId,
+        conceptIds: values[item?.id],
+        taxonomyId: item?.id,
 
       }
       return obj;
@@ -335,6 +330,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         });
     }
     const eventObj = {
+      image: imageFile,
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
@@ -478,25 +474,28 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       ServiceApi.updateEvent(eventObj, eventDetails.id)
         .then((response) => {
           if (response && response.data) {
-            if (isUpload && fileList.length > 0)
-              ServiceApi.imageUpload(
-                eventDetails.id,
-                fileList[0].originFileObj,
-                compressedFile
-              )
-                .then((response) => {
-                  setLoading(false);
+            setLoading(false);
                   message.success("Event Updated Successfully");
                   navigate(`/admin/events`);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                });
-            else {
-              setLoading(false);
-              message.success("Event Updated Successfully");
-              navigate(`/admin/events`);
-            }
+            // if (isUpload && fileList.length > 0)
+            //   ServiceApi.imageUpload(
+            //     eventDetails.id,
+            //     fileList[0].originFileObj,
+            //     compressedFile
+            //   )
+            //     .then((response) => {
+            //       setLoading(false);
+            //       message.success("Event Updated Successfully");
+            //       navigate(`/admin/events`);
+            //     })
+            //     .catch((error) => {
+            //       setLoading(false);
+            //     });
+            // else {
+            //   setLoading(false);
+            //   message.success("Event Updated Successfully");
+            //   navigate(`/admin/events`);
+            // }
           }
         })
         .catch((error) => {
@@ -506,25 +505,28 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       ServiceApi.addEvent(eventObj)
         .then((response) => {
           if (response && response.data) {
-            if (isUpload && fileList.length > 0)
-              ServiceApi.imageUpload(
-                response.data.id,
-                fileList[0].originFileObj,
-                compressedFile
-              )
-                .then((response) => {
-                  setLoading(false);
+            setLoading(false);
                   message.success("Event Created Successfully");
                   navigate(`/admin/events`);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                });
-            else {
-              setLoading(false);
-              message.success("Event Created Successfully");
-              navigate(`/admin/events`);
-            }
+            // if (isUpload && fileList.length > 0)
+            //   ServiceApi.imageUpload(
+            //     response.data.id,
+            //     fileList[0].originFileObj,
+            //     compressedFile
+            //   )
+            //     .then((response) => {
+            //       setLoading(false);
+            //       message.success("Event Created Successfully");
+            //       navigate(`/admin/events`);
+            //     })
+            //     .catch((error) => {
+            //       setLoading(false);
+            //     });
+            // else {
+            //   setLoading(false);
+            //   message.success("Event Created Successfully");
+            //   navigate(`/admin/events`);
+            // }
           }
         })
         .catch((error) => { });
@@ -654,9 +656,21 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           uid: "-1",
           name: "image.png",
           status: "done",
-          url: eventDetails.image?.thumbnail?.uri,
+          url: eventDetails.image?.thumbnail,
         };
         setFileList([obj]);
+         const imageData = {
+          "original": {
+            "uri": eventDetails.image?.original,
+          },
+          "large": {
+            "uri": eventDetails.image?.large,
+          },
+          "thumbnail": {
+            "uri": eventDetails.image?.thumbnail,
+          }
+        }
+         setImageFile(imageData)
       } else setFileList([]);
       if (eventDetails.recurringEvent) {
         setNumberOfDays(eventDetails.subEvents?.length);
@@ -719,9 +733,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         for (let i = 0; i <= eventDynamic.length; i++) {
 
           if (eventDynamic[i]?.taxonomyId)
+          {
             form.setFieldsValue({
               [eventDynamic[i].taxonomyId]: eventDynamic[i].conceptIds
             })
+           
+          }
         }
 
 
@@ -785,6 +802,19 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       convertSize: 200000,
       success: (compressedResult) => {
         setCompressedFile(compressedResult);
+        setLoading(true)
+        ServiceApi.imageUpload(
+          "id",
+          fileList[0].originFileObj,
+          compressedResult
+        )
+          .then((response) => {
+            setLoading(false);
+            setImageFile(response.data.data)
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
       },
     });
   };
@@ -1019,7 +1049,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               >
                 <OptGroup label={t("Online", { lng: currentLang })}>
                   {allLocations &&
-                    allLocations.virtualLocations.map((item) => (
+                    // allLocations.virtualLocations.map((item) => (
+                      allLocations.map((item) => (
                       <Option
                         type="Online"
                         value={item.id}
@@ -1036,7 +1067,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 </OptGroup>
                 <OptGroup label={t("Offline", { lng: currentLang })}>
                   {allLocations &&
-                    allLocations.places.map((item) => (
+                    allLocations.map((item) => (
                       <Option
                         type="Offline"
                         value={item.id}
@@ -1123,16 +1154,16 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
             {dynamicList.length > 0 &&
               dynamicList.map(item =>
-                <div key={item.taxonomy.entityId}>
+                <div key={item.id}>
                   <div className="update-select-title">
-                    {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+                    {t(item?.name?.fr, { lng: currentLang })}
                   </div>
 
-                  <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+                  <Form.Item name={item?.id} rules={[{ required: false }]}>
                     <TreeSelect
                       style={{ width: "100%" }}
                       dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                      treeData={formatarray(item.concepts)}
+                      treeData={formatarray(item.concept)}
                       multiple
                       placeholder="Please select"
                     />

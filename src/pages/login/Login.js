@@ -28,10 +28,10 @@ const Login = () => {
       {
         setLoading(true)
         const obj={
-          invitationId: code,
+          // invitationId: code,
          
          }
-          ServiceApi.acceptInvite(obj)
+          ServiceApi.acceptInvite(obj,code)
         .then((response) => {
           if (response && response.data) {
            
@@ -107,10 +107,10 @@ const Login = () => {
     const params = new URLSearchParams(search);
     const code = params.get("invitationId");
      const obj={
-      invitationId: code,
+      // invitationId: code,
       password: values.password
      }
-      ServiceApi.acceptInvite(obj)
+      ServiceApi.acceptInvite(obj,code)
     .then((response) => {
       if (response && response.data) {
        

@@ -30,7 +30,7 @@ export default class ServiceApi {
 
   static resetLink(payload) {
     return AxiosLogin({
-      url: `users/forgot-password`,
+      url: `users/recover-password`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -64,9 +64,9 @@ export default class ServiceApi {
     });
   }
 
-  static acceptInvite(payload) {
+  static acceptInvite(payload,id) {
     return Axios({
-      url: `invite/accept`,
+      url: `invite/${id}/accept`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -93,7 +93,7 @@ export default class ServiceApi {
 
   static getAllUser() {
     return Axios({
-      url: `users/all`,
+      url: `users`,
       method: "GET",
       params:{includeInactiveUsers:true,includeCalendarFilter:true}
 
@@ -102,7 +102,7 @@ export default class ServiceApi {
 
   static getAllUserSearch(value) {
     return Axios({
-      url: `users/all`,
+      url: `users`,
       method: "GET",
       params:{includeInactiveUsers:true,includeCalendarFilter:false,"search": value}
      
@@ -142,7 +142,7 @@ export default class ServiceApi {
 
   static getUser() {
     return Axios({
-      url: `users`,
+      url: `users/current`,
       method: "GET",
   
 
@@ -168,7 +168,8 @@ export default class ServiceApi {
   static leaveCalendar(calId) {
     const id_token = getCookies("user_token");
     return AxiosLogin({
-      url: `users/logged-in/leave-calendar`,
+      // url: `users/logged-in/leave-calendar`,
+      url: `users/current/leave-calendar`,
       method: "PATCH",
       headers:{"calendar-id":calId,
       "Authorization":"Bearer "+id_token?.token}
@@ -193,19 +194,19 @@ export default class ServiceApi {
     });
     else if(type==="withdraw")
     return Axios({
-      url: `invite/withdraw/${id}`,
+      url: `invite/${id}/withdraw`,
       method: "POST",
     
     });
     else if(type==="reactivate")
     return Axios({
-      url: `users/activate/${id}`,
+      url: `users/${id}/activate`,
       method: "PATCH",
     
     });
     else
     return Axios({
-      url: `users/deactivate/${id}`,
+      url: `users/${id}/deactivate`,
       method: "PATCH",
     
     });
@@ -213,7 +214,7 @@ export default class ServiceApi {
 
   static deActiveUser(id) {
     return Axios({
-      url: `users/deactivate/${id}`,
+      url: `users/${id}/deactivate`,
       method: "PATCH",
     
     });
@@ -237,7 +238,7 @@ export default class ServiceApi {
 
   static deleteCal(id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "DELETE",
       params:{id}
     
@@ -281,7 +282,8 @@ export default class ServiceApi {
   }
   static getAllPlaces() {
     return Axios({
-      url: `all-venues`,
+      // url: `all-venues`,
+      url: `places`,
       method: "GET",
       params:{
         excludeContainsPlace: true
@@ -297,7 +299,7 @@ export default class ServiceApi {
 
   static getAllCalendar() {
     return Axios({
-      url: `calendar-metadata`,
+      url: `calendars`,
       method: "GET",
     });
   }
@@ -314,7 +316,8 @@ export default class ServiceApi {
   static eventList(page=1,filterArray=[],lng="fr") {
     console.log(filterArray,filterArray.find((o) => o.type === "queryString")&&filterArray.find((o) => o.type === "queryString").name)
     return Axios({
-      url: `events/event-list/admin-view`,
+      // url: `events/event-list/admin-view`,
+      url: `events`,
       method: "GET",
       params:{
          "language":lng,
@@ -333,7 +336,7 @@ export default class ServiceApi {
 
   static getEventDetail(id,isAdmin= false,includeJsonld=true) {
     return Axios({
-      url: `event/${id}`,
+      url: `events/${id}`,
       method: "GET",
       // params:{
       //   isAdmin:true,
@@ -344,7 +347,7 @@ export default class ServiceApi {
 
   static publishEvents(id) {
     return Axios({
-      url: `event/${id}/publish/toggle`,
+      url: `events/${id}/toggle-publish`,
       method: "PATCH",
       
 
@@ -379,7 +382,7 @@ export default class ServiceApi {
 
   static getCalDetail(id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "GET",
       params:{'id':id}
       
@@ -391,7 +394,7 @@ export default class ServiceApi {
     return Axios({
       url: `taxonomy/${id}`,
       method: "GET",
-      
+      params:{'include-concepts':true}
 
     });
   }
@@ -433,9 +436,10 @@ export default class ServiceApi {
 
   static getFieldConcepts(name) {
     return Axios({
-      url: `calendar-metadata/field-taxonomy/concepts`,
+      // url: `calendar-metadata/field-taxonomy/concepts`,
+      url: `taxonomy`,
       method: "GET",
-      params:{"taxonomyClass":name}
+      params:{"taxonomy-class":name,'include-concepts':true}
 
     });
   }
@@ -451,7 +455,7 @@ export default class ServiceApi {
 
   static addEvent(payload) {
     return Axios({
-      url: `event`,
+      url: `events`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -459,7 +463,7 @@ export default class ServiceApi {
   }
   static updateEvent(payload,id) {
     return Axios({
-      url: `event/${id}`,
+      url: `events/${id}`,
       method: "PATCH",
       data: JSON.stringify(payload),
 
@@ -471,8 +475,8 @@ export default class ServiceApi {
     formdata.append("files",payload)
     formdata.append("files",new File([compressedFile], "compressed"+compressedFile.name))
     return Axios({
-      url: `event/${id}/image-upload`,
-      method: "PATCH",
+      url: `images`,
+      method: "POST",
       headers: {
         'Content-Type': 'multipart/form-data'
       },
@@ -510,7 +514,7 @@ export default class ServiceApi {
 
   static addCalendar(payload) {
     return Axios({
-      url: `calendar-metadata`,
+      url: `calendars`,
       method: "POST",
       data: JSON.stringify(payload),
 
@@ -579,7 +583,7 @@ export default class ServiceApi {
 
   static updateCalendar(payload,id) {
     return Axios({
-      url: `calendar-metadata/{id}`,
+      url: `calendars/{id}`,
       method: "PATCH",
       params:{id:id},
       data: JSON.stringify(payload),
@@ -598,7 +602,7 @@ export default class ServiceApi {
 
   static placeAdminArea() {
     return Axios({
-      url: `places/administrative-area`,
+      url: `places`,
       method: "GET",
      
 

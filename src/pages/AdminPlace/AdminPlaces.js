@@ -170,7 +170,7 @@ const AdminPlaces = function ({ currentLang, contentLang }) {
     ServiceApi.getAllPlaces(page, currentLang === "en" ? "EN" : "FR")
       .then((response) => {
         if (response && response.data && response.data.data) {
-          const events = response.data.data.places;
+          const events = response.data.data;
           const placeVirtual = response.data.data?.virtualLocations;
          
           dispatch(fetchPlace(response.data.data));
