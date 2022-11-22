@@ -208,7 +208,98 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     }
     setLoading(true)
     if (placeDetails)
-     ServiceApi.updatePostalAddress(postalObj,placeDetails.address.id)
+    {
+    if(!placeDetails.address)
+    {
+      ServiceApi.addPostalAddress(postalObj)
+      .then((response) => {
+        if (response && response.data) {
+          const placeObj = {
+            name: {
+              
+              [contentLang]: values.name,
+            },
+            description: {
+              
+              [contentLang]: values.description,
+            },
+            
+           openingHours: values.openingHours,
+
+            postalAddressId: {
+              entityId: response.data.id,
+            },
+            containedInPlace: values.containedInPlace?{entityId:values.containedInPlace}:undefined,
+           
+            geo: {
+              latitude: values.latitude,
+              longitude: values.longitude,
+            },
+            accessibilityNote: values.accessabilityNote,
+      accessibility: values.accessability
+      ? values.accessability.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+      : undefined,
+      dynamicFields:dynamicField,
+      regions: values.region
+        ? values.region.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
+        additionalType:values.type
+        ? values.type.map((item) => {
+          const obj = {
+            entityId: item,
+          };
+          return obj;
+        })
+        : undefined,
+            
+          };
+          if(contentLang == "bilengual")
+          {
+            placeObj.name = {fr:values.name, en: values.nameEn};
+            placeObj.description= {fr:values.description ,en:values.descriptionEn}
+          }
+          else{
+            if(placeDetails)
+            {
+              placeObj.name = {[contentLang]:values.name,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.name[[contentLang=="fr"?"en":"fr"]]};
+              placeObj.description= {[contentLang]:values.description,
+                [contentLang=="fr"?"en":"fr"]: placeDetails?.description[[contentLang=="fr"?"en":"fr"]]}
+            }
+            else{
+              placeObj.name = {[contentLang]:values.name};
+              placeObj.description= {[contentLang]:values.description}
+            }
+            
+          }
+          ServiceApi.updatePlace(placeObj,placeDetails.id)
+            .then((response) => {
+                setLoading(false)
+              message.success("Place Updated Successfully");
+              navigate(`/admin/places`);
+            })
+            .catch((error) => {
+                setLoading(false)
+            });
+        }
+      })
+      .catch((error) => {
+        setLoading(false)
+      });
+    }
+
+    else
+     ServiceApi.updatePostalAddress(postalObj,placeDetails.address?.id)
       .then((response) => {
         if (response && response.data) {
           const placeObj = {
@@ -293,6 +384,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
       .catch((error) => {
         setLoading(false)
       });
+    }
       else
       ServiceApi.addPostalAddress(postalObj)
       .then((response) => {
@@ -790,7 +882,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
             <TreeSelect
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                treeData={formatarray(item.concepts)}
+                treeData={formatarray(item.concept)}
                 multiple
                 placeholder="Please select"
               />

@@ -36,6 +36,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const contactStore = useSelector((state) => state.org);
 
   const formatarray = (data) => {
+    
     return data.map((item) => {
       const obj = {
         value: item.id,
@@ -265,6 +266,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
       .then((response) => {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
+          console.log(events,events.filter(item=>(item?.isDynamicField)))
           setDynamicList(events.filter(item=>(item?.isDynamicField)))
          
           
@@ -433,16 +435,16 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
 
 {    dynamicList.length>0 &&
   dynamicList.map(item=>
-    <div key={item.taxonomy.entityId}>
+    <div key={item.id}>
             <div className="update-select-title">
-              {t(item.taxonomy?.name?.fr, { lng: currentLang })}
+              {t(item?.name?.fr, { lng: currentLang })}
             </div>
 
-            <Form.Item name={item.taxonomy?.entityId} rules={[{ required: false }]}>
+            <Form.Item name={item.id} rules={[{ required: false }]}>
             <TreeSelect
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                treeData={formatarray(item.concepts)}
+                treeData={formatarray(item.concept)}
                 multiple
                 placeholder="Please select"
               />
