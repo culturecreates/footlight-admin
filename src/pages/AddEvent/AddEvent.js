@@ -220,16 +220,16 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
           events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "EventType")?.concept:[]));
 
 
-          // setInLangList(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept?
-          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept:[]));
+          setInLangList(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept?
+          events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "inLanguage")?.concept:[]));
 
 
-          // setOrgRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept?
-          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept:[]));
-          // setPerformerRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept?
-          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept:[]));
-          // setContributorRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept?
-          // events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept:[]));
+          setOrgRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept?
+          events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "OrganizerRole")?.concept:[]));
+          setPerformerRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept?
+          events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "PerformerRole")?.concept:[]));
+          setContributorRole(formatarray(events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept?
+          events.filter(item => !(item?.isDynamicField)).find(item => item?.mappedToField === "SupporterRole")?.concept:[]));
 
           
          
