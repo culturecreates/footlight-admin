@@ -389,6 +389,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
                 style={{ width: 350 }}
                 dropdownClassName="contact-select"
                 placeholder="Select Contact"
+                showSearch
                 dropdownRender={(menu) => (
                   <>
                     {menu}
@@ -413,6 +414,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
                 style={{ width: 350 }}
                 dropdownClassName="contact-select"
                 placeholder="Select Place"
+                showSearch
               
               >
                 {placeList.map((item) => (
@@ -447,6 +449,11 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
                 treeData={formatarray(item.concept)}
                 multiple
                 placeholder="Please select"
+                showSearch
+              treeNodeFilterProp="label"
+              filterTreeNode={(search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+              }}
               />
             </Form.Item>
             </div>

@@ -510,8 +510,8 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
         containedInPlace: placeDetails.containedInPlace && placeDetails.containedInPlace?.entityId,
 
         streetAddress: placeDetails.address?.streetAddress[contentLang],
-        latitude: placeDetails.latitude && ''+placeDetails.latitude.latitude,
-        longitude: placeDetails.latitude && ''+placeDetails.latitude.longitude,
+        latitude: placeDetails.geoCoordinates && ''+placeDetails.geoCoordinates.latitude,
+        longitude: placeDetails.geoCoordinates && ''+placeDetails.geoCoordinates.longitude,
         description: placeDetails.description && placeDetails.description[contentLang],
         accessability: placeDetails?.accessibility?.map(
           (item) => item?.entityId
@@ -798,10 +798,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
                 />
                 : item.type === "select"?
                 <Select
+                showSearch
                 style={{ width: 350 }}
                 dropdownClassName="contact-select"
                 placeholder="Select Contained place"
                 allowClear
+                filterOption={(input, option) =>
+                  option.children &&
+                  option.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
               
               >
                 {containsList.map((item) => (
@@ -827,11 +834,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
             <Form.Item name={"accessability"} rules={[{ required: false }]}>
               <TreeSelect
+              showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={accessabilityList}
                 multiple
                 placeholder="Please select"
+                
+                      treeNodeFilterProp="label"
+                      filterTreeNode={(search, item) => {
+                        return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                      }}
               />
             </Form.Item>
 
@@ -849,11 +862,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
             <Form.Item name={"region"} rules={[{ required: false }]}>
               <TreeSelect
+              
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={regionList}
                 multiple
                 placeholder="Please select"
+                showSearch
+              treeNodeFilterProp="label"
+              filterTreeNode={(search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+              }}
               />
             </Form.Item>
 
@@ -863,11 +882,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
             <Form.Item name={"type"} rules={[{ required: false }]}>
               <TreeSelect
+              showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={typesList}
                 multiple
                 placeholder="Please select"
+                
+              treeNodeFilterProp="label"
+              filterTreeNode={(search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+              }}
               />
             </Form.Item>
 
@@ -880,11 +905,17 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
 
             <Form.Item name={item?.id} rules={[{ required: false }]}>
             <TreeSelect
+            
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={formatarray(item.concept)}
                 multiple
                 placeholder="Please select"
+                showSearch
+              treeNodeFilterProp="label"
+              filterTreeNode={(search, item) => {
+                return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+              }}
               />
             </Form.Item>
             </div>
