@@ -1093,11 +1093,16 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
 
             <Form.Item name={"audience"} rules={[{ required: false }]}>
               <TreeSelect
+               showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={publicsList}
                 multiple
                 placeholder="Please select"
+                treeNodeFilterProp="label"
+                filterTreeNode={(search, item) => {
+                  return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                }}
               />
             </Form.Item>
 
@@ -1109,11 +1114,16 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
 
             <Form.Item name={"type"} rules={[{ required: false }]}>
               <TreeSelect
+              showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={typeList}
                 multiple
                 placeholder="Please select"
+                treeNodeFilterProp="label"
+                filterTreeNode={(search, item) => {
+                  return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                }}
               />
             </Form.Item>
 
@@ -1123,11 +1133,16 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
 
             <Form.Item name={"accessability"} rules={[{ required: false }]}>
               <TreeSelect
+              showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={accessabilityList}
                 multiple
                 placeholder="Please select"
+                treeNodeFilterProp="label"
+                filterTreeNode={(search, item) => {
+                  return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                }}
               />
             </Form.Item>
 
@@ -1136,11 +1151,16 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
             </div>
             <Form.Item name={"inLanguage"} rules={[{ required: false }]}>
               <TreeSelect
+              showSearch
                 style={{ width: "100%" }}
                 dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                 treeData={inLangList}
                 multiple
                 placeholder="Please select"
+                treeNodeFilterProp="label"
+                filterTreeNode={(search, item) => {
+                  return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                }}
               />
             </Form.Item>
 
@@ -1161,11 +1181,17 @@ console.log("ayatt",events.filter(item => (item?.isDynamicField)))
 
                   <Form.Item name={item?.id} rules={[{ required: false }]}>
                     <TreeSelect
+                    
                       style={{ width: "100%" }}
                       dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                       treeData={formatarray(item.concept)}
                       multiple
                       placeholder="Please select"
+                      showSearch
+                      treeNodeFilterProp="label"
+                      filterTreeNode={(search, item) => {
+                        return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                      }}
                     />
                   </Form.Item>
                 </div>

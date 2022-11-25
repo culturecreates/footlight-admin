@@ -129,6 +129,11 @@ const RoleOrganizer = ({
                 className="org-role-select-tree"
                 onSelect={(value)=>handleInputChange("role",item.id,value)}
                 placeholder="Select Role"
+                showSearch
+                      treeNodeFilterProp="label"
+                      filterTreeNode={(search, item) => {
+                        return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
+                      }}
               />
                 {payantList.length>1 &&
                 <DeleteOutlined className="delete-price" onClick={()=>deletePrice(item)}/>}
