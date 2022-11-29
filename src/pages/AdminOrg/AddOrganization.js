@@ -62,8 +62,8 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const handleSubmit = (values) => {
     const dynamicField =  dynamicList.map(item=>{
       const obj ={
-        conceptIds: values[item.taxonomy?.entityId],
-        taxonomyId: item.taxonomy?.entityId,
+        conceptIds: values[item?.id],
+        taxonomyId: item.id,
        
       }
       return obj;

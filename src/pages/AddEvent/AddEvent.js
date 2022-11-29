@@ -209,7 +209,6 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       .then((response) => {
         if (response && response.data && response.data.data) {
           const events = response.data.data;
-console.log("ayatt",events.filter(item => (item?.isDynamicField)))
       
           setDynamicList(events.filter(item => (item?.isDynamicField)))
           setPublicsList(formatarray(events.filter(item => !(item.isDynamicField)).find(item => item.mappedToField === "Audience")?.concept?
