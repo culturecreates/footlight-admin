@@ -163,7 +163,7 @@ const AddPlaces = function ({ currentLang,contentLang,placeDetails,isModal=false
     const dynamicField =  dynamicList.map(item=>{
       const obj ={
         conceptIds: values[item?.id],
-        taxonomyId: item.taxonomy?.id,
+        taxonomyId: item.id,
        
       }
       return obj;
