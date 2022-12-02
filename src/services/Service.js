@@ -290,6 +290,13 @@ export default class ServiceApi {
       }
     });
   }
+  static getVirtualPlaces() {
+    return Axios({
+      // url: `all-venues`,
+      url: `virtual-locations`,
+      method: "GET",
+    });
+  }
   static getAllOrg() {
     return Axios({
       url: `organizations`,
@@ -506,6 +513,15 @@ export default class ServiceApi {
   static addOrg(payload) {
     return Axios({
       url: `organizations`,
+      method: "POST",
+      data: JSON.stringify(payload),
+
+    });
+  }
+
+  static addVirtualLocation(payload) {
+    return Axios({
+      url: `virtual-locations`,
       method: "POST",
       data: JSON.stringify(payload),
 

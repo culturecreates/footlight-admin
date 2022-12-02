@@ -69,6 +69,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [allLocations, setAllLocations] = useState();
   const [fileList, setFileList] = useState([]);
   const [placeList, setPlaceList] = useState([]);
+  const [virtualList, setVirtualList] = useState([]);
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
@@ -146,7 +147,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     // }
 
     getPublics();
-    getOrgPublics()
+    getOrgPublics();
+    getVirtualLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -300,6 +302,17 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           setPlaceList(events);
           setAllLocations(events);
           dispatch(fetchPlace(events));
+        }
+      })
+      .catch((error) => { });
+  };
+
+  const getVirtualLocation = () => {
+    ServiceApi.getVirtualPlaces()
+      .then((response) => {
+        if (response && response.data && response.data.data) {
+          const events = response.data.data;
+          setVirtualList(events)
         }
       })
       .catch((error) => { });
@@ -750,7 +763,10 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       form.setFieldsValue({
         contact: id,
       });
-    } else if (showAddType === "Location") {
+    } else if (showAddType === "Virtual Location"){
+      getVirtualLocation()
+    }
+    else if (showAddType === "Location") {
       form.setFieldsValue({
         location: [id],
       });
@@ -793,6 +809,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const showAddModal = (typeName) => {
     setShowAddContact(true);
     setShowAddType(typeName);
+    console.log("test")
   };
   const onChange = (info) => {
     setIsUpload(true);
@@ -1043,13 +1060,22 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                         <PlusOutlined /> Add New Location
                       </Typography.Link>
                     </Space>
+                    <Divider style={{ margin: "8px 0" }} />
+                    <Space align="center" style={{ padding: "0 8px 4px" }}>
+                      <Typography.Link
+                        onClick={() => showAddModal("Virtual Location")}
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <PlusOutlined /> Add New Virtual Location
+                      </Typography.Link>
+                    </Space>
+                    
                   </>
                 )}
               >
                 <OptGroup label={t("Online", { lng: currentLang })}>
-                  {allLocations &&
-                    // allLocations.virtualLocations.map((item) => (
-                      allLocations.map((item) => (
+                  {virtualList &&
+                      virtualList.map((item) => (
                       <Option
                         type="Online"
                         value={item.id}
