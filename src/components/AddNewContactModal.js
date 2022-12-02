@@ -2,6 +2,7 @@ import {  Modal } from "antd";
 import AddContact from "../pages/AddContact/AddContact";
 import AddPlaces from "../pages/AdminPlace/AddPlaces";
 import AddOrganization from "../pages/AdminOrg/AddOrganization";
+import AddVirtualLocation from "../pages/AddEvent/AddVirtualLocation";
 
 const AddNewContactModal = ({
   isModalVisible,
@@ -44,6 +45,10 @@ const AddNewContactModal = ({
       :
       type==="Location"?
       <AddPlaces currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
+      onsuccessAddById={handleOkById}/>
+      :
+      type==="Virtual Location"?
+      <AddVirtualLocation currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}
       onsuccessAddById={handleOkById}/>
       :
       <AddOrganization currentLang={currentLang} contentLang={contentLang} contactDetails={null} isModal onsuccessAdd={handleOk}

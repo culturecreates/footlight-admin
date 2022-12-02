@@ -35,7 +35,7 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
   const [selectedLang, setSelectedLang] = useState("fr");
   const [selectedConcept, setSelectedConcept] = useState();
 
-  const conceptArray=["Event","Place", "Organization"]
+  const conceptArray=["Event","Place", "Organization","VirtualLocation"]
 
 
   const { t } = useTranslation();
@@ -234,6 +234,11 @@ function CreateConcept({ currentLang,contentLang,orgDetails}) {
     else if(value==="Place")
     {
       const map=["PlaceAccessibility","Region","Type"]
+    setMappedList(map)
+    }
+    else if(value==="VirtualLocation")
+    {
+      const map=["Type"]
     setMappedList(map)
     }
     else
