@@ -1,4 +1,4 @@
-name: Production build and deploy to S3
+name: Staging build and deploy to S3
 on:
   push:
     branches:
