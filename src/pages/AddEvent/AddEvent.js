@@ -930,7 +930,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       onChange={onChangeStart}
                       format="MM-DD-YYYY"
                       // disabledDate={disabledDate}
-                      disabledDate={(d) => !d || d.isBefore(endDisable)}
+                     
                     />
                   </Form.Item>
                 </div>
