@@ -1,4 +1,4 @@
-name: Staging build and deploy to S3
+name: Production build and deploy to S3
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm install
-    - run: npm run build:staging
+    - run: npm run build:production
       env:
         CI: ""
     - run: aws s3 sync ./build s3://oldcms.footlight.io/ --acl public-read --delete
