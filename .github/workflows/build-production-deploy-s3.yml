@@ -20,3 +20,13 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
         AWS_REGION: ca-central-1 
         WEBHOSTING_BUCKET_NAME: oldcms.footlight.io
+        
+    # Invalidate CloudFront (this action)
+    - name: Invalidate CloudFront
+      uses: chetan/invalidate-cloudfront-action@v2
+      env:
+        DISTRIBUTION: E1AMWNCHVFCNA8
+        PATHS: "/*"
+        AWS_REGION: "ca-central-1"
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
