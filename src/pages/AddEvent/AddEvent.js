@@ -331,11 +331,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
    
     setLoading(true);
     if (!isRecurring) {
+      if (values.startTime)
       values.startDate.set({
         h: values.startTime.get("hour"),
         m: values.startTime.get("minute"),
       });
-      if (isEndDate)
+      if (isEndDate && values.endTime)
         values.endDate.set({
           h: values.endTime.get("hour"),
           m: values.endTime.get("minute"),
@@ -347,13 +348,16 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
       dynamicFields: dynamicField,
-      startDate: !isRecurring
+      startDate:values.startTime?undefined: !isRecurring
+        ?  moment(values.startDate).format("YYYY-MM-DD")
+        : undefined,
+      startDateTime:values.startTime? !isRecurring
         ? ServiceApi.parseDate(
           moment(values.startDate).format("YYYY-MM-DD"),
           moment(values.startTime).format("HH:mm"),
           values.timeZone
         )
-        : undefined,
+        : undefined:undefined,
       scheduleTimezone: values.timeZone,
       locationId: {
         place: {
@@ -453,7 +457,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       }
     }
     if (isEndDate && !isRecurring)
-      eventObj.endDate = moment(values.endDate).format("YYYY-MM-DDTHH:mm:ss");
+    {
+      if(values.endTime)
+       eventObj.endDateTime = moment(values.endDate).format("YYYY-MM-DDTHH:mm:ss");
+      else 
+       eventObj.endDate = moment(values.endDate).format("YYYY-MM-DD")
+    }
     if (isRecurring) {
       const recurEvent = {
         frequency: values.frequency,
@@ -575,7 +584,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         location:
           eventDetails.locations &&
           eventDetails.locations.map((item) => item.id),
-        startDate: moment(new Date(eventDetails.startDate), "DD-MM-YYYY").tz(
+        startDate: moment(new Date(eventDetails.startDate?eventDetails.startDate:eventDetails.startDateTime), "DD-MM-YYYY").tz(
           eventDetails.scheduleTimezone
             ? eventDetails.scheduleTimezone
             : "Canada/Eastern"
@@ -586,16 +595,22 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               ? eventDetails.scheduleTimezone
               : "Canada/Eastern"
           )
-          : undefined,
-        title: eventDetails.name[contentLang],
-        endTime: eventDetails.endDate
-          ? moment(new Date(eventDetails.endDate), "HH-mm").tz(
+          :eventDetails.endDateTime
+          ? moment(new Date(eventDetails.endDateTime), "DD-MM-YYYY").tz(
             eventDetails.scheduleTimezone
               ? eventDetails.scheduleTimezone
               : "Canada/Eastern"
           )
           : undefined,
-        startTime: moment(new Date(eventDetails.startDate), "HH-mm").tz(
+        title: eventDetails.name[contentLang],
+        endTime: eventDetails.endDateTime && eventDetails.endDateTime
+          ? moment(new Date(eventDetails.endDateTime), "HH-mm").tz(
+            eventDetails.scheduleTimezone
+              ? eventDetails.scheduleTimezone
+              : "Canada/Eastern"
+          )
+          : undefined,
+        startTime: eventDetails.startDateTime && moment(new Date(eventDetails.startDateTime), "HH-mm").tz(
           eventDetails.scheduleTimezone
             ? eventDetails.scheduleTimezone
             : "Canada/Eastern"
@@ -941,7 +956,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                   <Form.Item
                     name="startTime"
                     className="status-comment-item"
-                    rules={[{ required: true, message: "Start time required" }]}
+                    rules={[{ required: false, message: "Start time required" }]}
                   >
                     <TimePicker format="HH:mm" />
                   </Form.Item>
@@ -985,7 +1000,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                   <Form.Item
                     name="endTime"
                     className="status-comment-item"
-                    rules={[{ required: true, message: "End time required" }]}
+                    rules={[{ required: false, message: "End time required" }]}
                   >
                     <TimePicker format="HH:mm" />
                   </Form.Item>
