@@ -86,10 +86,10 @@ const AdminEvents = function ({ currentLang,contentLang }) {
       key: "startDate",
       width: 200,
       render: (e, record) => (
-        <div>{moment(record.startDate).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
+        <div>{moment(record.startDate?record.startDate:record.startDateTime).tz(record.scheduleTimezone?record.scheduleTimezone:"Canada/Eastern").format("DD-MM-YYYY")}</div>
       ),
-      sorter: (a, b) => new Date(moment(a.startDate, "MMMM Do YYYY, h:mm:ss a").format("LLL")) -
-      new Date(moment(b.startDate, "MMMM Do YYYY, h:mm:ss a").format("LLL")),
+      sorter: (a, b) => new Date(moment(a.startDate?a.startDate:a.startDateTime, "MMMM Do YYYY, h:mm:ss a").format("LLL")) -
+      new Date(moment(b.startDate?b.startDate:b.startDateTime, "MMMM Do YYYY, h:mm:ss a").format("LLL")),
     },
 
     {
