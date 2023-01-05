@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/user-event": "^13.5.0",
     "antd": "^4.20.1",
     "axios": "^0.27.2",
     "compressorjs": "^1.1.1",
@@ -36,11 +33,11 @@
     "start": "react-scripts start",
     "start:dev": "env-cmd -f .env.dev react-scripts start",
     "start:staging": "env-cmd -f .env.staging react-scripts start",
-    "start:prod": "env-cmd -f .env.prod react-scripts start",
+    "start:production": "env-cmd -f .env.production react-scripts start",
     "build": "react-scripts build",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:staging": "env-cmd -f .env.staging react-scripts build",
-    "build:prod": "env-cmd -f .env.prod react-scripts build",
+    "build:production": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -63,8 +60,7 @@
     ]
   },
   "engines": {
-    "node": "14.4",
-    "npm": "6.14"
+    "node": "^14.4.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

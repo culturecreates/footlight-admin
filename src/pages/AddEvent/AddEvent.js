@@ -945,7 +945,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       onChange={onChangeStart}
                       format="MM-DD-YYYY"
                       // disabledDate={disabledDate}
-                      disabledDate={(d) => !d || d.isBefore(endDisable)}
+                     
                     />
                   </Form.Item>
                 </div>
@@ -1047,7 +1047,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               {t("Location", { lng: currentLang })}
             </div>
 
-            <Form.Item name={"location"} rules={[{ required: true }]}>
+            <Form.Item name={"location"}>
               <Select
                 data-testid="update-two-select-dropdown"
                 placeholder={`Select Location`}
