@@ -584,11 +584,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         location:
           eventDetails.locations &&
           eventDetails.locations.map((item) => item.id),
-        startDate: moment(new Date(eventDetails.startDate?eventDetails.startDate:eventDetails.startDateTime), "DD-MM-YYYY").tz(
-          eventDetails.scheduleTimezone
-            ? eventDetails.scheduleTimezone
-            : "Canada/Eastern"
-        ),
+        startDate: moment(new Date(eventDetails.startDate?eventDetails.startDate:eventDetails.startDateTime), "DD-MM-YYYY")
+        // .tz(
+        //   eventDetails.scheduleTimezone
+        //     ? eventDetails.scheduleTimezone
+        //     : "Canada/Eastern")
+        ,
         endDate: eventDetails.endDate
           ? moment(new Date(eventDetails.endDate), "DD-MM-YYYY").tz(
             eventDetails.scheduleTimezone
