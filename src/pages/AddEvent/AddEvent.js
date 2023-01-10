@@ -686,17 +686,17 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           url: eventDetails.image?.thumbnail,
         };
         setFileList([obj]);
-         const imageData = {
-          "original": {
-            "uri": eventDetails.image?.original,
+        const imageData = {
+          original: {
+            entityId: eventDetails.image?.original,
           },
-          "large": {
-            "uri": eventDetails.image?.large,
+          large: {
+            entityId: eventDetails.image?.large,
           },
-          "thumbnail": {
-            "uri": eventDetails.image?.thumbnail,
-          }
-        }
+          thumbnail: {
+            entityId: eventDetails.image?.thumbnail,
+          },
+        };
          setImageFile(imageData)
       } else setFileList([]);
       if (eventDetails.recurringEvent) {
