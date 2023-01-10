@@ -343,7 +343,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         });
     }
     const eventObj = {
-      image: imageFile,
+      // image: imageFile,
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
@@ -434,6 +434,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         })
         : undefined,
     };
+    if(imageFile)
+      eventObj.image = imageFile
     if (contentLang == "bilengual") {
       eventObj.name = { fr: values.title, en: values.titleEn };
       eventObj.description = { fr: values.desc, en: values.descEn }
@@ -698,7 +700,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             entityId: eventDetails.image?.thumbnail,
           },
         };
-         setImageFile(imageData)
+        //  setImageFile(imageData)
       } else setFileList([]);
       if (eventDetails.recurringEvent) {
         setNumberOfDays(eventDetails.subEvents?.length);
