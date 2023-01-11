@@ -128,16 +128,18 @@ const PriceModal = ({
       }):undefined
     }
 
-    ServiceApi.addOffer(
-      payload
-    )
-      .then((response) => {
-        closePriceModal(payloadSend,response.data.id)
-        setIsModalVisible(false);
-      })
-      .catch((error) => {});
+    closePriceModal(payloadSend)
+    setIsModalVisible(false);
+    // ServiceApi.addOffer(
+    //   payload
+    // )
+    //   .then((response) => {
+    //     closePriceModal(payloadSend,response.data.id)
+    //     setIsModalVisible(false);
+    //   })
+    //   .catch((error) => {});
 
-    console.log(payload)
+    // console.log(payload)
   }
  
   return (

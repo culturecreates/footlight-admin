@@ -78,6 +78,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [dynamicList, setDynamicList] = useState([]);
   const [accessabilityList, setAccessabilityList] = useState([]);
   const [contactList, setContactList] = useState([]);
+  const [contactObj, setContactObj] = useState();
   const [isUpload, setIsUpload] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [showAddContact, setShowAddContact] = useState(false);
@@ -373,21 +374,22 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         //     : null,
         // },
       },
-      contactPoint: values.contact
-        ? {
-          entityId: values.contact,
-        }
-        : null,
+      contactPoint: contactObj,
+      //  values.contact
+      //   ? {
+      //     entityId: values.contact,
+      //   }
+      //   : null,
       url: values.eventPage && { uri: values.eventPage },
       facebookUrl: values.facebookLink,
       videoUrl: values.videoUrl,
       offerConfiguration: offerConfig,
-      offers:
-        offerIds &&
-        offerIds.map((item) => {
-          const obj = { entityId: item };
-          return obj;
-        }),
+      // offers:
+      //   offerIds &&
+      //   offerIds.map((item) => {
+      //     const obj = { entityId: item };
+      //     return obj;
+      //   }),
       // organizer: values.organization
       //   ? {
       //       organization: values.organization.map((item) => {
@@ -575,6 +577,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setPerformerSelectedRole(eventDetails.performer?eventDetails.performer:[])
       setVirtualLocObj(eventDetails.locations &&
         eventDetails.locations.find(item=>!item.id))
+        setContactObj(eventDetails.contactPoint)
       form.setFieldsValue({
         // "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
         languages: eventDetails.languages,
@@ -782,9 +785,10 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const closeWithId = (id) => {
     setShowAddContact(false);
     if (showAddType === "Contact") {
-      form.setFieldsValue({
-        contact: id,
-      });
+      // form.setFieldsValue({
+      //   contact: id,
+      // });
+      setContactObj(id)
     } else if (showAddType === "Virtual Location"){
       console.log(id)
       setVirtualLocObj(id)
@@ -871,7 +875,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     }
   };
 
-  const closePriceModal = (config, ids) => {
+  const closePriceModal = (config, ids="") => {
     setOfferConfig(config);
     setOfferIds(ids);
   };
@@ -1147,11 +1151,24 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               </div>
               {
                 virtualLocObj &&
+                <Card
+                  size="small"
+                  extra={
+                    <DeleteOutlined
+                      onClick={() => {
+                        setVirtualLocObj()
+                      }}
+                    />
+                  }
+                  title="Virtual Location"
+                  style={{ width: 355, marginBottom: "10px" }}
+                >
                 <div className="vitual-loc-obj">
                    <span>Name :- {virtualLocObj.name.fr?virtualLocObj.name.fr:virtualLocObj.name.en}</span>
                    <br/>
                    {virtualLocObj.url &&<span>Url :- {virtualLocObj.url?.uri}</span>}
                 </div>
+                </Card>
               }
 
             <div className="update-select-title">
@@ -1287,7 +1304,44 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               </p>
             </Dragger>
             <div>
-              <div className="update-select-title">
+
+            <div>
+                <Button
+                  className="add-end-date-btn"
+                  icon={ <PlusOutlined />}
+                  onClick={() => showAddModal("Contact")}
+                >
+                  {t(" Add New Contact", { lng: currentLang })}
+                </Button>
+              </div>
+
+              {
+                contactObj &&
+                <Card
+                  size="small"
+                  extra={
+                    <DeleteOutlined
+                      onClick={() => {
+                        setContactObj()
+                      }}
+                    />
+                  }
+                  title="Contact"
+                  style={{ width: 355, marginBottom: "10px" }}
+                >
+                <div className="vitual-loc-obj">
+                   <span>Name :- {contactObj.name?.fr?contactObj.name?.fr:contactObj.name?.en}</span>
+                   <br/>
+                   {contactObj.url &&<span>Url :- {contactObj.url?.uri}</span>}
+                   <br/>
+                   {contactObj.email &&<span>Email :- {contactObj.email}</span>}
+                   <br/>
+                   {contactObj.telephone &&<span>Telephone :- {contactObj.telephone}</span>}
+                </div>
+                </Card>
+              }
+
+              {/* <div className="update-select-title">
                 {t("Contact", { lng: currentLang })}
               </div>
               <Form.Item
@@ -1327,7 +1381,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                     </Option>
                   ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
 
               <Button
                 size="large"

@@ -56,6 +56,10 @@ const AddContact = function ({ currentLang,contentLang,contactDetails,isModal=fa
       }
      
     }
+    if (isModal) {
+      onsuccessAddById(postalObj);
+      return;
+    }
     setLoading(true)
     if (contactDetails)
     ServiceApi.updateContact(postalObj,contactDetails.id)
