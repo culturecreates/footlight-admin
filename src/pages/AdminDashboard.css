@@ -250,3 +250,11 @@
     font-size: 13px;
     font-weight: 600;
 }
+
+.vitual-loc-obj{
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}

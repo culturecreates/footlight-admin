@@ -55,6 +55,7 @@ const AddVirtualLocation = function ({ currentLang,contentLang,orgDetails,isModa
   };
 
   const handleSubmit = (values) => {
+    console.log(dynamicList)
     const dynamicField =  dynamicList.map(item=>{
       const obj ={
         conceptIds: values[item?.id],
@@ -84,27 +85,22 @@ const AddVirtualLocation = function ({ currentLang,contentLang,orgDetails,isModa
       
      
     }
-    setLoading(true)
+    onsuccessAddById(postalObj)
+    // setLoading(true)
     
-      ServiceApi.addVirtualLocation(postalObj)
-      .then((response) => {
-        if (response && response.data) {
-          const getId=response.data?.id
+      // ServiceApi.addVirtualLocation(postalObj)
+      // .then((response) => {
+      //   if (response && response.data) {
+      //     const getId=response.data?.id              
+      //       setLoading(false) 
+      //       message.success("Virtual Location Created Successfully");
+      //       onsuccessAddById()            
             
-            
-            
-           
-            setLoading(false) 
-
-            message.success("Virtual Location Created Successfully");
-            onsuccessAddById()
-            
-            
-        }
-      })
-      .catch((error) => {
-        setLoading(false)
-      });
+      //   }
+      // })
+      // .catch((error) => {
+      //   setLoading(false)
+      // });
   };
 
   
@@ -250,7 +246,7 @@ const AddVirtualLocation = function ({ currentLang,contentLang,orgDetails,isModa
             >
               <Input placeholder="Enter org Name" className="replace-input" />
             </Form.Item>
- <div className="update-select-title">
+ {/* <div className="update-select-title">
               {t("Type", { lng: currentLang })}
             </div>
             <Form.Item name={"type"} rules={[{ required: false }]}>
@@ -266,7 +262,7 @@ const AddVirtualLocation = function ({ currentLang,contentLang,orgDetails,isModa
                   return item.title.toLowerCase().indexOf(search.toLowerCase()) >= 0;
                 }}
               />
-            </Form.Item>
+            </Form.Item> */}
 
 {    dynamicList.length>0 &&
   dynamicList.map(item=>

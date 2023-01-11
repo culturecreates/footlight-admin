@@ -70,6 +70,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   const [fileList, setFileList] = useState([]);
   const [placeList, setPlaceList] = useState([]);
   const [virtualList, setVirtualList] = useState([]);
+  const [virtualLocObj, setVirtualLocObj] = useState();
   const [orgList, setOrgList] = useState([]);
   const [publicsList, setPublicsList] = useState([]);
   const [typeList, setTypeList] = useState([]);
@@ -365,11 +366,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
             ? formLocation.find((item) => item.type === "Offline").value
             : null,
         },
-        virtualLocation: {
-          entityId: formLocation.find((item) => item.type === "Online")
-            ? formLocation.find((item) => item.type === "Online").value
-            : null,
-        },
+        virtualLocation: virtualLocObj
+        // {
+        //   entityId: formLocation.find((item) => item.type === "Online")
+        //     ? formLocation.find((item) => item.type === "Online").value
+        //     : null,
+        // },
       },
       contactPoint: values.contact
         ? {
@@ -571,6 +573,8 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
       setOrgSelectedRole(eventDetails.organizer?eventDetails.organizer:[])
       setContributorSelectedRole(eventDetails.collaborators?eventDetails.collaborators:[])
       setPerformerSelectedRole(eventDetails.performer?eventDetails.performer:[])
+      setVirtualLocObj(eventDetails.locations &&
+        eventDetails.locations.find(item=>!item.id))
       form.setFieldsValue({
         // "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
         languages: eventDetails.languages,
@@ -585,7 +589,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
           : "<p>&nbsp;</p>",
         location:
           eventDetails.locations &&
-          eventDetails.locations.map((item) => item.id),
+          eventDetails.locations.filter(item=>item.id).map((item) => item.id),
         startDate: moment(new Date(eventDetails.startDate?eventDetails.startDate:eventDetails.startDateTime), "DD-MM-YYYY")
         // .tz(
         //   eventDetails.scheduleTimezone
@@ -782,7 +786,9 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         contact: id,
       });
     } else if (showAddType === "Virtual Location"){
-      getVirtualLocation()
+      console.log(id)
+      setVirtualLocObj(id)
+      //  getVirtualLocation()
     }
     else if (showAddType === "Location") {
       form.setFieldsValue({
@@ -1078,7 +1084,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                         <PlusOutlined /> Add New Location
                       </Typography.Link>
                     </Space>
-                    <Divider style={{ margin: "8px 0" }} />
+                    {/* <Divider style={{ margin: "8px 0" }} />
                     <Space align="center" style={{ padding: "0 8px 4px" }}>
                       <Typography.Link
                         onClick={() => showAddModal("Virtual Location")}
@@ -1086,12 +1092,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                       >
                         <PlusOutlined /> Add New Virtual Location
                       </Typography.Link>
-                    </Space>
+                    </Space> */}
                     
                   </>
                 )}
               >
-                <OptGroup label={t("Online", { lng: currentLang })}>
+                {/* <OptGroup label={t("Online", { lng: currentLang })}>
                   {virtualList &&
                       virtualList.map((item) => (
                       <Option
@@ -1107,7 +1113,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                         {item.name["fr"]}
                       </Option>
                     ))}
-                </OptGroup>
+                </OptGroup> */}
                 <OptGroup label={t("Offline", { lng: currentLang })}>
                   {allLocations &&
                     allLocations.map((item) => (
@@ -1129,6 +1135,24 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                 </OptGroup>
               </Select>
             </Form.Item>
+
+            <div>
+                <Button
+                  className="add-end-date-btn"
+                  icon={ <PlusOutlined />}
+                  onClick={() => showAddModal("Virtual Location")}
+                >
+                  {t("Virtual Location", { lng: currentLang })}
+                </Button>
+              </div>
+              {
+                virtualLocObj &&
+                <div className="vitual-loc-obj">
+                   <span>Name :- {virtualLocObj.name.fr?virtualLocObj.name.fr:virtualLocObj.name.en}</span>
+                   <br/>
+                   {virtualLocObj.url &&<span>Url :- {virtualLocObj.url?.uri}</span>}
+                </div>
+              }
 
             <div className="update-select-title">
               {t("Publics", { lng: currentLang })}
