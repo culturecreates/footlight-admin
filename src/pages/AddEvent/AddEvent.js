@@ -150,7 +150,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
 
     getPublics();
     getOrgPublics();
-    getVirtualLocation()
+    // getVirtualLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -174,20 +174,20 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   }, [placeStore]);
 
   useEffect(() => {
-    if (contactStore == null) {
-      getContacts();
-    } else {
-      setContactList(
-        contactStore.map((item) => {
-          const obj = {
-            name: item.name[currentLang] ? item.name[currentLang] :
-              currentLang === "fr" ? item.name["en"] : item.name["fr"]
-            , value: item.id
-          };
-          return obj;
-        })
-      );
-    }
+    // if (contactStore == null) {
+    //   getContacts();
+    // } else {
+    //   setContactList(
+    //     contactStore.map((item) => {
+    //       const obj = {
+    //         name: item.name[currentLang] ? item.name[currentLang] :
+    //           currentLang === "fr" ? item.name["en"] : item.name["fr"]
+    //         , value: item.id
+    //       };
+    //       return obj;
+    //     })
+    //   );
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contactStore]);
 
@@ -439,8 +439,12 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         })
         : undefined,
     };
-    if(imageFile)
+    if(imageFile === null)
+     eventObj.image = null
+    else if (imageFile)
       eventObj.image = imageFile
+
+      
     if (contentLang == "bilengual") {
       eventObj.name = { fr: values.title, en: values.titleEn };
       eventObj.description = { fr: values.desc, en: values.descEn }
@@ -841,6 +845,11 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     setShowAddType(typeName);
     console.log("test")
   };
+
+  const onRemove = (info) =>{
+    setImageFile(null)
+
+  }
   const onChange = (info) => {
     setIsUpload(true);
     setFileList(info.fileList);
@@ -1292,6 +1301,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
               fileList={fileList}
               onChange={onChange}
               onPreview={onPreview}
+              onRemove={onRemove}
               aspect="3/3"
               accept="image/*"
             >
