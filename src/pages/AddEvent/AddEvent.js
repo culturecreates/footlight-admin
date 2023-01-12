@@ -1166,7 +1166,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                   style={{ width: 355, marginBottom: "10px" }}
                 >
                 <div className="vitual-loc-obj">
-                   <span>Name :- {virtualLocObj.name.fr?virtualLocObj.name.fr:virtualLocObj.name.en}</span>
+                   <span>Name :- {virtualLocObj.name?.fr?virtualLocObj.name?.fr:virtualLocObj.name?.en}</span>
                    <br/>
                    {virtualLocObj.url &&<span>Url :- {virtualLocObj.url?.uri}</span>}
                 </div>
