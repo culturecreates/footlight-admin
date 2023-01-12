@@ -321,7 +321,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
   };
 
   const handleSubmit = (values) => {
-
+   
     const dynamicField = dynamicList.map(item => {
       const obj = {
         conceptIds: values[item?.id],
@@ -346,6 +346,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
     }
     const eventObj = {
       // image: imageFile,
+      keywords: values.keywords,
       languages: values.languages,
       eventStatus: values.eventStatus,
       accessibilityNote: values.accessabilityNote,
@@ -580,6 +581,7 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
         setContactObj(eventDetails.contactPoint)
       form.setFieldsValue({
         // "6353ffdf212b820058acf819":["6353fff9212b820058acf83e"],
+        keywords: eventDetails.keywords?eventDetails.keywords:[],
         languages: eventDetails.languages,
         eventStatus: eventDetails.eventStatus,
         contact: eventDetails.contactPoint?.id,
@@ -1632,6 +1634,25 @@ const AddEvent = function ({ currentLang, contentLang, eventDetails }) {
                   onChange={(e) => setYoutubeLink(e.target.value)}
                   className="replace-input"
                 />
+              </Form.Item>
+
+              <div className="update-select-title">
+                {t("Keywords", { lng: currentLang })} 
+              </div>
+              <Form.Item
+                name="keywords"
+                className="status-comment-item"
+                rules={[{ required: false }]}
+              >
+                  <Select
+                    mode="tags"
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Tags Mode"
+                    
+                    options={[]}
+                  />
               </Form.Item>
               {youtubeLink && videoUrlValidate(youtubeLink) && (
                 youtubeLink.includes("vimeo.com") ?
