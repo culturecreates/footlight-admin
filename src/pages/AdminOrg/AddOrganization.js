@@ -1,15 +1,15 @@
-import { Layout, Form, Input, Button, message, Select, Divider, Space, Typography, TreeSelect } from "antd";
+import { Layout, Form, Input, Button, message, Select, Divider, Space, Typography, TreeSelect, Row, Col, Upload } from "antd";
 import React, { useState, useEffect } from "react";
-
+import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
  PlusOutlined,
   CheckOutlined,
   CloseOutlined,
-  
+  FileImageOutlined,
 } from "@ant-design/icons";
-import {  adminOrg, urlValidate } from "../../utils/Utility";
+import {  adminOrg, getSrcFromFile, urlValidate } from "../../utils/Utility";
 import ServiceApi from "../../services/Service";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import { fetchContact, fetchOrg } from "../../action";
 import AddNewContactModal from "../../components/AddNewContactModal";
 
 const { Option } = Select;
-
+const { Dragger } = Upload;
 const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=false,onsuccessAdd,onsuccessAddById }) {
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -26,6 +26,10 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
   const [formValue, setFormVaue] = useState();
   const [placeList, setPlaceList] = useState([]);
   const [dynamicList, setDynamicList] = useState([]);
+  const [logoList, setLogoList] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  const [imageFile, setImageFile] = useState();
+  const [logoFile, setLogoFile] = useState();
 
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -79,6 +83,11 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         }:undefined ,
         dynamicFields:dynamicField,
     };
+    if(imageFile)
+     postalObj.image = imageFile  
+    if(logoFile)
+     postalObj.logo = logoFile
+
     if(contentLang == "bilengual")
     {
       postalObj.name = {fr:values.name, en: values.nameEn};
@@ -166,7 +175,24 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         place: orgDetails.place?.entityId
         
       });
-
+      if (orgDetails.image) {
+        const obj = {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: orgDetails.image?.thumbnail,
+        };
+        setFileList([obj]);
+      }
+      if (orgDetails.logo) {
+        const obj = {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: orgDetails.logo?.thumbnail,
+        };
+        setLogoList([obj]);
+      }
       if(contentLang == "bilengual")
       {
         form.setFieldsValue({
@@ -302,6 +328,48 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
       .catch((error) => {
         setLoading(false);
       });
+  };
+
+  const onChange = (info,type) => {
+    // setIsUpload(true);
+    if(type === "image")
+    setFileList(info.fileList);
+    else
+    setLogoList(info.fileList);
+
+    new Compressor(info.fileList[0].originFileObj, {
+      convertSize: 200000,
+      success: (compressedResult) => {
+        setLoading(true)
+        ServiceApi.imageUpload(
+          "id",
+          info.fileList[0].originFileObj,
+          compressedResult
+        )
+          .then((response) => {
+            setLoading(false);
+            if(type === "image")
+            setImageFile(response.data.data)
+            else
+            setLogoFile(response.data.data)
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      },
+    });
+  };
+  const onPreview = async (file) => {
+    const src = file.url || (await getSrcFromFile(file));
+    const imgWindow = window.open(src);
+
+    if (imgWindow) {
+      const image = new Image();
+      image.src = src;
+      imgWindow.document.write(image.outerHTML);
+    } else {
+      window.location.href = src;
+    }
   };
 
   return (
@@ -458,6 +526,55 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
             </Form.Item>
             </div>
 )}
+<Row>
+  <Col style={{margin:"20px"}}>
+  <Dragger
+              listType="picture-card"
+              className={
+                fileList.length > 0 ? "event-upload" : "ant-event-upload"
+              }
+              fileList={fileList}
+              onChange={(info)=>onChange(info,"image")}
+              onPreview={onPreview}
+              aspect="3/3"
+              accept="image/*"
+            >
+              <p className="ant-upload-drag-icon">
+                <FileImageOutlined />
+              </p>
+              <p className="ant-upload-text">
+                {t("FileUpload", { lng: currentLang })}
+              </p>
+              <p className="ant-upload-hint">
+                {t("DragAndDrop", { lng: currentLang })}
+              </p>
+            </Dragger>
+  </Col>
+
+  <Col style={{margin:"20px"}}>
+  <Dragger
+              listType="picture-card"
+              className={
+                logoList.length > 0 ? "event-upload" : "ant-event-upload"
+              }
+              fileList={logoList}
+              onChange={(info)=>onChange(info,"logo")}
+              onPreview={onPreview}
+              aspect="3/3"
+              accept="image/*"
+            >
+              <p className="ant-upload-drag-icon">
+                <FileImageOutlined />
+              </p>
+              <p className="ant-upload-text">
+                {t("Logo Upload", { lng: currentLang })}
+              </p>
+              <p className="ant-upload-hint">
+                {t("DragAndDrop", { lng: currentLang })}
+              </p>
+            </Dragger>
+  </Col>
+</Row>
         <Form.Item className="submit-items">
           <Button
             size="large"

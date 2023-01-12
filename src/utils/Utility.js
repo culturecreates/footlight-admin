@@ -636,3 +636,11 @@ export const adminSideMenuLinks = [
       type:"reset"
     },
   ]
+
+  export const getSrcFromFile = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onload = () => resolve(reader.result);
+    });
+  };
