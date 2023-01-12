@@ -83,10 +83,14 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
         }:undefined ,
         dynamicFields:dynamicField,
     };
-    if(imageFile)
-     postalObj.image = imageFile  
-    if(logoFile)
-     postalObj.logo = logoFile
+    if(imageFile === null)
+     postalObj.image = null
+    else if(imageFile)
+     postalObj.image = imageFile     
+    if(logoFile === null)
+     postalObj.logo = null
+    else if(logoFile)
+     postalObj.logo = logoFile 
 
     if(contentLang == "bilengual")
     {
@@ -330,6 +334,13 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
       });
   };
 
+  const onRemove = (info,type) =>{
+    if(type === "image")
+    setImageFile(null)
+    else
+    setLogoFile(null)
+
+  }
   const onChange = (info,type) => {
     // setIsUpload(true);
     if(type === "image")
@@ -535,6 +546,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
               }
               fileList={fileList}
               onChange={(info)=>onChange(info,"image")}
+              onRemove={(info)=>onRemove(info,"image")}
               onPreview={onPreview}
               aspect="3/3"
               accept="image/*"
@@ -560,6 +572,7 @@ const AddOrganization = function ({ currentLang,contentLang,orgDetails,isModal=f
               fileList={logoList}
               onChange={(info)=>onChange(info,"logo")}
               onPreview={onPreview}
+              onRemove={(info)=>onRemove(info,"logo")}
               aspect="3/3"
               accept="image/*"
             >
